@@ -29,7 +29,7 @@ agents = [takashi,yumi,kazuki,satoshi,yusuke,ayumi]
 takashi_profile = [
     "Takashi Yamamoto is a shopkeeper who owns Shino Grocery Store and loves interacting with customers.",
     "Takashi manages day to day operations at the store and helps out customers with their orders.",
-    "TakashiHe is always willing to help out and make sure everyone is taken care of. ",
+    "Takashi is always willing to help out and make sure everyone is taken care of. ",
     "Takashi is also really interested in the local mayor election that is coming up next month.",
 ]
 
@@ -76,10 +76,17 @@ ayumi_profile = [
     "Ayumi Kimura goes to bed around 7pm, wakes up around 7am, eats dinner around 5pm"
 ]
 
-profiles = [takashi_profile,yumi_profile,kazuki_profile,satoshi_profile,yusuke_profile,ayumi_profile]
+profiles = {
+    "Takashi Yamamoto": takashi_profile, 
+    "Yumi Yamamoto": yumi_profile, 
+    "Kazuki Sato": kazuki_profile, 
+    "Satoshi Takahashi": satoshi_profile, 
+    "Yusuke Mori": yusuke_profile, 
+    "Ayumi Kimura": ayumi_profile
+}
 
 for i in range(0,len(agents)):
-  for profile_point in profiles[i]:
+  for profile_point in profiles[agents[i].person.name]:
     agents[i].profile.append(profile_point)
     agents[i].memory.add_memory(profile_point)
 
@@ -166,6 +173,6 @@ yamamoto_residence = Place("Yamamoto Residence", "The Yamamoto family's small ho
 shino_grocery_store = Place("Shino Grocery Store", "Shino grocery Store is a vital hub in the community, offering a wide range of essential products for everyday living. From fresh produce and pantry staples to household goods and personal care items, the grocery store caters to diverse needs. People visit the grocery store and buy the daily needed items. With a commitment to sustainability, the grocery store encourages eco-friendly practices such as the use of reusable bags and supporting local farmers. In essence, the grocery store is a community cornerstone, providing a reliable source for everyday necessities. It is owned by Takashi Yamamoto.", {})
 haya_apartments = Place("Haya Apartments", "Haya Apartments, situated in Hayashino Town, is home to a diverse community of independent individuals and families. The apartments within the building are fully furnished and feature tasteful wooden furniture.", {})
 hanazawa_park = Place("Hanazawa Park", "Hanazawa Park is a place where people visit for exercising or walking. They also interact with new people and get new ideas. Hanazawa Park has wooden fencing around it. People get relaxed in Hanazawa Park. It has a large variety of trees and flowers", {})
-kogaku_physics = Place("Kogaku Institute Of Physics", "Kogaku Institute of Physics, located in Hayashiro, is a leading scientific institution dedicated to the study and exploration of physics. With cutting-edge facilities and a team of renowned researchers, it strives to advance our understanding of the physical world through rigorous experimentation and theoretical investigations", {})
+kogaku_physics = Place("Kogaku Institute of Physics", "Kogaku Institute of Physics, located in Hayashiro, is a leading scientific institution dedicated to the study and exploration of physics. With cutting-edge facilities and a team of renowned researchers, it strives to advance our understanding of the physical world through rigorous experimentation and theoretical investigations", {})
 mizukami_shrine = Place("Mizukami Shrine", "A Japanese shrine is a sacred sanctuary steeped in tradition and spiritual significance. People visit shrines to worship God. Shrines serve as cultural touchstones, preserving Japan's ancient traditions and values. A visit to a Japanese shrine is a profound spiritual experience, offering a glimpse into the country's rich heritage and profound reverence", {})
 

@@ -14,7 +14,7 @@ import csv
 from datetime import datetime, timedelta
 from datetime import date
 from IPython.display import display, HTML
-import pygame
+import streamlit as st
 
 
 os.environ['OPENAI_API_KEY'] = '97ce304ef1a84eddb8e7598eb47479c3'
@@ -53,6 +53,8 @@ def retrieval_score():
   pass
 
 # Function to interact and ask questions to LLM
+def _generate_dialogue_response():
+   pass
 
 def generate_response(prompt):
   default_str = "Setup a context for yourself and whenever you are asked something, Imagine you are a character in a captivating role-playing game, and your objective is to engage players by embodying a believable persona. Answer questions as a human character, drawing upon your extensive memory, distinct traits, ongoing plans, and unique profile to provide immersive and realistic responses. Bring your character to life with depth and authenticity. In the conversation, please respond as if you were a person, without explicitly mentioning that you are an AI language model."
@@ -99,14 +101,8 @@ def create_new_memory_retriever():
     vectorstore = FAISS(embeddings_model.embed_query, index, InMemoryDocstore({}), {}, relevance_score_fn=relevance_score_fn)
     return TimeWeightedVectorStoreRetriever(vectorstore=vectorstore, other_score_keys=["importance"], k=15)
 
-
-def print_colored(text, color):
-    pygame.init()
-    window_width, window_height = 800, 600
-    window = pygame.display.set_mode((window_width, window_height))
-    pygame.display.set_caption("Pygame Window") 
-
-    font = pygame.font.Font(None, 36)  # Font and font size
+def print_colored(text,color):
+    
     color_code = {
         'black': '#000000',
         'red': '#FF0000',
@@ -119,15 +115,13 @@ def print_colored(text, color):
         'light blue': '#ADD8E6',
         'sky blue': "#87CEEB"
     }
-
-    text_colored = font.render(text, True, color_code[color])
-
-    window.fill((0, 0, 0))  # Fill the window with a black background color
-    window.blit(text_colored, (0, 0))  # Draw the text surface onto the window
-    pygame.display.update()
     
-    # colored_text = f'<span style="color: {color_code[color]}">{text}</span>'
-    # display(HTML(colored_text))
-
+    text_color = color_code[color]
+    text = f'<span style="color: {text_color};">{text}</span>'
+    st.markdown(text, unsafe_allow_html=True)
     
+
+
+   
+
 

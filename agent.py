@@ -1,8 +1,8 @@
 import langchain
 from langchain.experimental.generative_agents import GenerativeAgent, GenerativeAgentMemory
-import utils
 from utils import generate_response,print_colored
 
+ 
 class Agent():
   def __init__(self, name:str, age:int, traits:str, status:str, location:str, memory_retriever, llm, reflection_threshold:int, verbose:bool):
     self.memory = GenerativeAgentMemory(
@@ -20,6 +20,8 @@ class Agent():
                   llm=llm,
                   memory=self.memory
                 )
+    
+    self.state = "alive"
 
     self.location = location
 
@@ -35,11 +37,13 @@ class Agent():
 
   def update_location(self,new_location):
     self.location = new_location
-
-  def make_interaction2(self, current_time, current_location, Agents:list, last_message):
-    for agent in Agents:
-
-      pass
+  
+  def get_memory(self):
+    temp_mem = ""
+    for i in range(0,len(self.person.memory.memory_retriever.memory_stream)):
+      temp_mem+= self.person.memory.memory_retriever.memory_stream[i].page_content
+      
+    return temp_mem
 
   def make_interaction(self, current_time, Agents:list, last_message):
     for agent in Agents:
@@ -52,19 +56,26 @@ class Agent():
             you are {self.person.name} and you are currently at {self.location} with {agent.person.name}. Your status is {agent.person.status}. Your age is {agent.person.age}. \
             The traits of {agent.person.name} having age {agent.person.age} are: {agent.person.traits}.  \
             \
-            Greet {agent.person.name} and start the conversation as {self.person.name}. Interact with him/her on the bases of your relations: {self.relations[agent.person.name]} and your memories: {self.memory.fetch_memories(f'Give the memories related to {agent.person.name}')}"
+            Greet {agent.person.name} and start the conversation as {self.person.name}. Initiate conversation with him/her with a single line message on the basis of your relations: {self.relations[agent.person.name]} and your memories: {self.memory.fetch_memories(f'Give the memories related to {agent.person.name}')}"
           dialogue_response = generate_response(start_prompt)
         else:
           continue_convo, dialogue_response = self.person.generate_dialogue_response(dialogue_response)
         self.memory.add_memory(dialogue_response)
-        print_colored(dialogue_response,"yellow")
+        print_colored(dialogue_response,"magenta")
         if not continue_convo:
           break
         #other agent's chance
         continue_convo, dialogue_response = agent.person.generate_dialogue_response(dialogue_response)
-        print_colored(dialogue_response,"yellow")
+        print_colored(dialogue_response,"green")
         agent.memory.add_memory(dialogue_response)
         if not continue_convo:
           break
 
+  def killing_action(self,Agent2,agents):
+   Agent2.state = "dead"
+   Agent2.memory.add_memory("I have killed {}".format(Agent2.person.name))
+   
+   for agent in agents:
+      if agent!=Agent2:
+        agent.generate_reaction("{} has been killed at {}.".format(Agent2.person.name,Agent2.location))
 
