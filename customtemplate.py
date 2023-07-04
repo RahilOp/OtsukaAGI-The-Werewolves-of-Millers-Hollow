@@ -4,6 +4,7 @@ from typing import List, Union
 from langchain.prompts import PromptTemplate, BaseChatPromptTemplate
 from langchain.agents import Tool, AgentExecutor, LLMSingleActionAgent, AgentOutputParser
 from langchain.schema import AgentAction, AgentFinish, HumanMessage
+
 # Set up a prompt template
 class CustomPromptTemplate(BaseChatPromptTemplate):
     # The template to use
@@ -23,7 +24,7 @@ class CustomPromptTemplate(BaseChatPromptTemplate):
         # Set the agent_scratchpad variable to that value
         kwargs["agent_scratchpad"] = thoughts
         # Create a tools variable from the list of tools provided
-        kwargs["tools"] = "\n".join([f"{tool.name}: {tool.description}" for tool in self.tools])
+        kwargs["tools"] = "\n\n".join([f"{tool.name}: \n{tool.description}" for tool in self.tools])
         # Create a list of tool names for the tools provided
         kwargs["tool_names"] = ", ".join([tool.name for tool in self.tools])
         formatted = self.template.format(**kwargs)
@@ -34,11 +35,16 @@ class CustomOutputParser(AgentOutputParser):
 
     def parse(self, llm_output: str) -> Union[AgentAction, AgentFinish]:
         # Check if agent should finish
-        if "Final Answer:" in llm_output:
-            return AgentFinish(
+        return_values = {"output": {"tool_used": "", "result": ""}}
+        if "Action:" in llm_output:
+            return_values["output"]["tool_used"] = llm_output.split("Action:")[-1].strip().split("\n")[0]
+        if "Action Input:" in llm_output:
+            return_values["output"]["result"] = llm_output.split("Action Input:")[-1].strip()
+        if(len(return_values["output"].items())==2):
+          return AgentFinish(
                 # Return values is generally always a dictionary with a single `output` key
                 # It is not recommended to try anything else at the moment :)
-                return_values={"output": llm_output.split("Final Answer:")[-1].strip()},
+                return_values = return_values,
                 log=llm_output,
             )
         # Parse out the action and action input
@@ -49,4 +55,6 @@ class CustomOutputParser(AgentOutputParser):
         action = match.group(1).strip()
         action_input = match.group(2)
         # Return the action and action input
+
+        ## write regex code to store the observation of the conversation in the memory
         return AgentAction(tool=action, tool_input=action_input.strip(" ").strip('"'), log=llm_output)

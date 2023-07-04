@@ -1,27 +1,205 @@
-from agent import Agent
-from place import Place
-from utils import create_new_memory_retriever,LLM
+from agent_game import Agent
+from place_game import Place
+from utils1 import create_new_memory_retriever,LLM
 import pandas as pd
+import pygame
+import warnings
+warnings.filterwarnings("ignore")
 
+
+pygame.init()
+pygame.mixer.init()
+
+WINDOW_WIDTH = 1300
+WINDOW_HEIGHT = 800
+
+win = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+# Set the Caption
+pygame.display.set_caption("Hayashino")
+
+
+
+
+yamamoto_residence = Place("Yamamoto Residence",
+                           "The Yamamoto family's small house is located in Hayashino Town, serving as the residence of Takashi Yamamoto and Yumi Yamamoto.",
+                           69,69,
+                           377,217)  
+well = Place("Well","Villagers use it to get water",437,0,539,173)  
+haya1 = Place("Haya Apartment 1","Residence of Kazuki Sato",569,0,716,194)
+haya2 = Place("Haya Apartment 2","Residence of Satoshi Takahashi",724,0,873,192)
+haya3 = Place("Haya Apartent 3","Residence of Yusuke Mori",886,0,1046,192)
+haya4 = Place("Haya Apartent 4","Residence of Ayumi Kimura",1061,0,1220,195)
+college = Place("Kogaku Institute of Physics","Kogaku Institute of Physics in Hayashiro conducts groundbreaking physics research with top researchers and advanced facilities",91,398,343,656)
+shrine = Place("Mizukami Shrine","Japanese shrines are sacred sanctuaries preserving ancient traditions, offering a profound spiritual glimpse into rich heritage",770,580,957,768)
+garden = Place("Hanazawa Park","Hanazawa Park offers exercise, relaxation, and inspiration with nature's beauty",962,559,1230,744)
+grocery = Place("Shino Grocery Store","Shino grocery store, owned by Takashi Yamamoto, is a community hub providing diverse essential products and promoting sustainability",1080,350,1235,461)
+river1 = Place("River Part 1","River",580,388,677,550)
+river2 = Place("River Part 2","River",580,640,674,752)
+garden_fence = Place("Fence","Fence of Garden",1050,550,1248,554)
+
+##### array of locations and restricted_area ###########
+locations = [yamamoto_residence, well, haya1, haya2, haya3, haya4, college, shrine, garden, grocery]
+restricted_areas = [yamamoto_residence,well,haya1,haya2,haya3,haya4,college,shrine,garden_fence,grocery,river1,river2]
+
+
+# roles = ["Engineer", "Student", "Carpenter", "Professor", ""]
 #Creating objects and defining their name, age, traits, status, etc.
+left_images_agent1 = [pygame.image.load("assets/agent1_L1.gif").convert_alpha(),pygame.image.load("assets/agent1_L2.gif").convert_alpha(),pygame.image.load("assets/agent1_L3.gif").convert_alpha()]
+right_images_agent1 = [pygame.image.load("assets/agent1_R1.gif").convert_alpha(),pygame.image.load("assets/agent1_R2.gif").convert_alpha(),pygame.image.load("assets/agent1_R3.gif").convert_alpha()]
+up_images_agent1 = [pygame.image.load("assets/agent1_U1.gif").convert_alpha(),pygame.image.load("assets/agent1_U2.gif").convert_alpha(),pygame.image.load("assets/agent1_U3.gif").convert_alpha()]
+down_images_agent1 = [pygame.image.load("assets/agent1_D1.gif").convert_alpha(),pygame.image.load("assets/agent1_D2.gif").convert_alpha(),pygame.image.load("assets/agent1_D3.gif").convert_alpha()]
+
 takashi_status = "living with his wife Yumi Yamamoto, and discusses happenings at stores, neighborhood, and his political ambitions"
-takashi=Agent(name = "Takashi Yamamoto", age = 46, traits="rude, aggressive, energetic" , status = takashi_status, location = "Yamamoto Residence",memory_retriever=create_new_memory_retriever(), llm=LLM, reflection_threshold=8, verbose=False)
+takashi=Agent(name = "Takashi Yamamoto", 
+              age = 46, agent_type = "TownFolk", 
+              traits="rude, aggressive, energetic" , 
+              status = takashi_status, 
+              location = yamamoto_residence,
+              memory_retriever=create_new_memory_retriever(), 
+              llm=LLM, 
+              reflection_threshold=8, 
+              verbose=False, 
+              x=492, 
+              y=334, 
+              width = 60,
+              height = 60, 
+              image_path='assets/char.gif',
+              left_images=left_images_agent1,
+              right_images=right_images_agent1,
+              up_images=up_images_agent1,
+              down_images=down_images_agent1)
+
+left_images_agent2 = [pygame.image.load("assets/agent2_L1.png").convert_alpha(),pygame.image.load("assets/agent2_L2.png").convert_alpha(),pygame.image.load("assets/agent2_L3.png").convert_alpha()]
+right_images_agent2 = [pygame.image.load("assets/agent2_R1.png").convert_alpha(),pygame.image.load("assets/agent2_R2.png").convert_alpha(),pygame.image.load("assets/agent2_R3.png").convert_alpha()]
+up_images_agent2 = [pygame.image.load("assets/agent2_U1.png").convert_alpha(),pygame.image.load("assets/agent2_U2.png").convert_alpha(),pygame.image.load("assets/agent2_U3.png").convert_alpha()]
+down_images_agent2 = [pygame.image.load("assets/agent2_D1.png").convert_alpha(),pygame.image.load("assets/agent2_D2.png").convert_alpha(),pygame.image.load("assets/agent2_D3.png").convert_alpha()]
 
 yumi_status = "loves to take care of her family and enjoys spending time with them"
-yumi=Agent(name = "Yumi Yamamoto", age = 42, traits="friendly, helpful, organized" , status = yumi_status, location = "Yamamoto Residence",memory_retriever=create_new_memory_retriever(), llm=LLM, reflection_threshold=8, verbose=False)
+yumi=Agent(name = "Yumi Yamamoto", 
+              age = 42, agent_type = "TownFolk", 
+              traits="friendly, helpful, organized" , 
+              status = yumi_status, 
+              location = yamamoto_residence,
+              memory_retriever=create_new_memory_retriever(), 
+              llm=LLM, 
+              reflection_threshold=8, 
+              verbose=False, 
+              x=118,
+              y=330, 
+              width = 30,
+              height = 30, 
+              image_path='assets/char.gif',
+              left_images=left_images_agent2,
+              right_images=right_images_agent2,
+              up_images=up_images_agent2,
+              down_images=down_images_agent2)
+
+
+###################### making agent3 ########################
+left_images_agent3 = [pygame.image.load("assets/agent3_L1.png").convert_alpha(),pygame.image.load("assets/agent3_L2.png").convert_alpha(),pygame.image.load("assets/agent3_L3.png").convert_alpha()]
+right_images_agent3 = [pygame.image.load("assets/agent3_R1.png").convert_alpha(),pygame.image.load("assets/agent3_R2.png").convert_alpha(),pygame.image.load("assets/agent3_R3.png").convert_alpha()]
+up_images_agent3 = [pygame.image.load("assets/agent3_U1.png").convert_alpha(),pygame.image.load("assets/agent3_U2.png").convert_alpha(),pygame.image.load("assets/agent3_U3.png").convert_alpha()]
+down_images_agent3 = [pygame.image.load("assets/agent3_D1.png").convert_alpha(),pygame.image.load("assets/agent3_D2.png").convert_alpha(),pygame.image.load("assets/agent3_D3.png").convert_alpha()]
 
 kazuki_status = "intelligent student who is focussed on her career and health"
-kazuki=Agent(name = "Kazuki Sato", age = 21, traits="energetic, enthusiastic, inquisitive" , status = yumi_status, location = "Haya Apartments",memory_retriever=create_new_memory_retriever(), llm=LLM, reflection_threshold=8, verbose=False)
+kazuki=Agent(name = "Kazuki Sato", 
+              age = 21, agent_type = "TownFolk", 
+              traits="energetic, enthusiastic, inquisitive", 
+              status = kazuki_status, 
+              location = haya1,
+              memory_retriever=create_new_memory_retriever(), 
+              llm=LLM, 
+              reflection_threshold=8, 
+              verbose=False, 
+              x=118,
+              y=330, 
+              width = 30,
+              height = 30, 
+              image_path='assets/char.gif',
+              left_images=left_images_agent3,
+              right_images=right_images_agent3,
+              up_images=up_images_agent3,
+              down_images=down_images_agent3)
+
+###################### making agent4 ########################
+left_images_agent4 = [pygame.image.load("assets/agent4_L1.gif").convert_alpha(),pygame.image.load("assets/agent4_L2.gif").convert_alpha(),pygame.image.load("assets/agent4_L3.gif").convert_alpha()]
+right_images_agent4 = [pygame.image.load("assets/agent4_R1.gif").convert_alpha(),pygame.image.load("assets/agent4_R2.gif").convert_alpha(),pygame.image.load("assets/agent4_R3.gif").convert_alpha()]
+up_images_agent4 = [pygame.image.load("assets/agent4_U1.gif").convert_alpha(),pygame.image.load("assets/agent4_U2.gif").convert_alpha(),pygame.image.load("assets/agent4_U3.gif").convert_alpha()]
+down_images_agent4 = [pygame.image.load("assets/agent4_D1.gif").convert_alpha(),pygame.image.load("assets/agent4_D2.gif").convert_alpha(),pygame.image.load("assets/agent4_D3.gif").convert_alpha()]
 
 satoshi_status = "Retired Navy Officer and a wise man who loves helping others and takes care of his health"
-satoshi=Agent(name = "Satoshi Takahashi", age = 56, traits="wise, resourceful, humorous" , status = satoshi_status, location = "Haya Apartments",memory_retriever=create_new_memory_retriever(), llm=LLM, reflection_threshold=8, verbose=False)
+satoshi=Agent(name = "Satoshi Takahashi", 
+              age = 56, agent_type = "WereWolf", 
+              traits="wise, resourceful, humorous", 
+              status = satoshi_status, 
+              location = haya2,
+              memory_retriever=create_new_memory_retriever(), 
+              llm=LLM, 
+              reflection_threshold=8, 
+              verbose=False, 
+              x=118,
+              y=330, 
+              width = 30,
+              height = 30, 
+              image_path='assets/char.gif',
+              left_images=left_images_agent4,
+              right_images=right_images_agent4,
+              up_images=up_images_agent4,
+              down_images=down_images_agent4)
+
+
+###################### making agent5 ########################
+left_images_agent5 = [pygame.image.load("assets/agent5_L1.png").convert_alpha(),pygame.image.load("assets/agent5_L2.png").convert_alpha(),pygame.image.load("assets/agent5_L3.png").convert_alpha()]
+right_images_agent5 = [pygame.image.load("assets/agent5_R1.png").convert_alpha(),pygame.image.load("assets/agent5_R2.png").convert_alpha(),pygame.image.load("assets/agent5_R3.png").convert_alpha()]
+up_images_agent5 = [pygame.image.load("assets/agent5_U1.png").convert_alpha(),pygame.image.load("assets/agent5_U2.png").convert_alpha(),pygame.image.load("assets/agent5_U3.png").convert_alpha()]
+down_images_agent5 = [pygame.image.load("assets/agent5_D1.png").convert_alpha(),pygame.image.load("assets/agent5_D2.png").convert_alpha(),pygame.image.load("assets/agent5_D3.png").convert_alpha()]
 
 yusuke_status = "Yusuke Mori is a skilled carpenter and a religious person"
-yusuke=Agent(name = "Yusuke Mori", age = 45, traits="friendly, outgoing, generous" , status = yusuke_status, location = "Haya Apartments",memory_retriever=create_new_memory_retriever(), llm=LLM, reflection_threshold=8, verbose=False)
+yusuke=Agent(name = "Yusuke Mori", 
+              age = 45, agent_type = "WereWolf", 
+              traits="friendly, outgoing, generous", 
+              status = yusuke_status, 
+              location = haya3,
+              memory_retriever=create_new_memory_retriever(), 
+              llm=LLM, 
+              reflection_threshold=8, 
+              verbose=False, 
+              x=118,
+              y=330, 
+              width = 30,
+              height = 30, 
+              image_path='assets/char.gif',
+              left_images=left_images_agent5,
+              right_images=right_images_agent5,
+              up_images=up_images_agent5,
+              down_images=down_images_agent5)
+
+
+###################### making agent6 ########################
+left_images_agent6 = [pygame.image.load("assets/agent6_L1.png").convert_alpha(),pygame.image.load("assets/agent6_L2.png").convert_alpha(),pygame.image.load("assets/agent6_L3.png").convert_alpha()]
+right_images_agent6 = [pygame.image.load("assets/agent6_R1.png").convert_alpha(),pygame.image.load("assets/agent6_R2.png").convert_alpha(),pygame.image.load("assets/agent6_R3.png").convert_alpha()]
+up_images_agent6 = [pygame.image.load("assets/agent6_U1.png").convert_alpha(),pygame.image.load("assets/agent6_U2.png").convert_alpha(),pygame.image.load("assets/agent6_U3.png").convert_alpha()]
+down_images_agent6 = [pygame.image.load("assets/agent6_D1.png").convert_alpha(),pygame.image.load("assets/agent6_D2.png").convert_alpha(),pygame.image.load("assets/agent6_D3.png").convert_alpha()]
 
 ayumi_status = "religious lady who is always looking for ways to support her students"
-ayumi=Agent(name = "Ayumi Kimura", age = 44, traits="nurturing, kind, patient" , status = ayumi_status, location = "Haya Apartments",memory_retriever=create_new_memory_retriever(), llm=LLM, reflection_threshold=8, verbose=False)
-
+ayumi=Agent(name = "Ayumi Kimura", 
+              age = 44, agent_type = "TownFolk", 
+              traits="nurturing, kind, patient", 
+              status = ayumi_status, 
+              location = haya4,
+              memory_retriever=create_new_memory_retriever(), 
+              llm=LLM, 
+              reflection_threshold=8, 
+              verbose=False, 
+              x=118,
+              y=330, 
+              width = 30,
+              height = 30, 
+              image_path='assets/char.gif',
+              left_images=left_images_agent6,
+              right_images=right_images_agent6,
+              up_images=up_images_agent6,
+              down_images=down_images_agent6)
 
 agents = [takashi,yumi,kazuki,satoshi,yusuke,ayumi]
 # Profiles of agents
@@ -145,9 +323,6 @@ ayumi.relations = {
     'Takashi Yamamoto': 'Ayumi Kimura lives in the same neighborhood as Takashi Yamamoto.'
 }
 
-
-
-
 for agent in agents:
  for (key, value) in agent.relations.items():
     agent.person.memory.add_memory(f"{key}:{value}")
@@ -159,20 +334,32 @@ for agent in agents:
 df = pd.read_csv('villagers_plans.csv')
 df['Time'] = pd.to_datetime(df['Time']).dt.time
 # df.set_index('Time', inplace=True)
-column1 = df['Time']  # Replace 'Time' with the actual name of the first column
+# column1 = df['Time']  # Replace 'Time' with the actual name of the first column
 
 for agent in agents:
- column2 = df[agent.person.name]  # Replace 'Yumi Yamamoto' with the actual name of the second column
- agent.plans = dict(zip(column1, column2)) #create the dictionary
- for (key, val) in agent.plans.items():
-  print(f"{key}: {val}")
+    agent.plans = df[['Time', agent.person.name]].copy()
+    agent.plans.rename(columns = {agent.person.name: 'Plans'}, inplace=True)
+    print("Plans of:", agent.person.name)
+    print(agent.plans.head(1))
+    print(agent.plans[agent.plans['Time'].apply(lambda x: x.hour) == 10]['Plans'].values[0])
 
 
-#Creating locations and adding their descriptions
-yamamoto_residence = Place("Yamamoto Residence", "The Yamamoto family's small house is located in Hayashino Town, serving as the residence of Takashi Yamamoto and Yumi Yamamoto", {})
-shino_grocery_store = Place("Shino Grocery Store", "Shino grocery Store is a vital hub in the community, offering a wide range of essential products for everyday living. From fresh produce and pantry staples to household goods and personal care items, the grocery store caters to diverse needs. People visit the grocery store and buy the daily needed items. With a commitment to sustainability, the grocery store encourages eco-friendly practices such as the use of reusable bags and supporting local farmers. In essence, the grocery store is a community cornerstone, providing a reliable source for everyday necessities. It is owned by Takashi Yamamoto.", {})
-haya_apartments = Place("Haya Apartments", "Haya Apartments, situated in Hayashino Town, is home to a diverse community of independent individuals and families. The apartments within the building are fully furnished and feature tasteful wooden furniture.", {})
-hanazawa_park = Place("Hanazawa Park", "Hanazawa Park is a place where people visit for exercising or walking. They also interact with new people and get new ideas. Hanazawa Park has wooden fencing around it. People get relaxed in Hanazawa Park. It has a large variety of trees and flowers", {})
-kogaku_physics = Place("Kogaku Institute of Physics", "Kogaku Institute of Physics, located in Hayashiro, is a leading scientific institution dedicated to the study and exploration of physics. With cutting-edge facilities and a team of renowned researchers, it strives to advance our understanding of the physical world through rigorous experimentation and theoretical investigations", {})
-mizukami_shrine = Place("Mizukami Shrine", "A Japanese shrine is a sacred sanctuary steeped in tradition and spiritual significance. People visit shrines to worship God. Shrines serve as cultural touchstones, preserving Japan's ancient traditions and values. A visit to a Japanese shrine is a profound spiritual experience, offering a glimpse into the country's rich heritage and profound reverence", {})
 
+
+
+
+
+
+
+
+
+
+
+
+# #Creating locations and adding their descriptions
+# yamamoto_residence = Place("Yamamoto Residence", "The Yamamoto family's small house is located in Hayashino Town, serving as the residence of Takashi Yamamoto and Yumi Yamamoto", {})
+# shino_grocery_store = Place("Shino Grocery Store", "Shino grocery Store is a vital hub in the community, offering a wide range of essential products for everyday living. From fresh produce and pantry staples to household goods and personal care items, the grocery store caters to diverse needs. People visit the grocery store and buy the daily needed items. With a commitment to sustainability, the grocery store encourages eco-friendly practices such as the use of reusable bags and supporting local farmers. In essence, the grocery store is a community cornerstone, providing a reliable source for everyday necessities. It is owned by Takashi Yamamoto.", {})
+# haya_apartments = Place("Haya Apartments", "Haya Apartments, situated in Hayashino Town, is home to a diverse community of independent individuals and families. The apartments within the building are fully furnished and feature tasteful wooden furniture.", {})
+# hanazawa_park = Place("Hanazawa Park", "Hanazawa Park is a place where people visit for exercising or walking. They also interact with new people and get new ideas. Hanazawa Park has wooden fencing around it. People get relaxed in Hanazawa Park. It has a large variety of trees and flowers", {})
+# kogaku_physics = Place("Kogaku Institute of Physics", "Kogaku Institute of Physics, located in Hayashino, is a leading scientific institution dedicated to the study and exploration of physics. With cutting-edge facilities and a team of renowned researchers, it strives to advance our understanding of the physical world through rigorous experimentation and theoretical investigations", {})
+# mizukami_shrine = Place("Mizukami Shrine", "A Japanese shrine is a sacred sanctuary steeped in tradition and spiritual significance. People visit shrines to worship God. Shrines serve as cultural touchstones, preserving Japan's ancient traditions and values. A visit to a Japanese shrine is a profound spiritual experience, offering a glimpse into the country's rich heritage and profound reverence", {})
