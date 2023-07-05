@@ -2,6 +2,7 @@ from utils1 import generate_response
 from langchain.agents import Tool
 
 def decision_making(agents):
+    print("Decision Making Starts:")
     # start a group conversation 
     summaries = {}
     for agent in agents:
@@ -32,8 +33,8 @@ def decision_making(agents):
         
         print(next_agent_obj.person.name)
 
-        continue_convo, next_message = next_agent_obj.person.generate_dialogue_response("Tell at max 5 observations or points about whom you think is the Werewolf and needs to be eliminated with proper reasoning.")
-
+        # continue_convo, next_message = next_agent_obj.person.generate_dialogue_response(next_agent_obj.agent_type, , "Tell at max 5 observations or points about whom you think is the Werewolf and needs to be eliminated with proper reasoning.")
+        next_message = "I dont have any concrete views about werewolfs elimination"
         print(next_message)
 
         for agent in temp_agents:
@@ -64,7 +65,7 @@ def decision_making(agents):
                     voted_name = agent.person.name
                     break
         
-        print(voted_name)
+        print(agent.person.name, "votes to eliminate", voted_name)
 
         if voted_name != "":
           votes[voted_name]+=1

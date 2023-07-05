@@ -6,6 +6,21 @@ import pygame
 import warnings
 warnings.filterwarnings("ignore")
 
+# Initialising files for each agents
+file_path = []
+
+file_path.append("text1.html")
+file_path.append("text2.html")
+file_path.append("text3.html")
+file_path.append("text4.html")
+file_path.append("text5.html")
+file_path.append("text6.html")
+file_path.append("simulation.html")
+
+for i in range(0,6):
+  file = open(file_path[i], 'w')
+  file.close()
+
 
 pygame.init()
 pygame.mixer.init()
@@ -27,11 +42,11 @@ yamamoto_residence = Place("Yamamoto Residence",
 well = Place("Well","Villagers use it to get water",437,0,539,173)  
 haya1 = Place("Haya Apartment 1","Residence of Kazuki Sato",569,0,716,194)
 haya2 = Place("Haya Apartment 2","Residence of Satoshi Takahashi",724,0,873,192)
-haya3 = Place("Haya Apartent 3","Residence of Yusuke Mori",886,0,1046,192)
-haya4 = Place("Haya Apartent 4","Residence of Ayumi Kimura",1061,0,1220,195)
+haya3 = Place("Haya Apartment 3","Residence of Yusuke Mori",886,0,1046,192)
+haya4 = Place("Haya Apartment 4","Residence of Ayumi Kimura",1061,0,1220,195)
 college = Place("Kogaku Institute of Physics","Kogaku Institute of Physics in Hayashiro conducts groundbreaking physics research with top researchers and advanced facilities",91,398,343,656)
 shrine = Place("Mizukami Shrine","Japanese shrines are sacred sanctuaries preserving ancient traditions, offering a profound spiritual glimpse into rich heritage",770,580,957,768)
-garden = Place("Hanazawa Park","Hanazawa Park offers exercise, relaxation, and inspiration with nature's beauty",962,559,1230,744)
+garden = Place("Hanazawa Garden","Hanazawa Park offers exercise, relaxation, and inspiration with nature's beauty",962,559,1230,744)
 grocery = Place("Shino Grocery Store","Shino grocery store, owned by Takashi Yamamoto, is a community hub providing diverse essential products and promoting sustainability",1080,350,1235,461)
 river1 = Place("River Part 1","River",580,388,677,550)
 river2 = Place("River Part 2","River",580,640,674,752)
@@ -55,12 +70,13 @@ takashi=Agent(name = "Takashi Yamamoto",
               traits="rude, aggressive, energetic" , 
               status = takashi_status, 
               location = yamamoto_residence,
+              file_path=file_path[0],
               memory_retriever=create_new_memory_retriever(), 
               llm=LLM, 
               reflection_threshold=8, 
               verbose=False, 
-             x=757,
-              y=465,
+              x=153,
+              y=230,
               width = 60,
               height = 60, 
               image_path='assets/char.gif',
@@ -80,12 +96,13 @@ yumi=Agent(name = "Yumi Yamamoto",
               traits="friendly, helpful, organized" , 
               status = yumi_status, 
               location = yamamoto_residence,
+              file_path=file_path[1],
               memory_retriever=create_new_memory_retriever(), 
               llm=LLM, 
               reflection_threshold=8, 
               verbose=False, 
-              x=757,
-              y=465, 
+              x=153,
+              y=230, 
               width = 30,
               height = 30, 
               image_path='assets/char.gif',
@@ -107,12 +124,13 @@ kazuki=Agent(name = "Kazuki Sato",
               traits="energetic, enthusiastic, inquisitive", 
               status = kazuki_status, 
               location = haya1,
+              file_path=file_path[2],
               memory_retriever=create_new_memory_retriever(), 
               llm=LLM, 
               reflection_threshold=8, 
               verbose=False, 
-              x=757,
-              y=465, 
+              x=640,
+              y=203,  
               width = 30,
               height = 30, 
               image_path='assets/char.gif',
@@ -133,12 +151,13 @@ satoshi=Agent(name = "Satoshi Takahashi",
               traits="wise, resourceful, humorous", 
               status = satoshi_status, 
               location = haya2,
+              file_path=file_path[3],
               memory_retriever=create_new_memory_retriever(), 
               llm=LLM, 
               reflection_threshold=8, 
               verbose=False, 
-             x=757,
-              y=465, 
+              x= 810,
+              y=206,  
               width = 30,
               height = 30, 
               image_path='assets/char.gif',
@@ -160,12 +179,13 @@ yusuke=Agent(name = "Yusuke Mori",
               traits="friendly, outgoing, generous", 
               status = yusuke_status, 
               location = haya3,
+              file_path=file_path[4],
               memory_retriever=create_new_memory_retriever(), 
               llm=LLM, 
               reflection_threshold=8, 
               verbose=False, 
-              x=757,
-              y=465, 
+              x=970,
+              y=206, 
               width = 30,
               height = 30, 
               image_path='assets/char.gif',
@@ -187,12 +207,13 @@ ayumi=Agent(name = "Ayumi Kimura",
               traits="nurturing, kind, patient", 
               status = ayumi_status, 
               location = haya4,
+              file_path=file_path[5],
               memory_retriever=create_new_memory_retriever(), 
               llm=LLM, 
               reflection_threshold=8, 
               verbose=False, 
-               x=757,
-              y=465, 
+              x=1135,
+              y=206, 
               width = 30,
               height = 30, 
               image_path='assets/char.gif',
