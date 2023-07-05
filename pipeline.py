@@ -12,17 +12,22 @@ import datetime as datetime_only
 print(df.head())
 
 
-To_be_killed_time = time(7,0,0)
-Killer_time = time(8,0,0)
-Voting_time = time(18,0,0)
+# To_be_killed_time = time(7,0,0)
+# Killer_time = time(8,0,0)
+# Voting_time = time(18,0,0)
+To_be_killed_time = 8
+Killer_time = 9
+Voting_time = 10
+debug = True
 i_agents = agents
 i_locations = locations
 
 def pipeline(global_time):
-        print(global_time, type(global_time))
-    # for global_time in df['Time']:
-        print(f"Global time is: {datetime_only.time(global_time,0)}", "magenta")
-    #     # people finding on the location and print them
+        if debug:
+            print(global_time, type(global_time))
+            # for global_time in df['Time']:
+            print(f"Global time is: {datetime_only.time(global_time,0)}", "magenta")
+            #     # people finding on the location and print them
         
         agents = []
         for agent in i_agents:

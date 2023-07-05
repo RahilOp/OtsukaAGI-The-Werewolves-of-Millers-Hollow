@@ -200,7 +200,7 @@ class Agent():
             previous_dialogue_response_reaction, consumed_tokens_reaction = agent.person.generate_reaction(agent.agent_type, dialogue_response, current_time)
             continue_convo, dialogue_response, consumed_tokens_dialogue = agent.person.generate_dialogue_response(agent.agent_type, self, dialogue_response, previous_dialogue_response_reaction, current_plan_agent, current_plan_self, current_time, tools_to_use, agent.relations, counter)
             print_colored(f"{agent.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "magenta")
-            countere+=1
+            counter+=1
         else:
           continue_convo = True
           dialogue_response = ""

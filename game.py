@@ -100,25 +100,23 @@ def fetch_data():
         for agent in response:
             if agent.agent_type == "WereWolf":
                 cnt+=1
+        
+        print(len(response), cnt)
+        status = True 
+        if cnt==0:
+            print("The Game has been finished. TownFolks Won.")
+            status = False
+        elif (len(response)-cnt<=cnt):
+            print("The Game has been finished. WereWolfs Won.")
+            status = False
 
-        if len(response) == 0 or len(response-cnt)<=cnt:
-            print("The Game has been finished.")
+        if not status:
             break
     
         counter += 1
         counter %= 14 
         
-        print("Counter" , counter)
-        ok = False
-        for agent in response:
-            if agent.location != i_location[agent.person.name]:
-                ok = True
-                break
-        
-        if ok:
-            for agent in response:
-                i_location[agent.person.name]=agent.location
-            data_modified.set()
+        data_modified.set()
 
         data_modified.wait()
         data_modified.clear()
