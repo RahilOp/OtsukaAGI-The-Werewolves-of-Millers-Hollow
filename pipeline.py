@@ -18,14 +18,16 @@ print(df.head())
 To_be_killed_time = 7
 Killer_time = 8
 Voting_time = 9
+debug = True
 i_agents = agents
 i_locations = locations
 
 def pipeline(global_time):
-        print(global_time, type(global_time))
-    # for global_time in df['Time']:
-        print(f"Global time is: {datetime_only.time(global_time,0)}", "magenta")
-    #     # people finding on the location and print them
+        if debug:
+            print(global_time, type(global_time))
+            # for global_time in df['Time']:
+            print(f"Global time is: {datetime_only.time(global_time,0)}", "magenta")
+            #     # people finding on the location and print them
         
         agents = []
         for agent in i_agents:

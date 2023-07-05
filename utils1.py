@@ -67,7 +67,7 @@ def generate_response(prompt):
   result = openai.ChatCompletion.create(engine = "gpt-35-turbo",
                                                    messages = [ {"role": "system", "content": prompt} ],
                                                    temperature=0.7,
-                                                   max_tokens=128,
+                                                   max_tokens=1024,
                                                    top_p=0.95,
                                                    frequency_penalty=0,
                                                    presence_penalty=0,
