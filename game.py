@@ -1,12 +1,12 @@
 import pygame
 import datetime
 import pygame.mixer
-from agent_game import Agent 
+from agent_game import Agent , paths
 from place_game import Place
-from initialize import locations, restricted_areas, agents, win, WINDOW_HEIGHT, WINDOW_WIDTH
 from pygame_utils import create_popup,check_collision, show_popup
 from pipeline import pipeline
-from initialize import df,agents,locations,profiles
+# from debug_pipeline import pipeline
+from initialize import df,agents,locations,profiles,restricted_areas, win, WINDOW_HEIGHT, WINDOW_WIDTH, well , haya1 , takashi, garden, yamamoto_residence
 import threading
 from threading import Thread
 import time
@@ -67,7 +67,8 @@ def redrawGameWindow():
     win.blit(current_background, (0, 0))
 
     for agent in agents:
-        agent.draw(win,left_images_werewolf,right_images_werewolf,up_images_werewolf,down_images_werewolf,char_werewolf,env,env_night,current_background)
+        if agent.state == 'alive':
+            agent.draw(win,left_images_werewolf,right_images_werewolf,up_images_werewolf,down_images_werewolf,char_werewolf,env,env_night,current_background)
     
    
     if show_popup:
@@ -81,13 +82,22 @@ timing = [global_time for global_time in df['Time']]
 counter = 0
 data_modified = threading.Event()
 i_location = {}
+target_location = {}
+buffer_location = {}
 for agent in agents:
     i_location[agent.person.name] = agent.location
+    buffer_location[agent.person.name] = agent.location
+    target_location[agent.person.name] = agent.location
+    
+
 
 day = 0
+cnt = 0
+
+response = []
 
 def fetch_data():
-    global i_location, counter, day
+    global i_location, counter, day, response
     while True:
         print("Day: ", day)
         
@@ -96,29 +106,30 @@ def fetch_data():
 
         response = pipeline(counter + 7)
         
+        for agent in response:
+            buffer_location[agent.person.name] = agent.location
+        
         cnt = 0
         for agent in response:
             if agent.agent_type == "WereWolf":
                 cnt+=1
+        
+        print(len(response), cnt)
+        status = True 
+        if cnt==0:
+            print("The Game has been finished. TownFolks Won.")
+            status = False
+        elif (len(response)-cnt<=cnt):
+            print("The Game has been finished. WereWolfs Won.")
+            status = False
 
-        if len(response) == 0 or len(response-cnt)<=cnt:
-            print("The Game has been finished.")
+        if not status:
             break
     
         counter += 1
         counter %= 14 
-        
-        print("Counter" , counter)
-        ok = False
-        for agent in response:
-            if agent.location != i_location[agent.person.name]:
-                ok = True
-                break
-        
-        if ok:
-            for agent in response:
-                i_location[agent.person.name]=agent.location
-            data_modified.set()
+        cnt +=1
+        data_modified.set()
 
         data_modified.wait()
         data_modified.clear()
@@ -127,6 +138,8 @@ def fetch_data():
 thread1 = Thread(target = fetch_data, args = ())
 thread1.start()
 # main loop
+
+
 
 run = True
 while run:
@@ -156,8 +169,22 @@ while run:
     # move_manual(agent1)
     # move_manual(agent2)
     # agent2.update_location()
-    # move_agent2(agent2,path_agent2)
-    # move_agent3(agent3,path_agent3)
+    # for agent in agents:
+    #     agent.move_agent(agent.location,agent.location)
+    # if(cnt>0):
+    # if len(response) == 0:    
+    # print("######### Creating Screen 1  ##############")
+    
+    for agent in agents:
+        # print("############### Name : " , agent.person.name)
+        if(buffer_location[agent.person.name] != target_location[agent.person.name]):
+            i_location[agent.person.name] = target_location[agent.person.name]
+            target_location[agent.person.name] = buffer_location[agent.person.name]
+            agent.current_point = 1
+            agent.move_agent(paths[i_location[agent.person.name].name][target_location[agent.person.name].name])
+        else:
+            agent.move_agent(paths[i_location[agent.person.name].name][target_location[agent.person.name].name]) 
+   
     # move_agent4(agent4,path_agent4)
     # move_agent5(agent5,path_agent5)
     # move_agent6(agent6,path_agent6)
@@ -168,7 +195,7 @@ while run:
     if pygame.time.get_ticks() - current_background_timer >= background_duration:
         change_background()
     
-    
+    # print("##############  Creating Screen 2 ###############")
     # redrawGameWindow()
     redrawGameWindow()
     

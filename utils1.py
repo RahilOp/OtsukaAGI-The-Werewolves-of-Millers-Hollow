@@ -14,7 +14,6 @@ import csv
 from datetime import datetime, timedelta
 from datetime import date
 from IPython.display import display, HTML
-import streamlit as st
 
 
 os.environ['OPENAI_API_KEY'] = '97ce304ef1a84eddb8e7598eb47479c3'
@@ -106,24 +105,14 @@ def create_new_memory_retriever():
     vectorstore = FAISS(embeddings_model.embed_query, index, InMemoryDocstore({}), {}, relevance_score_fn=relevance_score_fn)
     return TimeWeightedVectorStoreRetriever(vectorstore=vectorstore, other_score_keys=["importance"], k=15)
 
-def print_colored(text,color):
+def print_colored(text,color,file_path):
     
-    color_code = {
-        'black': '#000000',
-        'red': '#FF0000',
-        'green': '#00FF00',
-        'yellow': '#FFFF00',
-        'blue': '#0000FF',
-        'magenta': '#FF00FF',
-        'cyan': '#00FFFF',
-        'white': '#FFFFFF',
-        'light blue': '#ADD8E6',
-        'sky blue': "#87CEEB"
-    }
+    print(text)
+    file = open(file_path, 'a')
+    file.write(f'<p style="color:{color};">{text}</p>\n')
+    # file.write(text, "\n")
+    file.close()
     
-    text_color = color_code[color]
-    text = f'<span style="color: {text_color};">{text}</span>'
-    st.markdown(text, unsafe_allow_html=True)
     
 
 

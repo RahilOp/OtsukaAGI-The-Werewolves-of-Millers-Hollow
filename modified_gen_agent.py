@@ -36,6 +36,10 @@ class GameGenerativeAgent(BaseModel):
     """The memory object that combines relevance, recency, and 'importance'."""
     llm: BaseLanguageModel
     """The underlying language model."""
+
+    #file path
+    file_path:str
+
     verbose: bool = False
     summary: str = ""  #: :meta private:
     """Stateful self-summary generated via reflection on the character's memory."""
@@ -242,7 +246,7 @@ Relevant context:
             #     + f"write:\nREACT: {self.name}'s reaction (if anything)."
             #     + f"\nEither do nothing or react something.\n\n"
             # )
-
+            return "No Reaction", 100
             call_to_action_template = (
                 f"Should {self.name} react to the observation, and if so,"
                 + " what would be an appropriate reaction? Respond in one line."
@@ -257,6 +261,9 @@ Relevant context:
 
             result = full_result.strip().split("\n")[0]
             # AAA
+            file = open(self.file_path, 'a')
+            file.write(f"{self.name} observed {observation} and reacted by {result}")
+
             self.memory.save_context(
                 {},
                 {
@@ -309,6 +316,9 @@ Relevant context:
         )
 
         # print(True, full_result, consumed_tokens)
+        file = open(self.file_path, 'a')
+        file.write(f"{self.name} observed {current_plan_agent} and said {full_result}")
+
         self.memory.save_context(
             {},
             {
@@ -358,6 +368,9 @@ Relevant context:
         )
 
         tool_used, full_result, consumed_tokens = self._generate_reaction(self_type, previous_dialogue_response_reaction, call_to_action_template, current_time, tools_to_use, now=now)
+        
+        file = open(self.file_path, 'a')
+        file.write(f"{self.name} heard {previous_response} from {agent.person.name} and said {full_result}")
 
         self.memory.save_context(
             {},
