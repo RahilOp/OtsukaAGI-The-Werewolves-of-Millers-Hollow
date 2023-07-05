@@ -15,9 +15,9 @@ print(df.head())
 # To_be_killed_time = time(7,0,0)
 # Killer_time = time(8,0,0)
 # Voting_time = time(18,0,0)
-To_be_killed_time = 8
-Killer_time = 9
-Voting_time = 10
+To_be_killed_time = 7
+Killer_time = 8
+Voting_time = 9
 debug = True
 i_agents = agents
 i_locations = locations
