@@ -13,6 +13,148 @@ from datetime import datetime
 threshold = 0.26
 
 # char = pygame.image.load('assets/char.gif')
+ 
+
+
+
+
+##################  PATHS #######################
+paths = {
+  'Yamamoto Residence': {
+    'Mizukami Shrine': [(757,465),(991,465)],
+    'Hanazawa Garden': [(757,465),(991,465)],
+    'Kogaku Institute of Physics': [(757,465),(991,465)],
+    'Well': [(757,465),(991,465)],
+    'Haya Apartment 1': [(757,465),(991,465)],
+    'Haya Apartment 2': [(757,465),(991,465)],
+    'Haya Apartment 3': [(757,465),(991,465)],
+    'Haya Apartment 4': [(757,465),(991,465)],
+    'Yamamoto Residence': [(757,465),(991,465)],
+    'Shino Grocery Store': [(757,465),(991,465)],
+    
+  } ,
+  'Well': {
+    'Mizukami Shrine': [(757,465),(991,465)],
+    'Hanazawa Garden': [(757,465),(991,465)],
+    'Kogaku Institute of Physics': [(757,465),(991,465)],
+    'Well': [(757,465),(991,465)],
+    'Haya Apartment 1': [(757,465),(991,465)],
+    'Haya Apartment 2': [(757,465),(991,465)],
+    'Haya Apartment 3': [(757,465),(991,465)],
+    'Haya Apartment 4': [(757,465),(991,465)],
+    'Yamamoto Residence': [(757,465),(991,465)],
+    'Shino Grocery Store': [(757,465),(991,465)],
+    
+  }  ,
+  'Haya Apartment 1': {
+    'Mizukami Shrine': [(757,465),(991,465)],
+    'Hanazawa Garden': [(757,465),(991,465)],
+    'Kogaku Institute of Physics': [(757,465),(991,465)],
+    'Well': [(757,465),(991,465)],
+    'Haya Apartment 1': [(757,465),(991,465)],
+    'Haya Apartment 2': [(757,465),(991,465)],
+    'Haya Apartment 3': [(757,465),(991,465)],
+    'Haya Apartment 4': [(757,465),(991,465)],
+    'Yamamoto Residence': [(757,465),(991,465)],
+    'Shino Grocery Store': [(757,465),(991,465)],
+    
+  }  ,
+  'Haya Apartment 2': {
+    'Mizukami Shrine': [(757,465),(991,465)],
+    'Hanazawa Garden': [(757,465),(991,465)],
+    'Kogaku Institute of Physics': [(757,465),(991,465)],
+    'Well': [(757,465),(991,465)],
+    'Haya Apartment 1': [(757,465),(991,465)],
+    'Haya Apartment 2': [(757,465),(991,465)],
+    'Haya Apartment 3': [(757,465),(991,465)],
+    'Haya Apartment 4': [(757,465),(991,465)],
+    'Yamamoto Residence': [(757,465),(991,465)],
+    'Shino Grocery Store': [(757,465),(991,465)],
+    
+  }  ,
+  'Haya Apartment 3': {
+     'Mizukami Shrine': [(757,465),(991,465)],
+    'Hanazawa Garden': [(757,465),(991,465)],
+    'Kogaku Institute of Physics': [(757,465),(991,465)],
+    'Well': [(757,465),(991,465)],
+    'Haya Apartment 1': [(757,465),(991,465)],
+    'Haya Apartment 2': [(757,465),(991,465)],
+    'Haya Apartment 3': [(757,465),(991,465)],
+    'Haya Apartment 4': [(757,465),(991,465)],
+    'Yamamoto Residence': [(757,465),(991,465)],
+    'Shino Grocery Store': [(757,465),(991,465)],
+    
+  }  ,
+  'Haya Apartment 4': {
+     'Mizukami Shrine': [(757,465),(991,465)],
+    'Hanazawa Garden': [(757,465),(991,465)],
+    'Kogaku Institute of Physics': [(757,465),(991,465)],
+    'Well': [(757,465),(991,465)],
+    'Haya Apartment 1': [(757,465),(991,465)],
+    'Haya Apartment 2': [(757,465),(991,465)],
+    'Haya Apartment 3': [(757,465),(991,465)],
+    'Haya Apartment 4': [(757,465),(991,465)],
+    'Yamamoto Residence': [(757,465),(991,465)],
+    'Shino Grocery Store': [(757,465),(991,465)],
+    
+  }  ,
+  'Kogaku Institute of Physics': {
+   'Mizukami Shrine': [(757,465),(991,465)],
+    'Hanazawa Garden': [(757,465),(991,465)],
+    'Kogaku Institute of Physics': [(757,465),(991,465)],
+    'Well': [(757,465),(991,465)],
+    'Haya Apartment 1': [(757,465),(991,465)],
+    'Haya Apartment 2': [(757,465),(991,465)],
+    'Haya Apartment 3': [(757,465),(991,465)],
+    'Haya Apartment 4': [(757,465),(991,465)],
+    'Yamamoto Residence': [(757,465),(991,465)],
+    'Shino Grocery Store': [(757,465),(991,465)],
+    
+  }  ,
+  'Mizukami Shrine': {
+    'Mizukami Shrine': [(757,465),(991,465)],
+    'Hanazawa Garden': [(757,465),(991,465)],
+    'Kogaku Institute of Physics': [(757,465),(991,465)],
+    'Well': [(757,465),(991,465)],
+    'Haya Apartment 1': [(757,465),(991,465)],
+    'Haya Apartment 2': [(757,465),(991,465)],
+    'Haya Apartment 3': [(757,465),(991,465)],
+    'Haya Apartment 4': [(757,465),(991,465)],
+    'Yamamoto Residence': [(757,465),(991,465)],
+    'Shino Grocery Store': [(757,465),(991,465)],
+    
+  }  ,
+  'Hanazawa Garden': {
+    'Mizukami Shrine': [(757,465),(991,465)],
+    'Hanazawa Garden': [(757,465),(991,465)],
+    'Kogaku Institute of Physics': [(757,465),(991,465)],
+    'Well': [(757,465),(991,465)],
+    'Haya Apartment 1': [(757,465),(991,465)],
+    'Haya Apartment 2': [(757,465),(991,465)],
+    'Haya Apartment 3': [(757,465),(991,465)],
+    'Haya Apartment 4': [(757,465),(991,465)],
+    'Yamamoto Residence': [(757,465),(991,465)],
+    'Shino Grocery Store': [(757,465),(991,465)],
+    
+  }  ,
+  'Shino Grocery Store': {
+     'Mizukami Shrine': [(757,465),(991,465)],
+    'Hanazawa Garden': [(757,465),(991,465)],
+    'Kogaku Institute of Physics': [(757,465),(991,465)],
+    'Well': [(757,465),(991,465)],
+    'Haya Apartment 1': [(757,465),(991,465)],
+    'Haya Apartment 2': [(757,465),(991,465)],
+    'Haya Apartment 3': [(757,465),(991,465)],
+    'Haya Apartment 4': [(757,465),(991,465)],
+    'Yamamoto Residence': [(757,465),(991,465)],
+    'Shino Grocery Store': [(757,465),(991,465)],
+    
+  }  
+}
+
+
+
+
 
 class Agent():
     def __init__(self, name:str, age:int, agent_type:str, traits:str, status:str, location, memory_retriever, llm, reflection_threshold:int, verbose:bool, x, y, width, height,image_path, left_images,right_images,up_images,down_images):
@@ -65,8 +207,9 @@ class Agent():
         self.up = False
         self.down = False
         self.walkCount = 0
-        self.vel = 2  # Adjust the speed of the agent
-    
+        self.vel = 1  # Adjust the speed of the agent
+        self.current_point = 0
+        self.direction = 1
 
     def draw(self, win, left_images_werewolf, right_images_werewolf,up_images_werewolf,down_images_werewolf,char_werewolf,env,env_night,current_background):
         if self.walkCount + 1 >= 9:
@@ -105,20 +248,83 @@ class Agent():
     def add_relations(self, Agent, relation):
         self.relations[Agent.name] = relation
 
-    def update_location(self,new_location):
-        self.location = new_location
 
-        while self.x <= new_location.x :
-            self.x+=self.vel
-        
-        while self.x >= new_location.x :
-            self.x-=self.vel
-        
-        while self.y <= new_location.y:
-            self.y+=self.vel
-        
-        while self.y >= new_location.y:
-            self.y-=self.vel
+
+
+    def move_agent(self,prev_location,new_location):
+        # global agent_x, agent_y, current_point, direction
+        # Calculate the target position based on the current point in the path
+        path = [(757,465),(991,465)]
+        final = 991
+        if(self.x == 991):
+             path = [(991,465),(757,465)]
+             final = 757
+
+        while(self.x != final):
+               
+                target_x, target_y = path[self.current_point]
+
+                # Calculate the change in x and y coordinates based on the target position
+                x_change = self.vel if target_x > self.x else -self.vel if target_x < self.x else 0
+                y_change = self.vel if target_y > self.y else -self.vel if target_y < self.y else 0
+
+                # Update the agent's position
+                self.x += x_change
+                self.y += y_change
+
+                if(x_change > 0):
+                    self.right = True
+                    self.left = False
+                    self.up = False
+                    self.down = False
+
+                if(x_change < 0):
+                    self.right = False
+                    self.left = True
+                    self.up = False
+                    self.down = False
+
+                if(y_change > 0):
+                    self.right = False
+                    self.left = False
+                    self.up = False
+                    self.down = True
+
+                if(y_change < 0):
+                    self.right = False
+                    self.left = False
+                    self.up = True
+                    self.down = False
+
+                
+
+                # Check if the agent has reached the target position
+                if self.x == target_x and self.y == target_y:
+                    # Move to the next point in the path
+                    self.current_point += self.direction
+
+                    # Check if the agent has reached the end of the path, and reverse the direction
+                    # if self.current_point == len(path) :
+                    #     self.direction = -1
+                    #     self.current_point = len(path) - 2
+                    # elif self.current_point == -1:
+                    #     self.direction = 1
+                    #     self.current_point = 1
+
+        self.right = False
+        self.left = False
+        self.up = False
+        self.down = False
+        self.current_point = 0
+        self.direction = 1
+
+
+
+
+    def update_location(self,prev_location, new_location):
+        self.move_agent(prev_location, new_location)
+        self.location = new_location
+           
         # self.x = new_location.x
         # self.y = new_location.y
         
@@ -200,7 +406,7 @@ class Agent():
             previous_dialogue_response_reaction, consumed_tokens_reaction = agent.person.generate_reaction(agent.agent_type, dialogue_response, current_time)
             continue_convo, dialogue_response, consumed_tokens_dialogue = agent.person.generate_dialogue_response(agent.agent_type, self, dialogue_response, previous_dialogue_response_reaction, current_plan_agent, current_plan_self, current_time, tools_to_use, agent.relations, counter)
             print_colored(f"{agent.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "magenta")
-            countere+=1
+            counter+=1
         else:
           continue_convo = True
           dialogue_response = ""
