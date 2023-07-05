@@ -397,7 +397,8 @@ class Agent():
               previous_dialogue_response_reaction, consumed_tokens_reaction = self.person.generate_reaction(self.agent_type, dialogue_response, current_time)
               continue_convo, dialogue_response, consumed_tokens_dialogue = self.person.generate_dialogue_response(self.agent_type, agent, dialogue_response, previous_dialogue_response_reaction, current_plan_self, current_plan_agent, current_time, tools_to_use, self.relations, counter)
               
-            print_colored(f"{self.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "blue")
+            # print_colored(f"{self.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "blue")
+            print(f"{self.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "blue")
             if not continue_convo:
               break
             #other agent's chance
@@ -405,7 +406,8 @@ class Agent():
             tools_to_use = [all_tools_agent["townfolk_continue_dialogue_tool"], all_tools_agent["townfolk_end_dialogue_tool"]]
             previous_dialogue_response_reaction, consumed_tokens_reaction = agent.person.generate_reaction(agent.agent_type, dialogue_response, current_time)
             continue_convo, dialogue_response, consumed_tokens_dialogue = agent.person.generate_dialogue_response(agent.agent_type, self, dialogue_response, previous_dialogue_response_reaction, current_plan_agent, current_plan_self, current_time, tools_to_use, agent.relations, counter)
-            print_colored(f"{agent.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "magenta")
+            # print_colored(f"{agent.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "magenta")
+            print(f"{agent.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "magenta")
             counter+=1
         else:
           continue_convo = True
@@ -427,7 +429,8 @@ class Agent():
               previous_dialogue_response_reaction, consumed_tokens_reaction = self.person.generate_reaction(self.agent_type, dialogue_response, current_time)
               continue_convo, dialogue_response, consumed_tokens_dialogue = self.person.generate_dialogue_response(self.agent_type, agent, dialogue_response, previous_dialogue_response_reaction, current_plan_self, current_plan_agent, current_time, tools_to_use, self.relations, counter)
 
-            print_colored(f"{self.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "blue")
+            # print_colored(f"{self.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "blue")
+            print(f"{self.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "blue")
             if not continue_convo:
               break
             #other agent's chance
@@ -435,7 +438,8 @@ class Agent():
             tools_to_use = [all_tools_agent["werewolf_continue_dialogue_tool"], all_tools_agent["werewolf_end_dialogue_tool"]]
             previous_dialogue_response_reaction, consumed_tokens_reaction = agent.person.generate_reaction(agent.agent_type, dialogue_response, current_time)
             continue_convo, dialogue_response, consumed_tokens_dialogue = agent.person.generate_dialogue_response(agent.agent_type, self, dialogue_response, previous_dialogue_response_reaction, current_plan_agent, current_plan_self, current_time, tools_to_use, agent.relations, counter)
-            print_colored(f"{agent.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "magenta")
+            # print_colored(f"{agent.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "magenta")
+            print(f"{agent.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "magenta")
             counter+=1
 
         # pass
@@ -464,14 +468,16 @@ class Agent():
               tools_to_use = [all_tools["werewolf_continue_dialogue_tool"], all_tools["werewolf_end_dialogue_tool"]]
               previous_dialogue_response_reaction, consumed_tokens_reaction = self.person.generate_reaction(self.agent_type, dialogue_response, current_time)
               continue_convo, dialogue_response, consumed_tokens_dialogue = self.person.generate_dialogue_response(self.agent_type, agent, dialogue_response, previous_dialogue_response_reaction, current_plan_self, current_plan_agent, current_time, tools_to_use, self.relations, counter)
-            print_colored(f"{self.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "blue")
+            # print_colored(f"{self.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "blue")
+            print(f"{self.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "blue")
             if not continue_convo:
               break
             #other agent's chance
             tools_to_use = [all_tools_agent["townfolk_continue_dialogue_tool"], all_tools_agent["townfolk_end_dialogue_tool"]]
             previous_dialogue_response_reaction, consumed_tokens_reaction = agent.person.generate_reaction(agent.agent_type, dialogue_response, current_time)
             continue_convo, dialogue_response, consumed_tokens_dialogue = agent.person.generate_dialogue_response(agent.agent_type, self, dialogue_response, previous_dialogue_response_reaction, current_plan_agent, current_plan_self, current_time, tools_to_use, agent.relations, counter)
-            print_colored(f"{agent.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "magenta")
+            # print_colored(f"{agent.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "magenta")
+            print(f"{agent.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "magenta")
 
             counter+=1
         else: # agent.agent_type == "WereWolf"
@@ -494,14 +500,16 @@ class Agent():
               previous_dialogue_response_reaction, consumed_tokens_reaction = self.person.generate_reaction(self.agent_type, dialogue_response, current_time)
               continue_convo, dialogue_response, consumed_tokens_dialogue = self.person.generate_dialogue_response(self.agent_type, agent, dialogue_response, previous_dialogue_response_reaction, current_plan_self, current_plan_agent, current_time, tools_to_use, self.relations, counter)
             
-            print_colored(f"{self.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "blue")
+            # print_colored(f"{self.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "blue")
+            print(f"{self.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "blue")
             if not continue_convo:
               break
             #other agent's chance
             tools_to_use = [all_tools_agent["werewolf_continue_dialogue_tool"], all_tools_agent["werewolf_end_dialogue_tool"]]
             previous_dialogue_response_reaction, consumed_tokens_reaction = agent.person.generate_reaction(agent.agent_type, dialogue_response, current_time)
             continue_convo, dialogue_response, consumed_tokens_dialogue = agent.person.generate_dialogue_response(agent.agent_type, self, dialogue_response, previous_dialogue_response_reaction, current_plan_agent, current_plan_self, current_time, tools_to_use, agent.relations, counter)
-            print_colored(f"{agent.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "magenta")
+            # print_colored(f"{agent.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "magenta")
+            print(f"{agent.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "magenta")
             counter+=1
 
      else:

@@ -6,6 +6,7 @@ from place_game import Place
 from initialize import locations, restricted_areas, agents, win, WINDOW_HEIGHT, WINDOW_WIDTH
 from pygame_utils import create_popup,check_collision, show_popup
 from pipeline import pipeline
+# from debug_pipeline import pipeline
 from initialize import df,agents,locations,profiles
 import threading
 from threading import Thread

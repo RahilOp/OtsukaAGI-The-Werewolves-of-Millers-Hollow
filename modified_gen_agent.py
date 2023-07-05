@@ -242,7 +242,7 @@ Relevant context:
             #     + f"write:\nREACT: {self.name}'s reaction (if anything)."
             #     + f"\nEither do nothing or react something.\n\n"
             # )
-
+            return "No Reaction", 100
             call_to_action_template = (
                 f"Should {self.name} react to the observation, and if so,"
                 + " what would be an appropriate reaction? Respond in one line."

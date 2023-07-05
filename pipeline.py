@@ -62,10 +62,10 @@ def pipeline(global_time):
             print("Interaction", "red")
 
             for i in range(0, len(agent_list)):
-                for j in range(i+1, len(agent_list)):
-                    print(f"Dialogue between {agent_list[i].person.name} and {agent_list[j].person.name}:", "cyan")
-                    # def make_interaction_conversation_tree(self, current_time, Agents:list, user_setting = False, user_initializer: Optional[str] = "")
-                    agent_list[i].make_interaction_conversation_tree(global_time, [agent_list[j]])
+                # for j in range(i+1, len(agent_list)):
+                #     print(f"Dialogue between {agent_list[i].person.name} and {agent_list[j].person.name}:", "cyan")
+                #     # def make_interaction_conversation_tree(self, current_time, Agents:list, user_setting = False, user_initializer: Optional[str] = "")
+                #     agent_list[i].make_interaction_conversation_tree(global_time, [agent_list[j]])
 
                 location_result = generate_response("The person is {} with the profile: {}. He is currently at {}. His memory is having {}, his plans are {}. Based on these informations, can you predict the most probable location out of the locations: {}, where he would be in the next hour? Answer in following format: 'Location_Name'".format(
                                                 agent_list[i].person.name, agent_list[i].profile, agent_list[i].location, agent_list[i].get_memory(),agent_list[i].plans,i_locations))
