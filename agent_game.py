@@ -208,7 +208,7 @@ class Agent():
         self.down = False
         self.walkCount = 0
         self.vel = 1  # Adjust the speed of the agent
-        self.current_point = 0
+        self.current_point = 1
         self.direction = 1
 
     def draw(self, win, left_images_werewolf, right_images_werewolf,up_images_werewolf,down_images_werewolf,char_werewolf,env,env_night,current_background):
@@ -299,9 +299,9 @@ class Agent():
                 
 
                 # Check if the agent has reached the target position
-                if self.x == target_x and self.y == target_y:
-                    # Move to the next point in the path
-                    self.current_point += self.direction
+                # if self.x == target_x and self.y == target_y:
+                #     # Move to the next point in the path
+                #     self.current_point += self.direction
 
                     # Check if the agent has reached the end of the path, and reverse the direction
                     # if self.current_point == len(path) :
@@ -315,7 +315,7 @@ class Agent():
         self.left = False
         self.up = False
         self.down = False
-        self.current_point = 0
+        self.current_point = 1
         self.direction = 1
 
 
