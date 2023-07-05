@@ -79,7 +79,7 @@ def pipeline(global_time):
                             break 
                 
                 if new_location!=i_locations[0]:
-                  agent_list[i].update_location(new_location)
+                  agent_list[i].update_location(agent_list[i].location, new_location)
                 
                 print(agent_list[i].person.name, new_location)
 
@@ -153,7 +153,7 @@ def pipeline(global_time):
             if global_time == Killer_time:
                 prev_loc_killer = killer_p.location
                 #Killer goes to the location of the townfolk 
-                killer_p.update_location(to_be_killed_p.location)
+                killer_p.update_location(killer_p.location, to_be_killed_p.location)
                     
                 #kill the agent
                 killer_p.killing_action(to_be_killed_p,agents)
@@ -162,21 +162,21 @@ def pipeline(global_time):
                 print(to_be_killed_p.person.name, to_be_killed_p.state)
                 
                 #Killer back to its previous location
-                killer_p.update_location(prev_loc_killer)
+                killer_p.update_location(killer_p.location, prev_loc_killer)
 
             if global_time == Voting_time:
                 prev_loc_killer = [agent.location for agent in agents]
 
                 #Send all the killers to Hanazawa Park for Voting session
                 for agent in agents:
-                    agent.update_location(garden)
+                    agent.update_location(agent.location, garden)
                 
                 #Carry out the decision making session
                 
                 decision_making(agents)
                 #Bring all the agents back to their original position
                 for i in range(0,len(agents)):
-                    agents[i].update_location(prev_loc_killer[i])
+                    agents[i].update_location(agents[i], prev_loc_killer[i])
 
             
         return agents
