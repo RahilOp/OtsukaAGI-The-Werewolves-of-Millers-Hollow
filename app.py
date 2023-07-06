@@ -30,7 +30,68 @@ app = Flask(__name__)
 def index():
     return render_template('index.html', text='')
 
+@app.route('/takashi')
+def index1():
+    return render_template('takashi.html', text='')
+
+@app.route('/yumi')
+def index2():
+    return render_template('yumi.html', text='')
+
+@app.route('/satoshi')
+def index3():
+    return render_template('satoshi.html', text='')
+
+@app.route('/ayumi')
+def index4():
+    return render_template('ayumi.html', text='')
+
+@app.route('/yusuke')
+def index5():
+    return render_template('yusuke.html', text='')
+
+@app.route('/kazuki')
+def index6():
+    return render_template('kazuki.html', text='')
+
+@app.route('/simulation')
+def index7():
+    return render_template('simulation_logs.html', text='')
+
+@app.route('/well')
+def index8():
+    return render_template('well.html', text='')
+
+@app.route('/haya1')
+def index9():
+    return render_template('haya1.html', text='')
+
+@app.route('/haya2')
+def index10():
+    return render_template('haya2.html', text='')
+
+@app.route('/haya3')
+def index11():
+    return render_template('haya3.html', text='')
+
+@app.route('/haya4')
+def index12():
+    return render_template('haya4.html', text='')
+
+@app.route('/college')
+def index13():
+    return render_template('college.html', text='')
+
+@app.route('/shrine')
+def index14():
+    return render_template('shrine.html', text='')
+
+@app.route('/yamamoto_residence')
+def index15():
+    return render_template('yamamoto_residence.html', text='')
+
 @app.route('/get-text')
+
 def get_text():
     # Replace this logic with your own code to fetch and return the updated text
     # Read the text from the file
@@ -43,6 +104,15 @@ def get_text():
     file_path.append("text5.html")
     file_path.append("text6.html")
     file_path.append("simulation.html")
+    file_path.append("well.html")
+    file_path.append("haya1.html")
+    file_path.append("haya2.html")
+    file_path.append("haya3.html")
+    file_path.append("haya4.html")
+    file_path.append("college.html")
+    file_path.append("shrine.html")
+    file_path.append("yamamoto_residence.html")
+
     
     texts = []
 
