@@ -4,6 +4,8 @@ from utils1 import create_new_memory_retriever,LLM
 import pandas as pd
 import pygame
 import warnings
+import nltk
+nltk.download('punkt')
 warnings.filterwarnings("ignore")
 
 # Initialising files for each agents

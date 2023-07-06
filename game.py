@@ -104,7 +104,7 @@ def fetch_data():
         if counter == 0:
            day+=1
 
-        response = pipeline(counter + 7)
+        response = pipeline(counter + 7, day)
         
         for agent in response:
             buffer_location[agent.person.name] = agent.location
