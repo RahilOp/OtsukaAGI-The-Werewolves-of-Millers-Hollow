@@ -19,6 +19,8 @@ from customtemplate import CustomOutputParser, CustomPromptTemplate
 from langchain.agents import Tool, AgentExecutor, LLMSingleActionAgent, AgentOutputParser
 from datetime import date
 import csv
+import multiprocessing
+import time
 
 class GameGenerativeAgent(BaseModel):
     """A character with memory and innate characteristics."""
@@ -246,7 +248,7 @@ Relevant context:
             #     + f"write:\nREACT: {self.name}'s reaction (if anything)."
             #     + f"\nEither do nothing or react something.\n\n"
             # )
-            return "No Reaction", 100
+            # return "No Reaction", 100
             call_to_action_template = (
                 f"Should {self.name} react to the observation, and if so,"
                 + " what would be an appropriate reaction? Respond in one line."
@@ -254,16 +256,30 @@ Relevant context:
                 + "\nEither react or do nothing\n\n"
             )
 
+            timeout = 4
+            pool = multiprocessing.Pool(processes=2)
             tools_to_use = []
-            _, full_result, consumed_tokens = self._generate_reaction(
-                self_type, observation, call_to_action_template, current_time, tools_to_use, now=now
-            )
-
+            args = (self_type, observation, call_to_action_template, current_time, tools_to_use, now)
+            result = pool.apply_async(self._generate_reaction, args = args)
+            try:
+                _, full_result, consumed_tokens = result.get(timeout)
+            except multiprocessing.TimeoutError:
+                pool.terminate()  # Terminate the function
+                pool.join()
+                full_result = "No Reaction"
+                consumed_tokens = 0
+                
+        # Continue with alternative logic or print an error message
+            # tools_to_use = []
+            # _, full_result, consumed_tokens = self._generate_reaction(
+            #     self_type, observation, call_to_action_template, current_time, tools_to_use, now=now
+            # )
             result = full_result.strip().split("\n")[0]
             # AAA
             file = open(self.file_path, 'a')
-            file.write(f"{self.name} observed {observation} and reacted by {result}")
-
+            file.write(f"{datetime_only.time(current_time,0)}: {self.name} observed {observation} and reacted by {result}\n")
+            file.close()
+            
             self.memory.save_context(
                 {},
                 {
@@ -309,15 +325,28 @@ Relevant context:
             +f"Question: {user_initializer}\n"
             +"{agent_scratchpad}"
         )
-      
+        
+        timeout = 10
+        pool = multiprocessing.Pool(processes=2)
+        args = (self_type, current_plan_reaction, call_to_action_template, current_time, tools_to_use, now)
+        result = pool.apply_async(self._generate_reaction, args = args)
+        try:
+            tool_used, full_result, consumed_tokens = result.get(timeout)
+        except multiprocessing.TimeoutError:
+            pool.terminate()  # Terminate the function
+            pool.join()
+            full_result = f"Hi {agent.person.name}-san, how are you?"
+            consumed_tokens = 0
+        
         #  _generate_reaction(self, observation: str, call_to_action_template: str, current_time, tools_to_use, now: Optional[datetime] = None) -> Tuple[str, int]:
-        tool_used, full_result, consumed_tokens = self._generate_reaction(self_type,
-            current_plan_reaction, call_to_action_template, current_time, tools_to_use, now=now
-        )
+        # tool_used, full_result, consumed_tokens = self._generate_reaction(self_type,
+        #     current_plan_reaction, call_to_action_template, current_time, tools_to_use, now=now
+        # )
 
         # print(True, full_result, consumed_tokens)
         file = open(self.file_path, 'a')
-        file.write(f"{self.name} observed {current_plan_agent} and said {full_result}")
+        file.write(f"{datetime_only.time(current_time,0)}: {self.name} observed {current_plan_agent} and said {full_result}\n")
+        file.close()
 
         self.memory.save_context(
             {},
@@ -338,6 +367,8 @@ Relevant context:
         self.agent_type, agent, dialogue_response, previous_dialogue_response_reaction, current_plan_self, current_plan_agent, current_time, tools_to_use, self.relations)
 
         """
+        if previous_response==f"Ohh {self.name}-san, I sincerely apologize for the inconvenience, but I kindly request your understanding as I need to attend to something else at the moment. I greatly appreciate your patience and would be grateful if we could continue our conversation at a later time. Thank you so much for your understanding and cooperation. Have a splendid day, and I look forward to reconnecting with you soon!":
+            return False, f"Its completely fine {agent.person.name}-san, have a good day", 0
         agent_profile_summary = " ".join(agent.profile)
         # call_to_action_template = (
         #     f"{self.name} is in conversation with {agent.person.name}. "
@@ -367,19 +398,39 @@ Relevant context:
             +"{agent_scratchpad}"
         )
 
-        tool_used, full_result, consumed_tokens = self._generate_reaction(self_type, previous_dialogue_response_reaction, call_to_action_template, current_time, tools_to_use, now=now)
+        timeout = 10
+        pool = multiprocessing.Pool(processes=2)
+        args = (self_type, previous_dialogue_response_reaction, call_to_action_template, current_time, tools_to_use, now)
+        result = pool.apply_async(self._generate_reaction, args = args)
+        try:
+            tool_used, full_result, consumed_tokens = result.get(timeout)
+        except multiprocessing.TimeoutError:
+            pool.terminate()  # Terminate the function
+            pool.join()
+            tool_used = ""
+            if self_type=="TownFolk":
+                tool_used = "Townfolk End Dialogue Tool"
+            else:
+                tool_used = "Werewolf End Dialogue Tool"
+            full_result = f"Ohh {agent.person.name}-san, I sincerely apologize for the inconvenience, but I kindly request your understanding as I need to attend to something else at the moment. I greatly appreciate your patience and would be grateful if we could continue our conversation at a later time. Thank you so much for your understanding and cooperation. Have a splendid day, and I look forward to reconnecting with you soon!"
+            consumed_tokens = 0
+            
+            
+        # tool_used, full_result, consumed_tokens = self._generate_reaction(self_type, previous_dialogue_response_reaction, call_to_action_template, current_time, tools_to_use, now=now)
         
         file = open(self.file_path, 'a')
-        file.write(f"{self.name} heard {previous_response} from {agent.person.name} and said {full_result}")
-
-        self.memory.save_context(
-            {},
-            {
-                self.memory.add_memory_key: f"{self.name} heard "
-                f"{previous_response} from {agent.person.name} and said {full_result}",
-                self.memory.now_key: now,
-            },
-        )
+        file.write(f"{datetime_only.time(current_time, 0)}: {self.name} heard {previous_response} from {agent.person.name} and said {full_result}\n")
+        file.close()
+        buffer_string = f"Ohh {agent.person.name}-san, I sincerely apologize for the inconvenience, but I kindly request your understanding as I need to attend to something else at the moment. I greatly appreciate your patience and would be grateful if we could continue our conversation at a later time. Thank you so much for your understanding and cooperation. Have a splendid day, and I look forward to reconnecting with you soon!"
+        if full_result!=buffer_string:
+            self.memory.save_context(
+                {},
+                {
+                    self.memory.add_memory_key: f"{self.name} heard "
+                    f"{previous_response} from {agent.person.name} and said {full_result}",
+                    self.memory.now_key: now,
+                },
+            )
 
         if((tool_used == "Townfolk Continue Dialogue Tool") or (tool_used == "Werewolf Continue Dialogue Tool")):
           return True, full_result, consumed_tokens

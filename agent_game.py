@@ -14,7 +14,7 @@ threshold = 0.57
 
 # char = pygame.image.load('assets/char.gif')
  
-
+simulation_path = "simulation.html"
 
 paths = {
   'Yamamoto Residence': {
@@ -187,6 +187,7 @@ class Agent():
         self.relations = {}
 
         self.plans = []
+        self.short_plans = []
 
         self.profile = []
         
@@ -210,6 +211,8 @@ class Agent():
         self.vel = 1  # Adjust the speed of the agent
         self.current_point = 1
         self.direction = 1
+        
+        self.show_popup = False
 
     def draw(self, win, left_images_werewolf, right_images_werewolf,up_images_werewolf,down_images_werewolf,char_werewolf,env,env_night,current_background):
         if self.walkCount + 1 >= 9:
@@ -259,6 +262,7 @@ class Agent():
           self.left = False
           self.up = False
           self.down = False 
+          self.show_popup = True
           return
           
         target_x, target_y = path[self.current_point]
@@ -276,30 +280,35 @@ class Agent():
             self.left = False
             self.up = False
             self.down = False
+            self.show_popup = False
 
         if(x_change < 0):
             self.right = False
             self.left = True
             self.up = False
             self.down = False
+            self.show_popup = False
 
         if(y_change > 0):
             self.right = False
             self.left = False
             self.up = False
             self.down = True
+            self.show_popup = False
 
         if(y_change < 0):
             self.right = False
             self.left = False
             self.up = True
             self.down = False
+            self.show_popup = False
             
         if(x_change == 0 and y_change == 0):
             self.right = False
             self.left = False
             self.up = False
             self.down = False
+            self.show_popup = True
             
         if(self.x == target_x and self.y == target_y):
           self.current_point += 1
@@ -398,7 +407,7 @@ class Agent():
               continue_convo, dialogue_response, consumed_tokens_dialogue = self.person.generate_dialogue_response(self.agent_type, agent, dialogue_response, previous_dialogue_response_reaction, current_plan_self, current_plan_agent, current_time, tools_to_use, self.relations, counter)
               
             # print_colored(f"{self.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "blue")
-            print_colored(f"{self.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "blue",self.file_path)
+            print_colored(f"{self.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "blue",simulation_path)
             if not continue_convo:
               break
             #other agent's chance
@@ -407,7 +416,7 @@ class Agent():
             previous_dialogue_response_reaction, consumed_tokens_reaction = agent.person.generate_reaction(agent.agent_type, dialogue_response, current_time)
             continue_convo, dialogue_response, consumed_tokens_dialogue = agent.person.generate_dialogue_response(agent.agent_type, self, dialogue_response, previous_dialogue_response_reaction, current_plan_agent, current_plan_self, current_time, tools_to_use, agent.relations, counter)
             # print_colored(f"{agent.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "magenta")
-            print_colored(f"{agent.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "magenta",agent.file_path)
+            print_colored(f"{agent.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "magenta",simulation_path)
             counter+=1
         else:
           continue_convo = True
@@ -430,7 +439,7 @@ class Agent():
               continue_convo, dialogue_response, consumed_tokens_dialogue = self.person.generate_dialogue_response(self.agent_type, agent, dialogue_response, previous_dialogue_response_reaction, current_plan_self, current_plan_agent, current_time, tools_to_use, self.relations, counter)
 
             # print_colored(f"{self.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "blue")
-            print_colored(f"{self.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "blue",self.file_path)
+            print_colored(f"{self.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "blue",simulation_path)
             if not continue_convo:
               break
             #other agent's chance
@@ -439,7 +448,7 @@ class Agent():
             previous_dialogue_response_reaction, consumed_tokens_reaction = agent.person.generate_reaction(agent.agent_type, dialogue_response, current_time)
             continue_convo, dialogue_response, consumed_tokens_dialogue = agent.person.generate_dialogue_response(agent.agent_type, self, dialogue_response, previous_dialogue_response_reaction, current_plan_agent, current_plan_self, current_time, tools_to_use, agent.relations, counter)
             # print_colored(f"{agent.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "magenta")
-            print_colored(f"{agent.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "magenta",agent.file_path)
+            print_colored(f"{agent.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "magenta",simulation_path)
             counter+=1
 
         # pass
@@ -469,7 +478,7 @@ class Agent():
               previous_dialogue_response_reaction, consumed_tokens_reaction = self.person.generate_reaction(self.agent_type, dialogue_response, current_time)
               continue_convo, dialogue_response, consumed_tokens_dialogue = self.person.generate_dialogue_response(self.agent_type, agent, dialogue_response, previous_dialogue_response_reaction, current_plan_self, current_plan_agent, current_time, tools_to_use, self.relations, counter)
             # print_colored(f"{self.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "blue")
-            print_colored(f"{self.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "blue",self.file_path)
+            print_colored(f"{self.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "blue",simulation_path)
             if not continue_convo:
               break
             #other agent's chance
@@ -477,7 +486,7 @@ class Agent():
             previous_dialogue_response_reaction, consumed_tokens_reaction = agent.person.generate_reaction(agent.agent_type, dialogue_response, current_time)
             continue_convo, dialogue_response, consumed_tokens_dialogue = agent.person.generate_dialogue_response(agent.agent_type, self, dialogue_response, previous_dialogue_response_reaction, current_plan_agent, current_plan_self, current_time, tools_to_use, agent.relations, counter)
             # print_colored(f"{agent.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "magenta")
-            print_colored(f"{agent.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "magenta",agent.file_path)
+            print_colored(f"{agent.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "magenta",simulation_path)
 
             counter+=1
         else: # agent.agent_type == "WereWolf"
@@ -501,7 +510,7 @@ class Agent():
               continue_convo, dialogue_response, consumed_tokens_dialogue = self.person.generate_dialogue_response(self.agent_type, agent, dialogue_response, previous_dialogue_response_reaction, current_plan_self, current_plan_agent, current_time, tools_to_use, self.relations, counter)
             
             # print_colored(f"{self.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "blue")
-            print_colored(f"{self.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "blue",self.file_path)
+            print_colored(f"{self.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "blue",simulation_path)
             if not continue_convo:
               break
             #other agent's chance
@@ -509,7 +518,7 @@ class Agent():
             previous_dialogue_response_reaction, consumed_tokens_reaction = agent.person.generate_reaction(agent.agent_type, dialogue_response, current_time)
             continue_convo, dialogue_response, consumed_tokens_dialogue = agent.person.generate_dialogue_response(agent.agent_type, self, dialogue_response, previous_dialogue_response_reaction, current_plan_agent, current_plan_self, current_time, tools_to_use, agent.relations, counter)
             # print_colored(f"{agent.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "magenta")
-            print_colored(f"{agent.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "magenta",agent.file_path)
+            print_colored(f"{agent.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "magenta",simulation_path)
             counter+=1
 
      else:
@@ -543,12 +552,14 @@ class Agent():
                 if not continue_convo:
                     break
 
-    def killing_action(self,Agent2,agents):
+    def killing_action(self,Agent2,agents, current_time):
         Agent2.state = "dead"
         file = open(self.file_path, 'a')
-        file.write(f"I have eliminated {Agent2.person.name}.")
+        file.write(f"I have eliminated {Agent2.person.name}.\n")
+        file.close()
         self.memory.add_memory("I have eliminated {}.".format(Agent2.person.name))
-
+        print_colored(f"{datetime.time(current_time,0)}: {Agent2.person.name} is dead.", "red", simulation_path)
+        
         for agent in agents:
             if agent!=Agent2:
                 file = open(agent.file_path, 'a')

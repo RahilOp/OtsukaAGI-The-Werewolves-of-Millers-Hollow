@@ -9,6 +9,7 @@ from nltk.tokenize import sent_tokenize
 import warnings
 warnings.filterwarnings("ignore")
 import datetime as datetime_only
+import random
 
 # Main function to carry on the simulation
 print(df.head())
@@ -17,13 +18,14 @@ print(df.head())
 # To_be_killed_time = time(7,0,0)
 # Killer_time = time(8,0,0)
 # Voting_time = time(18,0,0)
-Killer_time = 19
-Voting_time = 8
+Killer_time = 18
+Voting_time = 7
 debug = True
 i_agents = agents
 i_locations = locations
 simulation_path = "simulation.html"
-def pipeline(global_time):
+agent_current_tasks = {}
+def pipeline(global_time, day):
         if debug:
             print(global_time, type(global_time))
             # for global_time in df['Time']:
@@ -59,19 +61,19 @@ def pipeline(global_time):
                 # reaction, consumed_tokens = local_agent.person.generate_reaction(local_agent.agent_type, local_agent.plans[local_agent.plans['Time'].apply(lambda x: x.hour) == global_time]['Plans'].values[0], global_time)
                 print_colored(f"Task: {local_agent.plans[local_agent.plans['Time'].apply(lambda x: x.hour) == global_time]['Plans'].values[0]}", "sky blue",simulation_path)
                 print_colored(f"Reaction: {reaction}", "green",simulation_path)
+                agent_current_tasks[local_agent.person.name] = local_agent.short_plans[local_agent.plans['Time'].apply(lambda x: x.hour) == global_time]['Plans'].values[0]
+                # res = generate_response(f'''User: Generate a sequence of actions and time in minutes for the agent to perform as part of its "Takashi opens the Shino Grocery Store." and convert in present continuous form
+                #                     Agent: 'Takashi is arriving at the store and unlocking the entrance door - 5 minutes. He is turning on the lights and adjusting the temperature settings - 2 minutes. He is checking inventory and restocking shelves if necessary - 10 minutes. He is setting up the cash register and ensuring it's functioning properly - 5 minutes. He is arranging promotional displays or special offers - 8 minutes. He is verifying the freshness of perishable items - 3 minutes. He is reviewing the schedule for incoming deliveries - 5 minutes. He is performing a quick cleanup of the store and organizing any clutter - 7 minutes. He is opening the store for customers and removing the "Closed" sign - 1 minute. '
 
-                res = generate_response(f'''User: Generate a sequence of actions and time in minutes for the agent to perform as part of its "Takashi opens the Shino Grocery Store." and convert in present continuous form
-                                    Agent: 'Takashi is arriving at the store and unlocking the entrance door - 5 minutes. He is turning on the lights and adjusting the temperature settings - 2 minutes. He is checking inventory and restocking shelves if necessary - 10 minutes. He is setting up the cash register and ensuring it's functioning properly - 5 minutes. He is arranging promotional displays or special offers - 8 minutes. He is verifying the freshness of perishable items - 3 minutes. He is reviewing the schedule for incoming deliveries - 5 minutes. He is performing a quick cleanup of the store and organizing any clutter - 7 minutes. He is opening the store for customers and removing the "Closed" sign - 1 minute. '
+                #                     Use the example given above to similarily generate subplans and convert in present continuous tense for:
+                #                     "{local_agent.plans[local_agent.plans['Time'].apply(lambda x: x.hour) == global_time]['Plans'].values[0]}"''')
 
-                                    Use the example given above to similarily generate subplans and convert in present continuous tense for:
-                                    "{local_agent.plans[local_agent.plans['Time'].apply(lambda x: x.hour) == global_time]['Plans'].values[0]}"''')
+                # # Tokenize the paragraph into sentences
+                # sentences = sent_tokenize(res)
 
-                # Tokenize the paragraph into sentences
-                sentences = sent_tokenize(res)
-
-                # Print the extracted sentences
-                for sentence in sentences:
-                    print_colored(sentence,"green",simulation_path)
+                # # Print the extracted sentences
+                # for sentence in sentences:
+                #     print_colored(sentence,"green",simulation_path)
                 
 
             print_colored("Interaction", "red",simulation_path)
@@ -81,6 +83,12 @@ def pipeline(global_time):
                 #     print(f"Dialogue between {agent_list[i].person.name} and {agent_list[j].person.name}:", "cyan")
                 #     # def make_interaction_conversation_tree(self, current_time, Agents:list, user_setting = False, user_initializer: Optional[str] = "")
                 #     agent_list[i].make_interaction_conversation_tree(global_time, [agent_list[j]])
+                valid_indices = [index for index in range(len(agent_list)) if index != i]
+                if valid_indices:
+                    j = random.choice(valid_indices)
+                    print_colored(f"Dialogue between {agent_list[i].person.name} and {agent_list[j].person.name}:", "blue", simulation_path)
+                    # def make_interaction_conversation_tree(self, current_time, Agents:list, user_setting = False, user_initializer: Optional[str] = "")
+                    agent_list[i].make_interaction_conversation_tree(global_time, [agent_list[j]])
 
                 location_result = generate_response("The person is {} with the profile: {}. He is currently at {}. His memory is having {}, his plans are {}. Based on these informations, can you predict the most probable location out of the locations: {}, where he would be in the next hour? Answer in following format: 'Location_Name'".format(
                                                 agent_list[i].person.name, agent_list[i].profile, agent_list[i].location, agent_list[i].get_memory(),agent_list[i].plans,i_locations))
@@ -156,7 +164,7 @@ def pipeline(global_time):
             except Exception as e:
                 print("ChatGpt API busy, using own sense to find who will be killed.")
 
-        
+            global to_be_killed_p
             to_be_killed_p = random.choice(townfolk_agents)
             for agent in agents:
                 for k in range(0,len(to_be_killed)):
@@ -200,32 +208,33 @@ def pipeline(global_time):
             killer_p.update_location(killer_p.location, to_be_killed_p.location)
                 
             #kill the agent
-            killer_p.killing_action(to_be_killed_p,agents)
+            
+        if global_time == Killer_time + 1:
+            #Killer back to its previous location
+            killer_p.killing_action(to_be_killed_p,agents, global_time)
             
             print(killer_p.person.name, killer_p.location.name)
             print(to_be_killed_p.person.name, to_be_killed_p.state)
             
-        if global_time == Killer_time + 1:
-            #Killer back to its previous location
             killer_p.update_location(killer_p.location, prev_loc_killer)
 
-        if global_time == Voting_time:
+        if (global_time == Voting_time) and (day !=1):
             prev_loc_voters_list = [agent.location for agent in agents]
 
             #Send all the killers to Hanazawa Park for Voting session
             for agent in agents:
                 agent.update_location(agent.location, garden)
             
+        if (global_time == Voting_time + 1) and (day !=1):
             #Carry out the decision making session
             print_colored("Moving in Decision Making Function","blue",simulation_path)
             decision_making(agents)
         
-        if global_time == Voting_time + 1:
             #Bring all the agents back to their original position
             for i in range(0,len(agents)):
                 agents[i].update_location(agents[i].location, prev_loc_voters_list[i])
 
             
-        return agents
+        return [agents,agent_current_tasks]
 
 

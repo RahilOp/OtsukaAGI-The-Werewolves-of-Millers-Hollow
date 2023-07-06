@@ -4,6 +4,8 @@ from utils1 import create_new_memory_retriever,LLM
 import pandas as pd
 import pygame
 import warnings
+import nltk
+nltk.download('punkt')
 warnings.filterwarnings("ignore")
 
 # Initialising files for each agents
@@ -16,8 +18,16 @@ file_path.append("text4.html")
 file_path.append("text5.html")
 file_path.append("text6.html")
 file_path.append("simulation.html")
+file_path.append("well.html")
+file_path.append("haya1.html")
+file_path.append("haya2.html")
+file_path.append("haya3.html")
+file_path.append("haya4.html")
+file_path.append("college.html")
+file_path.append("shrine.html")
+file_path.append("yamamoto_residence.html")
 
-for i in range(0,6):
+for i in range(0,len(file_path)):
   file = open(file_path[i], 'w')
   file.close()
 
@@ -105,7 +115,7 @@ yumi=Agent(name = "Yumi Yamamoto",
               y=230, 
               width = 30,
               height = 30, 
-              image_path='assets/char.gif',
+              image_path='assets/agent2_D1.png',
               left_images=left_images_agent2,
               right_images=right_images_agent2,
               up_images=up_images_agent2,
@@ -133,7 +143,7 @@ kazuki=Agent(name = "Kazuki Sato",
               y=203,  
               width = 30,
               height = 30, 
-              image_path='assets/char.gif',
+              image_path='assets/agent3_D1.png',
               left_images=left_images_agent3,
               right_images=right_images_agent3,
               up_images=up_images_agent3,
@@ -160,7 +170,7 @@ satoshi=Agent(name = "Satoshi Takahashi",
               y=206,  
               width = 30,
               height = 30, 
-              image_path='assets/char.gif',
+              image_path='assets/agent4_D1.gif',
               left_images=left_images_agent4,
               right_images=right_images_agent4,
               up_images=up_images_agent4,
@@ -188,7 +198,7 @@ yusuke=Agent(name = "Yusuke Mori",
               y=206, 
               width = 30,
               height = 30, 
-              image_path='assets/char.gif',
+              image_path='assets/agent5_D2.png',
               left_images=left_images_agent5,
               right_images=right_images_agent5,
               up_images=up_images_agent5,
@@ -216,7 +226,7 @@ ayumi=Agent(name = "Ayumi Kimura",
               y=206, 
               width = 30,
               height = 30, 
-              image_path='assets/char.gif',
+              image_path='assets/agent6_D2.png',
               left_images=left_images_agent6,
               right_images=right_images_agent6,
               up_images=up_images_agent6,
@@ -354,12 +364,16 @@ for agent in agents:
 # Read a CSV file
 df = pd.read_csv('villagers_plans.csv')
 df['Time'] = pd.to_datetime(df['Time']).dt.time
+df2 = pd.read_csv('short_plans.csv')
+df2['Time'] = pd.to_datetime(df2['Time']).dt.time
 # df.set_index('Time', inplace=True)
 # column1 = df['Time']  # Replace 'Time' with the actual name of the first column
 
 for agent in agents:
     agent.plans = df[['Time', agent.person.name]].copy()
     agent.plans.rename(columns = {agent.person.name: 'Plans'}, inplace=True)
+    agent.short_plans = df2[['Time', agent.person.name]].copy()
+    agent.short_plans.rename(columns = {agent.person.name: 'Plans'}, inplace=True)
     print("Plans of:", agent.person.name)
     print(agent.plans.head(1))
     print(agent.plans[agent.plans['Time'].apply(lambda x: x.hour) == 10]['Plans'].values[0])
