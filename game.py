@@ -90,7 +90,7 @@ for agent in agents:
     target_location[agent.person.name] = agent.location
     
 
-
+winning_status = "Playing"
 day = 0
 cnt = 0
 
@@ -118,9 +118,11 @@ def fetch_data():
         status = True 
         if cnt==0:
             print("The Game has been finished. TownFolks Won.")
+            winning_status = "TownFolks Won"
             status = False
         elif (len(response)-cnt<=cnt):
             print("The Game has been finished. WereWolfs Won.")
+            winning_status = "Werewolf Won"
             status = False
 
         if not status:
