@@ -24,7 +24,9 @@ debug = True
 i_agents = agents
 i_locations = locations
 simulation_path = "simulation.html"
+
 agent_current_tasks = {}
+
 def pipeline(global_time, day):
         if debug:
             print(global_time, type(global_time))
@@ -64,6 +66,10 @@ def pipeline(global_time, day):
                 agent_current_tasks[local_agent.person.name] = local_agent.short_plans[local_agent.plans['Time'].apply(lambda x: x.hour) == global_time]['Plans'].values[0]
                 # res = generate_response(f'''User: Generate a sequence of actions and time in minutes for the agent to perform as part of its "Takashi opens the Shino Grocery Store." and convert in present continuous form
                 #                     Agent: 'Takashi is arriving at the store and unlocking the entrance door - 5 minutes. He is turning on the lights and adjusting the temperature settings - 2 minutes. He is checking inventory and restocking shelves if necessary - 10 minutes. He is setting up the cash register and ensuring it's functioning properly - 5 minutes. He is arranging promotional displays or special offers - 8 minutes. He is verifying the freshness of perishable items - 3 minutes. He is reviewing the schedule for incoming deliveries - 5 minutes. He is performing a quick cleanup of the store and organizing any clutter - 7 minutes. He is opening the store for customers and removing the "Closed" sign - 1 minute. '
+
+                # res = generate_response(f'''User: Generate a sequence of actions and time in minutes for the agent to perform as part of its "Takashi opens the Shino Grocery Store." and convert in present continuous form
+                #                     Agent: 'Takashi is arriving at the store and unlocking the entrance door - 5 minutes. He is turning on the lights and adjusting the temperature settings - 2 minutes. He is checking inventory and restocking shelves if necessary - 10 minutes. He is setting up the cash register and ensuring it's functioning properly - 5 minutes. He is arranging promotional displays or special offers - 8 minutes. He is verifying the freshness of perishable items - 3 minutes. He is reviewing the schedule for incoming deliveries - 5 minutes. He is performing a quick cleanup of the store and organizing any clutter - 7 minutes. He is opening the store for customers and removing the "Closed" sign - 1 minute. '
+
 
                 #                     Use the example given above to similarily generate subplans and convert in present continuous tense for:
                 #                     "{local_agent.plans[local_agent.plans['Time'].apply(lambda x: x.hour) == global_time]['Plans'].values[0]}"''')
@@ -229,7 +235,9 @@ def pipeline(global_time, day):
             #Carry out the decision making session
             print_colored("Moving in Decision Making Function","blue",simulation_path)
             decision_making(agents)
-        
+
+        if (global_time == Voting_time + 1) and (day !=1):
+
             #Bring all the agents back to their original position
             for i in range(0,len(agents)):
                 agents[i].update_location(agents[i].location, prev_loc_voters_list[i])

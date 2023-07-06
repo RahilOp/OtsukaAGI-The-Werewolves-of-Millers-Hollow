@@ -120,7 +120,6 @@ for agent in agents:
 
 
 
-
 # Set up fonts
 title_font = pygame.font.Font("assets/japanese.otf", 50)
 text_font = pygame.font.Font("assets/japanese.otf", 24)
@@ -198,6 +197,8 @@ def show_story_screen():
 
 show_story_screen()
 
+
+=======
 
 winning_status = "Playing"
 day = 0
