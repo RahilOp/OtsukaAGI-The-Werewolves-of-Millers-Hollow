@@ -2,83 +2,131 @@
 <html>
 <head>
   <style>
-    body {
+    
+    .village {
       display: flex;
-      flex-direction: column;
       align-items: center;
-    }
-
-    header {
-      background-color: #ffffff;
-      color: #000;
-      padding: 25px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .simulation_logs{
-      border: 1px solid black;
-      padding: 20px; /* Increase padding for more space inside the palette */
-      margin-top: 20px; /* Increase margin for more separation between palettes */
-      width: 650px; /* Increase width to make the palette wider */
-      max-width: 90%; /* Set a maximum width to ensure responsiveness */
-      height: 600px;
-      overflow-y: auto;
-    }
-
-    .icon-buttons-container {
-      display: flex;
       justify-content: center;
-      margin-top: 20px; /* Adjust margin as needed */
-      background-color:#000;
-      border-radius: 10px;
+    }
+     
+    .agents_list {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 3px solid #f2f2f2;
+      padding: 15px;
+      height: 250px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 10px; /* Adjust margin as needed */
+      transition: transform 0.3s ease; /* Add transition effect */
     }
     
-    .icon-button {
+    .locations_list {
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      width: 90px; /* Adjust width as needed */
-      height: 90px; /* Adjust height as needed */
-      background-color: #f0f0f0; /* Adjust background color as needed */
-      border: none;
+      border: 3px solid #f2f2f2;
+      padding: 15px;
+      height: 250px;
       border-radius: 5px;
       cursor: pointer;
       margin: 10px; /* Adjust margin as needed */
       transition: transform 0.3s ease; /* Add transition effect */
     }
 
-    .icon-button:hover{
+
+    .btn {
+     margin-right: 70px; /* Adjust the value to set the desired horizontal space */
+     display: block;
+     margin-bottom: 10px; /* Adjust the value to set the desired vertical space between button and text */
+     padding: 10px 20px; /* Adjust the padding values to increase the button size */
+     font-size: 16px; /* Adjust the font size to increase the button size */
+     width: 100px;
+     height: 100px;
+     border-radius: 50px;
+     color: white;
+    }
+
+
+    .instructions-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .instructions {
+      text-align: center;
+      background-color: #f0f0f0;
+      padding: 10px;
+      border-radius: 10px;
+      max-width: 540px;
+    }
+
+    .simulation_logs{
+      display: flex;
+      border: 3px solid #f2f2f2;
+      padding: 20px;
+      height: 540px;
+    }
+
+
+    .village:hover {
       transform: translateY(-5px); /* Adjust the amount of displacement */
-      background-color: #ccc; /* Adjust hover background color as needed */
+    }
+    .agents_list:hover{
+      transform: translateY(-5px); /* Adjust the amount of displacement */
     }
     
-    .icon-button img {
-
-        size: 100px;
-    }
-
-    .icon-button span {
-      font-size: 14px; /* Adjust text size as needed */
-      margin-top: 5px; /* Adjust spacing between icon and text */
-    }
-
     .logs-palette {
       display: none;
-      border: 1px solid black;
+      border: None;
+      border-radius: 10px;
+      background-color: #fcfcfc;
       padding: 20px; /* Increase padding for more space inside the palette */
       margin-top: 20px; /* Increase margin for more separation between palettes */
-      width: 650px; /* Increase width to make the palette wider */
+      width: 1080px; /* Increase width to make the palette wider */
       max-width: 90%; /* Set a maximum width to ensure responsiveness */
-      height: 600px;
+      height: auto;
       overflow-y: auto;
+      color:rgb(126, 126, 126)
+    }
+
+    .footer {
+      background-color: #f8f9fa;
+      padding: 10px;
+      text-align: center;
+      font-size: 16px;
+    }
+
+    .love-emoji {
+      font-size: 20px;
     }
     
   </style>
+
   <script>
+
+    // JavaScript for smooth scrolling
+  document.addEventListener('DOMContentLoaded', function() {
+    var scrollLinks = document.querySelectorAll('a[href^="#"]');
+    
+    for (var i = 0; i < scrollLinks.length; i++) {
+      scrollLinks[i].addEventListener('click', smoothScroll);
+    }
+    
+    function smoothScroll(e) {
+      e.preventDefault();
+      var targetId = this.getAttribute('href');
+      var targetElement = document.querySelector(targetId);
+      
+      window.scrollTo({
+        behavior: 'smooth',
+        top: targetElement.offsetTop - 50 // Adjust the scroll offset if needed
+      });
+    }
+  });
+
     var source = new EventSource('/updates');
 
     source.addEventListener('message', function(event) {
@@ -133,75 +181,249 @@
       var logsPalette = document.getElementById('logs-palette-' + iconId);
       logsPalette.style.display = 'block';
     }
+  
+    // script for video 
+    var videoElement = document.getElementById('video');
+        var containerElement = document.getElementById('video-container');
+
+        videoElement.addEventListener('loadedmetadata', function() {
+            var duration = videoElement.duration;
+            var initialWidth = videoElement.offsetWidth;
+            var initialHeight = videoElement.offsetHeight;
+            var scaleFactor = 10;
+
+            var interval = setInterval(function() {
+                var currentTime = videoElement.currentTime;
+                var newWidth = initialWidth + (currentTime / duration) * scaleFactor;
+                var newHeight = initialHeight + (currentTime / duration) * scaleFactor;
+
+                containerElement.style.width = newWidth + 'px';
+                containerElement.style.height = newHeight + 'px';
+
+                if (currentTime >= duration) {
+                    clearInterval(interval);
+                }
+            }, 100);
+        });
+
   </script>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+
+   <!-- Bootstrap CSS -->
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
 </head>
 <body>
-    <header>
-        <div class = "logo">
-       <!-- <img src="4df962b6e04c4ea2ba7ad99a140eb95d (1).png" alt="Company Logo" width="50" height="50">-->
-        <h1><a href = 'home.html' style="color:#000" >GrowSum</a></h1>
-        </div>
-        <nav>
-          <ul>
-            <li><a href="#services">Insights</a></li>
-            <li><a href="#portfolio">Earn Money</a></li>
-            <li><a href="#Transactions">Transactions</a></li>
-            <li><a href="#download">Download App</a></li>
-            <li><a href="#gform">Google Form</a></li>
-            <li>
-              <button class="register-button" onclick="window.location.href = 'http://gsfdwite.xyz/registerrc/241cMNm24n'">Register</button>
-            </li>
-          </ul>
-        </nav>
-      </header>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <img src = "static\otsuka.png" style="width: 75px; height: 75px; padding: 5px; border-radius: 5px;" >
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarScroll">
+        <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="http://127.0.0.1:5000/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#village">Village</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#agents">Agents</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#locations">Locations</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#footer">About Us</a>
+          </li>
+        </ul>
+        <button onclick = "window.location.href = 'simulation'" type="button" class="btn btn-outline-success" style = " width:150px; height:40px;">Simulation Logs</button>
+      </div>
+    </div>
+  </nav>
+ 
 
-  <div>
-    <img src = "{{ url_for('static', filename='env.jpeg') }}" style="width: 650px; height: 400px; padding: 20px; border-radius: 5px;" >
+  <div class="container-fluid text-center" style = "padding: 280px 25px;
+            background:url('../static/env.jpeg');
+            background-attachment: fixed;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      color: #ffffff;">
+ </div>
+ <br><br>
+ <div class = "village">
+ <div id = "village" class="card mb-3" style="max-width: 1080px;">
+  <div class="row g-0">
+    <div class="col-md-4">
+      <img src="{{ url_for('static', filename='env.jpeg') }}" class="img-fluid rounded-start" alt="...">
+    </div>
+    <div class="col-md-8" >
+      <div class="card-body">
+        <h5 class="card-title">HAYASHINO</h5>
+        <p class="card-text"> A tranquil community enveloped by lush forests. It houses a sacred shrine, serene apartments, a vibrant grocery store, an esteemed physics institute, and a picturesque garden, all graced by a meandering river that adds to its natural charm.</p>
+        <p class="card-text"><small class="text-muted">Inspired by the Japanese Culture</small></p>
+      </div>
+    </div>
   </div>
-   
-  <div class = "simulation_logs">
-    <h1 style = "color:#000; text-align:center">Simulation Logs</h1>
-    <p id = "simulation" > {{text}} </p>
+</div>
+</div>
+
+<!-- <div id="video-container" class = "village">
+  <video id="video" controls autoplay>
+      <source src="{{ url_for('static', filename='animation.mp4') }}" type="video/mp4">
+  </video>
+</div> -->
+
+  
+  <div id = "agents" class = "agents_list" >
+    <h2 style = "margin-right: 150px;"> Our Agents </h2>
+    <button onclick="displayLogsPalette('icon1');" type="button" class="btn btn-outline-primary" data-bs-toggle="button" autocomplete="off"><img src="{{ url_for('static', filename='icon1.png') }}" alt="Button 1"></button>
+    <button onclick="displayLogsPalette('icon2');" type="button" class="btn btn-outline-primary" data-bs-toggle="button" autocomplete="off"><img src="{{ url_for('static', filename='icon2.png') }}" alt="Button 2"></button>
+    <button onclick="displayLogsPalette('icon3');" type="button" class="btn btn-outline-primary" data-bs-toggle="button" autocomplete="off"><img src="{{ url_for('static', filename='icon3.png') }}" alt="Button 3"></button>
+    <button onclick="displayLogsPalette('icon4');" type="button" class="btn btn-outline-primary" data-bs-toggle="button" autocomplete="off"><img src="{{ url_for('static', filename='icon4.png') }}" alt="Button 4"></button>
+    <button onclick="displayLogsPalette('icon5');" type="button" class="btn btn-outline-primary" data-bs-toggle="button" autocomplete="off"><img src="{{ url_for('static', filename='icon5.png') }}" alt="Button 5"></button>
+    <button onclick="displayLogsPalette('icon6');" type="button" class="btn btn-outline-primary" data-bs-toggle="button" autocomplete="off"><img src="{{ url_for('static', filename='icon6.png') }}" alt="Button 6"></button>
+  </div>
+  
+  <div class="instructions-container">
+    <div class="instructions">
+      <span>Click on the agents to see their profile and other details.</span>
+    </div>
   </div>
 
-
-  <div class = "icon-buttons-container"> 
-    <button onclick="displayLogsPalette('icon1');" class="icon-button"><img src="{{ url_for('static', filename='icon1.png') }}" alt="Button 1"> <span>Agent Logs 1</span> </button>
-    <button onclick="displayLogsPalette('icon2');" class="icon-button"><img src="{{ url_for('static', filename='icon2.png') }}" alt="Button 2"> <span>Agent Logs 2</span> </button>
-    <button onclick="displayLogsPalette('icon3');" class="icon-button"><img src="{{ url_for('static', filename='icon3.png') }}" alt="Button 3"> <span>Agent Logs 3</span> </button>
-    <button onclick="displayLogsPalette('icon4');" class="icon-button"><img src="{{ url_for('static', filename='icon4.png') }}" alt="Button 4"> <span>Agent Logs 4</span> </button>
-    <button onclick="displayLogsPalette('icon5');" class="icon-button"><img src="{{ url_for('static', filename='icon5.png') }}" alt="Button 5"> <span>Agent Logs 5</span> </button>
-    <button onclick="displayLogsPalette('icon6');" class="icon-button"><img src="{{ url_for('static', filename='icon6.png') }}" alt="Button 6"> <span>Agent Logs 6</span> </button>
-  </div>
-
+  <div class = "village">
   <div id="logs-palette-icon1" class="logs-palette">
-    <h2>Memory for Agent 1</h2>
-    <p id="content">{{ text }}</p>
+    <h2> <img src="{{ url_for('static', filename='icon1.png') }}" > Takashi Yamamoto </h2>
+    <p> <b>Age:</b> 45 </p>
+    <p> <b>Status:</b> living with his wife Yumi Yamamoto, and discusses happenings at stores, neighborhood, and his political ambitions </p>
+    <p> <b>Traits:</b> rude, aggressive, energetic </p>
+    <button onclick = "window.location.href = 'takashi'" type="button" class="btn btn-outline-success" style = " width:150px; height:40px;">See Details</button>
   </div>
 
   <div id="logs-palette-icon2" class="logs-palette">
-    <h2>Memory for Agent 2</h2>
-    <p id="content1">{{ text }}</p>
+    <h2> <img src="{{ url_for('static', filename='icon2.png') }}" > Yumi Yamamoto </h2>
+    <p> <b>Age:</b> 42 </p>
+    <p> <b>Status:</b> loves to take care of her family and enjoys spending time with them </p>
+    <p> <b>Traits:</b> friendly, helpful, organized </p>
+    <button onclick = "window.location.href = 'yumi'" type="button" class="btn btn-outline-success" style = " width:150px; height:40px;">See Details</button>
   </div>
 
   <div id="logs-palette-icon3" class="logs-palette">
-    <h2>Memory for Agent 3</h2>
-    <p id="content2">{{ text }}</p>
+    <h2> <img src="{{ url_for('static', filename='icon3.png') }}" > Satoshi Takahashi </h2>
+    <p> <b>Age:</b> 56 </p>
+    <p> <b>Status:</b> Retired Navy Officer and a wise man who loves helping others and takes care of his health </p>
+    <p> <b>Traits:</b> wise, resourceful, humorous </p>
+    <button onclick = "window.location.href = 'satoshi'" type="button" class="btn btn-outline-success" style = " width:150px; height:40px;">See Details</button>
   </div>
 
   <div id="logs-palette-icon4" class="logs-palette">
-    <h2>Memory for Agent 4</h2>
-    <p id="content3">{{ text }}</p>
+    <h2> <img src="{{ url_for('static', filename='icon4.png') }}" > Ayumi Kimora </h2>
+    <p> <b>Age:</b> 44 </p>
+    <p> <b>Status:</b> religious lady who is always looking for ways to support her students </p>
+    <p> <b>Traits:</b> nurturing, kind, patient </p>
+    <button onclick = "window.location.href = 'ayumi'" type="button" class="btn btn-outline-success" style = " width:150px; height:40px;">See Details</button>
   </div>
 
   <div id="logs-palette-icon5" class="logs-palette">
-    <h2>Memory for Agent 5</h2>
-    <p id="content4">{{ text }}</p>
+    <h2> <img src="{{ url_for('static', filename='icon5.png') }}" > Yusuke Mori </h2>
+    <p> <b>Age:</b> 45 </p>
+    <p> <b>Status:</b> Yusuke Mori is a skilled carpenter and a religious person </p>
+    <p> <b>Traits:</b> nurturing, kind, patient </p>
+    <button onclick = "window.location.href = 'yusuke'" type="button" class="btn btn-outline-success" style = " width:150px; height:40px;">See Details</button>
   </div>
 
   <div id="logs-palette-icon6" class="logs-palette">
-    <h2>Memory for Agent 6</h2>
-    <p id="content5">{{ text }}</p>
+    <h2> <img src="{{ url_for('static', filename='icon6.png') }}" > Kazuki Sato </h2>
+    <p> <b>Age:</b> 21 </p>
+    <p> <b>Status:</b> intelligent student who is focussed on her career and health </p>
+    <p> <b>Traits:</b> energetic, enthusiastic, inquisitive </p>
+    <button onclick = "window.location.href = 'kazuki'" type="button" class="btn btn-outline-success" style = " width:150px; height:40px;">See Details</button>
   </div>
+  </div>
+  
+
+  <div id = "locations" class = "locations_list">
+    <button onclick="displayLogsPalette('icon7');" type="button" class="btn btn-outline-primary" data-bs-toggle="button" autocomplete="off"><img src="{{ url_for('static', filename='icon7.png') }}" style = "height: 75px; width: 75px;" alt="Button 1"></button>
+    <button onclick="displayLogsPalette('icon8');" type="button" class="btn btn-outline-primary" data-bs-toggle="button" autocomplete="off"><img src="{{ url_for('static', filename='icon8.png') }}" style = "height: 75px; width: 75px;" alt="Button 2"></button>
+    <button onclick="displayLogsPalette('icon9');" type="button" class="btn btn-outline-primary" data-bs-toggle="button" autocomplete="off"><img src="{{ url_for('static', filename='icon9.png') }}" style = "height: 75px; width: 75px;" alt="Button 3"></button>
+    <button onclick="displayLogsPalette('icon10');" type="button" class="btn btn-outline-primary" data-bs-toggle="button" autocomplete="off"><img src="{{ url_for('static', filename='icon10.png') }}" style = "height: 75px; width: 75px;" alt="Button 4"></button>
+    <button onclick="displayLogsPalette('icon11');" type="button" class="btn btn-outline-primary" data-bs-toggle="button" autocomplete="off"><img src="{{ url_for('static', filename='icon11.png') }}" style = "height: 75px; width: 75px;" alt="Button 5"></button>
+    <button onclick="displayLogsPalette('icon12');" type="button" class="btn btn-outline-primary" data-bs-toggle="button" autocomplete="off"><img src="{{ url_for('static', filename='icon12.png') }}" style = "height: 75px; width: 75px;" alt="Button 6"></button>
+    <button onclick="displayLogsPalette('icon13');" type="button" class="btn btn-outline-primary" data-bs-toggle="button" autocomplete="off"><img src="{{ url_for('static', filename='icon13.png') }}" style = "height: 75px; width: 75px;" alt="Button 6"></button>
+    <button onclick="displayLogsPalette('icon14');" type="button" class="btn btn-outline-primary" data-bs-toggle="button" autocomplete="off"><img src="{{ url_for('static', filename='icon14.png') }}" style = "height: 75px; width: 75px;" alt="Button 6"></button>
+    <h2 style = "margin-left: -40px;"> Our Locations </h2>
+  </div>
+  
+  <div class="instructions-container">
+    <div class="instructions">
+      <span>Click on the locations to see their history and description.</span>
+    </div>
+  </div>
+
+  <div class = "village">
+  <div id="logs-palette-icon7" class="logs-palette">
+    <h2> <img src="{{ url_for('static', filename='icon7.png') }} " style = "height: 75px; width: 75px;"> Shino Grocery Store </h2>
+    <p>  <b>Description:</b> Shino grocery store, owned by Takashi Yamamoto, is a community hub providing diverse essential products and promoting sustainability </p>
+    <button onclick = "window.location.href = 'college'" type="button" class="btn btn-outline-success" style = " width:150px; height:40px;">See Details</button>
+  </div>
+
+  <div id="logs-palette-icon8" class="logs-palette">
+    <h2> <img src="{{ url_for('static', filename='icon8.png') }} " style = "height: 75px; width: 75px;"> Mizukami Shrine </h2>
+    <p>  <b>Description:</b> Japanese shrines are sacred sanctuaries preserving ancient traditions, offering a profound spiritual glimpse into rich heritage </p>
+    <button onclick = "window.location.href = 'shrine'" type="button" class="btn btn-outline-success" style = " width:150px; height:40px;">See Details</button>
+  </div>
+
+  <div id="logs-palette-icon9" class="logs-palette">
+    <h2> <img src="{{ url_for('static', filename='icon9.png') }}" style = "height: 75px; width: 75px;"> Well </h2>
+    <p>  <b>Description:</b> Villagers use it to get water </p>
+    <button onclick = "window.location.href = 'well'" type="button" class="btn btn-outline-success" style = " width:150px; height:40px;">See Details</button>
+  </div>
+
+  <div id="logs-palette-icon10" class="logs-palette">
+    <h2> <img src="{{ url_for('static', filename='icon10.png') }}" style = "height: 75px; width: 75px;" > Yamamoto Residence </h2>
+    <p>  <b>Description:</b> The Yamamoto family's small house is located in Hayashino Town, serving as the residence of Takashi Yamamoto and Yumi Yamamoto. </p>
+    <button onclick = "window.location.href = 'yamamoto_residence'" type="button" class="btn btn-outline-success" style = " width:150px; height:40px;">See Details</button>
+  </div>
+
+  <div id="logs-palette-icon11" class="logs-palette">
+    <h2> <img src="{{ url_for('static', filename='icon11.png') }}" style = "height: 75px; width: 75px;"> Haya 4 </h2>
+    <p>  <b>Description:</b> Residence of Ayumi Kimura </p>
+    <button onclick = "window.location.href = 'haya4'" type="button" class="btn btn-outline-success" style = " width:150px; height:40px;">See Details</button>
+  </div>
+
+  <div id="logs-palette-icon12" class="logs-palette">
+    <h2> <img src="{{ url_for('static', filename='icon12.png') }}" style = "height: 75px; width: 75px;"> Haya 3 </h2>
+    <p>  <b>Description:</b> Residence of Yusuke Mori </p>
+    <button onclick = "window.location.href = 'haya3'" type="button" class="btn btn-outline-success" style = " width:150px; height:40px;">See Details</button>
+  </div>
+
+
+  <div id="logs-palette-icon13" class="logs-palette">
+    <h2> <img src="{{ url_for('static', filename='icon13.png') }}" style = "height: 75px; width: 75px;"> Haya 2 </h2>
+    <p>  <b>Description:</b> Residence of Satoshi Takahashi </p>
+    <button onclick = "window.location.href = 'haya2'" type="button" class="btn btn-outline-success" style = " width:150px; height:40px;">See Details</button>
+  </div>
+
+
+  <div id="logs-palette-icon14" class="logs-palette">
+    <h2> <img src="{{ url_for('static', filename='icon14.png') }}" style = "height: 75px; width: 75px;"> Haya 1 </h2>
+    <p>  <b>Description:</b> Residence of Kazuki Sato </p>
+    <button onclick = "window.location.href = 'haya1'" type="button" class="btn btn-outline-success" style = " width:150px; height:40px;">See Details</button>
+  </div>
+  </div>
+
+  <br><br><br>
+
+  <div id = "footer" class="footer">
+    Made with love by Team B 
+    <span class="love-emoji">&#x1F496;</span>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
 </body>
+
 </html>
