@@ -436,7 +436,7 @@ while run:
     ####### Generating Pop Out ##########
     if (counter% 15)+7 == 19:
         if(ctr_killing_time == 0):
-            generate_popup("Killing Time!")
+            generate_popup("暇つぶし")
             # blit_image(killing_action, 5000)
             ctr_killing_time += 1
     else:
