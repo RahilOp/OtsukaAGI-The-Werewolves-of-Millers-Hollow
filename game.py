@@ -12,6 +12,7 @@ from threading import Thread
 import time
 import warnings
 from pygame import *
+import moviepy
 from moviepy.editor import VideoFileClip
 # import os
 warnings.filterwarnings("ignore")
@@ -91,7 +92,7 @@ char_townfolk = pygame.image.load("assets/char.gif").convert_alpha()
 def change_background():
     global current_background, current_background_timer
 
-    if current_background == env:
+    if (current_background == env):
         current_background = env_night
     else:
         current_background = env
@@ -198,8 +199,6 @@ def show_story_screen():
 show_story_screen()
 
 
-=======
-
 winning_status = "Playing"
 day = 0
 
@@ -230,7 +229,7 @@ def fetch_data():
             print("The Game has been finished. TownFolks Won.")
             winning_status = "TownFolks Won"
             status = False
-        elif (len(response)-cnt<=cnt):
+        elif (len(response[0])-cnt<=cnt):
             print("The Game has been finished. WereWolfs Won.")
             winning_status = "Werewolf Won"
             status = False
@@ -315,6 +314,8 @@ def generate_popup(text):
 run = True
 ctr_killing_time  = 0
 ctr_voting_time  = 0
+
+
 def redrawGameWindow():
     
     # win.blit(env, (0,0))
@@ -324,7 +325,7 @@ def redrawGameWindow():
     for agent in agents:
         if agent.state == 'alive':
             if agent.show_popup == True:
-                win.blit(font.render(current_actions[agent.person.name], True, BLACK, LIGHT_BLUE), (agent.x+10, agent.y))
+                win.blit(font.render(current_actions[agent.person.name], True, BLACK, LIGHT_BLUE), (agent.x+20, agent.y))
             agent.draw(win,left_images_werewolf,right_images_werewolf,up_images_werewolf,down_images_werewolf,char_werewolf,env,env_night,current_background)
 
 
@@ -333,19 +334,6 @@ def redrawGameWindow():
     pygame.display.update()
 
 
-def redrawGameWindow():
-    # win.blit(env, (0,0))
-   
-    win.blit(current_background, (0, 0))
-
-    for agent in agents:
-        if agent.state == 'alive':
-            agent.draw(win,left_images_werewolf,right_images_werewolf,up_images_werewolf,down_images_werewolf,char_werewolf,env,env_night,current_background)
-    
-   
-    if show_popup:
-        create_popup(popup_title , popup_text,mouse_pos[0]-80, mouse_pos[1]-20, win, WINDOW_HEIGHT, WINDOW_WIDTH)
-    pygame.display.update()
 
 
 while run:
@@ -448,13 +436,13 @@ while run:
     ####### Generating Pop Out ##########
     if (counter% 15)+7 == 19:
         if(ctr_killing_time == 0):
-            generate_popup("Killing Time!")
+            generate_popup("暇つぶし")
             # blit_image(killing_action, 5000)
             ctr_killing_time += 1
     else:
         ctr_killing_time = 0
     if (counter% 15)+7 == 8:
-        if(ctr_voting_time == 0):
+        if(ctr_voting_time == 0 and day!=1):
             generate_popup("Voting Starts!")
             # blit_image(killing_action, 5000)
             ctr_voting_time += 1
@@ -491,8 +479,14 @@ while run:
     time += datetime.timedelta(minutes=1)  # Increment time by 1 minute
     
 
-    if pygame.time.get_ticks() - current_background_timer >= background_duration:
-        change_background()
+    # if pygame.time.get_ticks() - current_background_timer >= background_duration:
+    #     change_background()
+    # if pygame.time.get_ticks() - current_background_timer >= background_duration:
+    #     change_background()
+    if((counter% 15)+7 >=7 and (counter% 15)+7 < 18):
+        current_background = env
+    else:
+        current_background = env_night
     
     # print("##############  Creating Screen 2 ###############")
     # redrawGameWindow()
