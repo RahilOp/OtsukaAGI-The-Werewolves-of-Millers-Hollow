@@ -30,6 +30,10 @@ app = Flask(__name__)
 def index():
     return render_template('index.html', text='')
 
+@app.route('/index_japanese')
+def index0():
+    return render_template('index_japanese.html', text='')
+
 @app.route('/takashi')
 def index1():
     return render_template('takashi.html', text='')
