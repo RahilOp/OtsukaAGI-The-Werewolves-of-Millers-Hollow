@@ -239,6 +239,8 @@
             <a class="nav-link" href="#footer">About Us</a>
           </li>
         </ul>
+        <button onclick="window.location.href='index_japanese'" type="button" class="btn btn-outline-success" style="width:150px; height:40px; ">Japanese</button>
+
         <button onclick = "window.location.href = 'simulation'" type="button" class="btn btn-outline-success" style = " width:150px; height:40px;">Simulation Logs</button>
       </div>
     </div>
@@ -246,7 +248,7 @@
  
 
   <div class="container-fluid text-center" style = "padding: 280px 25px;
-            background:url('../static/env.jpeg');
+            background:url('../static/env.png');
             background-attachment: fixed;
       background-position: center;
       background-repeat: no-repeat;
@@ -271,11 +273,11 @@
 </div>
 </div>
 
-<!-- <div id="video-container" class = "village">
+<div id="video-container" class = "village">
   <video id="video" controls autoplay>
-      <source src="{{ url_for('static', filename='animation.mp4') }}" type="video/mp4">
+      <source src="{{ url_for('static', filename='video.mp4') }}" type="video/mp4">
   </video>
-</div> -->
+</div>
 
   
   <div id = "agents" class = "agents_list" >
@@ -418,8 +420,7 @@
   <br><br><br>
 
   <div id = "footer" class="footer">
-    Made with love by Team B 
-    <span class="love-emoji">&#x1F496;</span>
+    Made with love <span class="love-emoji">&#x1F496;</span> by Team B in JAPAN
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
