@@ -256,7 +256,7 @@ Relevant context:
                 + "\nEither react or do nothing\n\n"
             )
 
-            timeout = 4
+            timeout = 1
             pool = multiprocessing.Pool(processes=2)
             tools_to_use = []
             args = (self_type, observation, call_to_action_template, current_time, tools_to_use, now)
@@ -326,7 +326,7 @@ Relevant context:
             +"{agent_scratchpad}"
         )
         
-        timeout = 10
+        timeout = 1
         pool = multiprocessing.Pool(processes=2)
         args = (self_type, current_plan_reaction, call_to_action_template, current_time, tools_to_use, now)
         result = pool.apply_async(self._generate_reaction, args = args)
@@ -398,7 +398,7 @@ Relevant context:
             +"{agent_scratchpad}"
         )
 
-        timeout = 10
+        timeout = 1
         pool = multiprocessing.Pool(processes=2)
         args = (self_type, previous_dialogue_response_reaction, call_to_action_template, current_time, tools_to_use, now)
         result = pool.apply_async(self._generate_reaction, args = args)
