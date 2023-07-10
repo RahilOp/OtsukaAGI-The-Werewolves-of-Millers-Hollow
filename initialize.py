@@ -11,21 +11,22 @@ warnings.filterwarnings("ignore")
 # Initialising files for each agents
 file_path = []
 
-file_path.append("text1.html")
-file_path.append("text2.html")
-file_path.append("text3.html")
-file_path.append("text4.html")
-file_path.append("text5.html")
-file_path.append("text6.html")
-file_path.append("simulation.html")
-file_path.append("well.html")
-file_path.append("haya1.html")
-file_path.append("haya2.html")
-file_path.append("haya3.html")
-file_path.append("haya4.html")
-file_path.append("college.html")
-file_path.append("shrine.html")
-file_path.append("yamamoto_residence.html")
+file_path.append("text1.html") # 0
+file_path.append("text2.html") # 1
+file_path.append("text3.html") # 2
+file_path.append("text4.html") # 3
+file_path.append("text5.html") # 4
+file_path.append("text6.html") # 5
+file_path.append("simulation.html") # 6
+file_path.append("well.html") # 7
+file_path.append("haya1.html") # 8
+file_path.append("haya2.html") # 9
+file_path.append("haya3.html") # 10
+file_path.append("haya4.html") # 11
+file_path.append("college.html") # 12
+file_path.append("shrine.html") # 13
+file_path.append("yamamoto_residence.html") # 14
+# file_path.append("garden.html") # 15
 
 for i in range(0,len(file_path)):
   file = open(file_path[i], 'w')
@@ -47,20 +48,21 @@ pygame.display.set_caption("Hayashino")
 
 yamamoto_residence = Place("Yamamoto Residence",
                            "The Yamamoto family's small house is located in Hayashino Town, serving as the residence of Takashi Yamamoto and Yumi Yamamoto.",
+                           file_path[14],
                            69,69,
-                           377,217)  
-well = Place("Well","Villagers use it to get water",437,0,539,173)  
-haya1 = Place("Haya Apartment 1","Residence of Kazuki Sato",569,0,716,194)
-haya2 = Place("Haya Apartment 2","Residence of Satoshi Takahashi",724,0,873,192)
-haya3 = Place("Haya Apartment 3","Residence of Yusuke Mori",886,0,1046,192)
-haya4 = Place("Haya Apartment 4","Residence of Ayumi Kimura",1061,0,1220,195)
-college = Place("Kogaku Institute of Physics","Kogaku Institute of Physics in Hayashiro conducts groundbreaking physics research with top researchers and advanced facilities",91,398,343,656)
-shrine = Place("Mizukami Shrine","Japanese shrines are sacred sanctuaries preserving ancient traditions, offering a profound spiritual glimpse into rich heritage",770,580,957,768)
-garden = Place("Hanazawa Garden","Hanazawa Park offers exercise, relaxation, and inspiration with nature's beauty",962,559,1230,744)
-grocery = Place("Shino Grocery Store","Shino grocery store, owned by Takashi Yamamoto, is a community hub providing diverse essential products and promoting sustainability",1080,350,1235,461)
-river1 = Place("River Part 1","River",580,388,677,550)
-river2 = Place("River Part 2","River",580,640,674,752)
-garden_fence = Place("Fence","Fence of Garden",1050,550,1248,554)
+                           377,217,"山本家","山本家の小さな家は林野町に位置し、山本隆志と山本由美の居住地となっています。")  
+well = Place("Well","Villagers use it to get water", file_path[7],437,0,539,173, "良い", "村人たちは水を汲むためにそれを使っています」")  
+haya1 = Place("Haya Apartment 1","Residence of Kazuki Sato", file_path[8],569,0,716,194,"早アパートメント１", "佐藤一樹邸")
+haya2 = Place("Haya Apartment 2","Residence of Satoshi Takahashi", file_path[9],724,0,873,192,"ハヤアパートメント","高橋聡の居住地")
+haya3 = Place("Haya Apartment 3","Residence of Yusuke Mori", file_path[10],886,0,1046,192,"ハヤアパートメント3","森祐介の居住地")
+haya4 = Place("Haya Apartment 4","Residence of Ayumi Kimura", file_path[11],1061,0,1220,195,"ハヤアパートメント4","木村あゆみの居住地")
+college = Place("Kogaku Institute of Physics","Kogaku Institute of Physics in Hayashiro conducts groundbreaking physics research with top researchers and advanced facilities",file_path[12],91,398,343,656,"光学物理学研究所","林城の光学物理学研究所は、優れた研究者と先進的な施設を駆使して、画期的な物理学研究を行っています。")
+shrine = Place("Mizukami Shrine","Japanese shrines are sacred sanctuaries preserving ancient traditions, offering a profound spiritual glimpse into rich heritage", file_path[13],770,580,957,768,"水上神社","日本の神社は古代の伝統を守り、豊かな文化遺産への深い精神的な洞察を提供する神聖な聖域です。")
+garden = Place("Hanazawa Garden","Hanazawa Park offers exercise, relaxation, and inspiration with nature's beauty", "",962,559,1230,744,"花沢ガーデン","花沢公園は、自然の美しさと共に運動、リラックス、そしてインスピレーションを提供します。")
+grocery = Place("Shino Grocery Store","Shino grocery store, owned by Takashi Yamamoto, is a community hub providing diverse essential products and promoting sustainability", "",1080,350,1235,461,"篠食品店","山本隆志が経営する篠食品店は、地域の中心地となり、多様な必需品を提供し、持続可能性を促進しています。")
+river1 = Place("River Part 1","River","",580,388,677,550,"川の一部","川の一部")
+river2 = Place("River Part 2","River","",580,640,674,752,"川の一部","川の一部")
+garden_fence = Place("Fence","Fence of Garden","",1050,550,1248,554,"川の一部","川の一部")
 
 ##### array of locations and restricted_area ###########
 locations = [yamamoto_residence, well, haya1, haya2, haya3, haya4, college, shrine, garden, grocery]
@@ -88,17 +90,18 @@ takashi=Agent(name = "Takashi Yamamoto",
               x=153,
               y=230,
               width = 60,
-              height = 60, 
+              height = 50, 
               image_path='assets/char.gif',
               left_images=left_images_agent1,
               right_images=right_images_agent1,
               up_images=up_images_agent1,
               down_images=down_images_agent1)
 
-left_images_agent2 = [pygame.image.load("assets/agent2_L1.png").convert_alpha(),pygame.image.load("assets/agent2_L2.png").convert_alpha(),pygame.image.load("assets/agent2_L3.png").convert_alpha()]
-right_images_agent2 = [pygame.image.load("assets/agent2_R1.png").convert_alpha(),pygame.image.load("assets/agent2_R2.png").convert_alpha(),pygame.image.load("assets/agent2_R3.png").convert_alpha()]
-up_images_agent2 = [pygame.image.load("assets/agent2_U1.png").convert_alpha(),pygame.image.load("assets/agent2_U2.png").convert_alpha(),pygame.image.load("assets/agent2_U3.png").convert_alpha()]
-down_images_agent2 = [pygame.image.load("assets/agent2_D1.png").convert_alpha(),pygame.image.load("assets/agent2_D2.png").convert_alpha(),pygame.image.load("assets/agent2_D3.png").convert_alpha()]
+left_images_agent5 = [pygame.image.load("assets/agent5_L1.png").convert_alpha(),pygame.image.load("assets/agent5_L2.png").convert_alpha(),pygame.image.load("assets/agent5_L3.png").convert_alpha()]
+right_images_agent5 = [pygame.image.load("assets/agent5_R1.png").convert_alpha(),pygame.image.load("assets/agent5_R2.png").convert_alpha(),pygame.image.load("assets/agent5_R3.png").convert_alpha()]
+up_images_agent5 = [pygame.image.load("assets/agent5_U1.png").convert_alpha(),pygame.image.load("assets/agent5_U2.png").convert_alpha(),pygame.image.load("assets/agent5_U3.png").convert_alpha()]
+down_images_agent5 = [pygame.image.load("assets/agent5_D1.png").convert_alpha(),pygame.image.load("assets/agent5_D2.png").convert_alpha(),pygame.image.load("assets/agent5_D3.png").convert_alpha()]
+
 
 yumi_status = "loves to take care of her family and enjoys spending time with them"
 yumi=Agent(name = "Yumi Yamamoto", 
@@ -115,11 +118,11 @@ yumi=Agent(name = "Yumi Yamamoto",
               y=230, 
               width = 30,
               height = 30, 
-              image_path='assets/agent2_D1.png',
-              left_images=left_images_agent2,
-              right_images=right_images_agent2,
-              up_images=up_images_agent2,
-              down_images=down_images_agent2)
+              image_path='assets/agent5_D1.png',
+              left_images=left_images_agent5,
+              right_images=right_images_agent5,
+              up_images=up_images_agent5,
+              down_images=down_images_agent5)
 
 
 ###################### making agent3 ########################
@@ -142,7 +145,7 @@ kazuki=Agent(name = "Kazuki Sato",
               x=640,
               y=203,  
               width = 30,
-              height = 30, 
+              height = 60, 
               image_path='assets/agent3_D1.png',
               left_images=left_images_agent3,
               right_images=right_images_agent3,
@@ -169,7 +172,7 @@ satoshi=Agent(name = "Satoshi Takahashi",
               x= 810,
               y=206,  
               width = 30,
-              height = 30, 
+              height = 45, 
               image_path='assets/agent4_D1.gif',
               left_images=left_images_agent4,
               right_images=right_images_agent4,
@@ -178,10 +181,11 @@ satoshi=Agent(name = "Satoshi Takahashi",
 
 
 ###################### making agent5 ########################
-left_images_agent5 = [pygame.image.load("assets/agent5_L1.png").convert_alpha(),pygame.image.load("assets/agent5_L2.png").convert_alpha(),pygame.image.load("assets/agent5_L3.png").convert_alpha()]
-right_images_agent5 = [pygame.image.load("assets/agent5_R1.png").convert_alpha(),pygame.image.load("assets/agent5_R2.png").convert_alpha(),pygame.image.load("assets/agent5_R3.png").convert_alpha()]
-up_images_agent5 = [pygame.image.load("assets/agent5_U1.png").convert_alpha(),pygame.image.load("assets/agent5_U2.png").convert_alpha(),pygame.image.load("assets/agent5_U3.png").convert_alpha()]
-down_images_agent5 = [pygame.image.load("assets/agent5_D1.png").convert_alpha(),pygame.image.load("assets/agent5_D2.png").convert_alpha(),pygame.image.load("assets/agent5_D3.png").convert_alpha()]
+
+left_images_agent2 = [pygame.image.load("assets/agent2_L1.png").convert_alpha(),pygame.image.load("assets/agent2_L2.png").convert_alpha(),pygame.image.load("assets/agent2_L3.png").convert_alpha()]
+right_images_agent2 = [pygame.image.load("assets/agent2_R1.png").convert_alpha(),pygame.image.load("assets/agent2_R2.png").convert_alpha(),pygame.image.load("assets/agent2_R3.png").convert_alpha()]
+up_images_agent2 = [pygame.image.load("assets/agent2_U1.png").convert_alpha(),pygame.image.load("assets/agent2_U2.png").convert_alpha(),pygame.image.load("assets/agent2_U3.png").convert_alpha()]
+down_images_agent2 = [pygame.image.load("assets/agent2_D1.png").convert_alpha(),pygame.image.load("assets/agent2_D2.png").convert_alpha(),pygame.image.load("assets/agent2_D3.png").convert_alpha()]
 
 yusuke_status = "Yusuke Mori is a skilled carpenter and a religious person"
 yusuke=Agent(name = "Yusuke Mori", 
@@ -198,11 +202,11 @@ yusuke=Agent(name = "Yusuke Mori",
               y=206, 
               width = 30,
               height = 30, 
-              image_path='assets/agent5_D2.png',
-              left_images=left_images_agent5,
-              right_images=right_images_agent5,
-              up_images=up_images_agent5,
-              down_images=down_images_agent5)
+              image_path='assets/agent2_D2.png',
+              left_images=left_images_agent2,
+              right_images=right_images_agent2,
+              up_images=up_images_agent2,
+              down_images=down_images_agent2)
 
 
 ###################### making agent6 ########################

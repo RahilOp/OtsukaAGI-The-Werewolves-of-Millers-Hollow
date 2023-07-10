@@ -3,7 +3,7 @@ from utils1 import create_new_memory_retriever, LLM
 from langchain.experimental.generative_agents import GenerativeAgentMemory
 
 class Place():
-    def __init__(self, name, description, x, y, x_bottom, y_bottom):
+    def __init__(self, name, description, file_path, x, y, x_bottom, y_bottom,name_japan,desc_japan):
 
         self.x = x
         self.y = y
@@ -14,6 +14,9 @@ class Place():
         self.rect = pygame.Rect(x, y, self.width, self.height)
         self.name = name
         self.description = description
+        self.file_path = file_path
+        self.name_japan = name_japan
+        self.desc_japan = desc_japan
         # self.objects = objects
 
         self.history = GenerativeAgentMemory(

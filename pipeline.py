@@ -1,5 +1,5 @@
 from datetime import time
-from utils1 import generate_response, print_colored
+from utils1 import generate_response, print_colored,print_colored1
 import random
 from utils2 import decision_making
 import initialize
@@ -34,6 +34,8 @@ def pipeline(global_time, day):
             print_colored(f"Global time is: {datetime_only.time(global_time,0)}", "magenta",simulation_path)
             #     # people finding on the location and print them
         
+        location_names = ", ".join([location.name for location in i_locations])
+        
         agents = []
         for agent in i_agents:
             if agent.state == "alive":
@@ -46,6 +48,7 @@ def pipeline(global_time, day):
             for agent in agents:
                if agent.location.name == location.name:
                  people[location.name].append(agent)
+                 print_colored1(f"{agent.person.name} is at {location.name}. {agent.plans[agent.plans['Time'].apply(lambda x: x.hour) == global_time]['Plans'].values[0]}", "blue", location.file_path)
 
             for (num, p) in enumerate(people[location.name]):
                 print_colored(f"{num+1}. {p.person.name}", "black",simulation_path)
@@ -89,15 +92,17 @@ def pipeline(global_time, day):
                 #     print(f"Dialogue between {agent_list[i].person.name} and {agent_list[j].person.name}:", "cyan")
                 #     # def make_interaction_conversation_tree(self, current_time, Agents:list, user_setting = False, user_initializer: Optional[str] = "")
                 #     agent_list[i].make_interaction_conversation_tree(global_time, [agent_list[j]])
-                valid_indices = [index for index in range(len(agent_list)) if index != i]
-                if valid_indices:
-                    j = random.choice(valid_indices)
-                    print_colored(f"Dialogue between {agent_list[i].person.name} and {agent_list[j].person.name}:", "blue", simulation_path)
-                    # def make_interaction_conversation_tree(self, current_time, Agents:list, user_setting = False, user_initializer: Optional[str] = "")
-                    agent_list[i].make_interaction_conversation_tree(global_time, [agent_list[j]])
+                # valid_indices = [index for index in range(len(agent_list)) if index != i]
+                # if valid_indices:
+                #     j = random.choice(valid_indices)
+                #     print_colored(f"Dialogue between {agent_list[i].person.name} and {agent_list[j].person.name}:", "blue", simulation_path)
+                #     # def make_interaction_conversation_tree(self, current_time, Agents:list, user_setting = False, user_initializer: Optional[str] = "")
+                #     agent_list[i].make_interaction_conversation_tree(global_time, [agent_list[j]])
 
-                location_result = generate_response("The person is {} with the profile: {}. He is currently at {}. His memory is having {}, his plans are {}. Based on these informations, can you predict the most probable location out of the locations: {}, where he would be in the next hour? Answer in following format: 'Location_Name'".format(
-                                                agent_list[i].person.name, agent_list[i].profile, agent_list[i].location, agent_list[i].get_memory(),agent_list[i].plans,i_locations))
+                # location_result = generate_response("The person is {} with the profile: {}. He is currently at {}. His memory is having {}, his current plan is {}. Based on these informations, can you predict the most probable location out of the locations: {}, where he would be in the next hour? Answer in following format: 'Location_Name'".format(
+                #                                 agent_list[i].person.name, agent_list[i].profile, agent_list[i].location.name, agent_list[i].get_memory(),agent_list[i].plans[agent_list[i].plans['Time'].apply(lambda x: x.hour) == global_time]['Plans'].values[0],location_names))
+                
+                location_result = generate_response(f"The person is {agent_list[i].person.name}, currently at {agent_list[i].location.name} and he is currently doing {agent_list[i].plans[agent_list[i].plans['Time'].apply(lambda x: x.hour) == global_time]['Plans'].values[0]}. The locations where the person can go are: {location_names}. Based on the given plan, where would the person be in the next hour? Answer in following format: 'Location_Name'")
                 
 
                 new_location = i_locations[0]

@@ -558,7 +558,7 @@ class Agent():
         file.write(f"I have eliminated {Agent2.person.name}.\n")
         file.close()
         self.memory.add_memory("I have eliminated {}.".format(Agent2.person.name))
-        print_colored(f"{datetime.time(current_time,0)}: {Agent2.person.name} is dead.", "red", simulation_path)
+        print_colored(f"{Agent2.person.name} is dead.", "red", simulation_path)
         
         for agent in agents:
             if agent!=Agent2:

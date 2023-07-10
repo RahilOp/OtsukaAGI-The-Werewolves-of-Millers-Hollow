@@ -347,8 +347,8 @@ while run:
             for object in locations:
                 if object.rect.collidepoint(mouse_pos):
                     # print("Colliding")
-                    popup_title = object.name
-                    popup_text = object.description
+                    popup_title = object.name_japan
+                    popup_text = object.desc_japan
                     popup_width = 600
                     popup_height = 200
                     show_popup = True

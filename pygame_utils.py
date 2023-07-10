@@ -11,7 +11,8 @@ popup_width = 0
 popup_height = 0
 popup_title = ""
 popup_text = ""
-font = pygame.font.Font(None, 20)
+font = pygame.font.Font("assets/japanese.otf", 20)
+
 show_popup = False
 
 
@@ -50,13 +51,13 @@ def create_popup(p_title, p_text, p_x, p_y, win, WINDOW_HEIGHT, WINDOW_WIDTH):
     pygame.draw.rect(win, background_color, popup_rect)
 
     # Render the popup title
-    title_font = pygame.font.Font("assets/Ysabeau_semiBold.ttf", title_font_size)  # Use a bold font
+    title_font = pygame.font.Font("assets/japanese.otf", title_font_size)  # Use a bold font
     title_surface = title_font.render(p_title, True, title_color)
     title_rect = title_surface.get_rect(center=(popup_rect.centerx, popup_rect.top + padding))
     win.blit(title_surface, title_rect)
 
     # Render the popup text
-    text_font = pygame.font.Font("assets/OpenSans.ttf", text_font_size)
+    text_font = pygame.font.Font("assets/japanese.otf", text_font_size)
     lines = p_text.split("\n")
 
     # Calculate the position of the first line of text
