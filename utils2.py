@@ -31,11 +31,11 @@ def decision_making(agents):
                     next_agent_obj = agent
                     break
         
-        print(next_agent_obj.person.name)
+        # print(next_agent_obj.person.name)
 
         # continue_convo, next_message = next_agent_obj.person.generate_dialogue_response(next_agent_obj.agent_type, , "Tell at max 5 observations or points about whom you think is the Werewolf and needs to be eliminated with proper reasoning.")
         next_message = "I dont have any concrete views about werewolfs elimination"
-        print(next_message)
+        # print(next_message)
 
         for agent in temp_agents:
             agent.memory.add_memory(next_message)

@@ -106,12 +106,18 @@ def create_new_memory_retriever():
     return TimeWeightedVectorStoreRetriever(vectorstore=vectorstore, other_score_keys=["importance"], k=15)
 
 def print_colored(text,color,file_path):
-    
     print(text)
+    
     file = open(file_path, 'a')
     file.write(f'<p style="color:{color};">{text}</p>\n')
     # file.write(text, "\n")
     file.close()
+def print_colored1(text,color,file_path):
+    if file_path!="":
+      file = open(file_path, 'a')
+      file.write(f'<p style="color:{color};">{text}</p>\n')
+      # file.write(text, "\n")
+      file.close()
     
     
 
