@@ -1,6 +1,12 @@
 # OtsukaAGI: The Werewolves of Millers Hollow
 
-OtsukaAGI is an advanced framework, powered by Otsuka Corporation in Tokyo, Japan, and based on the chat-gpt-3.5-turbo engine. It offers developers the capability to create sophisticated generative agents with distinct Agent Avatars, comprising Profile, Plans, and Relations. The underlying engine utilized is Chat GPT LLM.
+Welcome to "The Werewolves of Millers Hollow," an extraordinary autosimulative game that takes inspiration from the popular concept of AmongUs, but with a captivating twist! In this enthralling game, the participants are not ordinary players; they are autonomous agents, brought to life using the groundbreaking OtsukaAGI framework.
+
+Within the quaint village of Hayashino, both the gentle Townfolks and the cunning Werewolves coexist. The Townfolks have two objectives: either complete their assigned tasks or unite their forces to identify and eliminate the sly Werewolves through a democratic voting process. On the other hand, the mischievous Werewolves endeavor to eliminate one unsuspecting Townfolk each night until their numbers match.
+
+As the game unfolds, the OtsukaAGI-created agents take center stage, demonstrating their unique traits, interactions, and strategic decision-making abilities. The Townfolks collaborate to protect their community, while the Werewolves employ their wit to create chaos and remain hidden amidst the shadows.
+
+Embrace the thrilling experience of witnessing autonomous agents engage in an autosimulative adventure like never before! Explore the intricate dynamics, unravel the mysteries, and immerse yourself in the world of "The Werewolves of Millers Hollow," where artificial intelligence meets suspenseful gameplay.
 
 <img src = "/static/env.png">
 ## OtsukaAGI - Agent Attributes:
