@@ -7,8 +7,8 @@ We use Chat GPT LLM
 ### OtsukaAGI - Agent
 ### Components present in the Agent:
 __Person:__ Based on the modified GameGenerativeAgent class inherited from Langchain. <br>
-
-Memory: Based on the modified GameGenerativeMemory class inherited from Langchain. <br>
+* hello
+__Memory:__ Based on the modified GameGenerativeMemory class inherited from Langchain. <br>
 
 
 
