@@ -69,25 +69,28 @@ Embrace the thrilling experience of witnessing autonomous agents engage in an au
 
 ## OtsukaAGI - Place Attributes:
 
-1. **history**: This component is based on the modified GameGenerativeMemory class inherited from Langchain.
-   - `llm`: The engine used by the agent to generate responses.
+1. **History**: The "History" attribute is an essential component based on the modified GameGenerativeMemory class inherited from Langchain, forming a crucial part of OtsukaAGI's functionality.
+   - `llm`: The engine utilized by the agent to generate responses.
    - `memory_retriever`: The retriever responsible for extracting information from the agent's memory.
    - `verbose`: Provides additional details regarding the LLM's response.
    - `reflection_threshold`: Determines the threshold for generating reflections based on the agent's memory.
 
-2. Information about the Locations
-   - `name`: The name of the location.
-   - `description`: Description of the location.
-   - `objects`: Objects present in the internal view of the location.
+2. **Information about the Locations**:
+   - `name`: Represents the name of the location.
+   - `description`: Provides a detailed description of the location.
+   - `objects`: Lists the objects present within the internal view of the location.
    - `file_path`: Specifies the file path containing the location's history, serving various purposes.
-   - `sabotage_memory`: Memory used to hold the information about the tasks which have been sabotaged.
-
+   - `sabotage_memory`: Utilized to store information about tasks that have been sabotaged.
 
 ## OtsukaAGI - Place Methods:
 
-1. **add_history()**: Method to add the history or information about the location.
+1. **add_history()**: The "add_history()" method enables the addition of historical or informational data about the location. This method plays a vital role in enriching the agents' knowledge base, contributing to more informed interactions and decision-making.
 
+All the aforementioned methods and attributes are inherited from OtsukaAGI, the powerful framework that serves as the backbone of this simulation. Additionally, some methods have been custom-defined to suit the specific requirements of the simulation, including "draw()", "killing_action()", and "sabotage_memory," among others.
 
-All of the methods and attributes above are inherited from OtsukaAGI, while some of them are defined as per the requirement of the simulation, viz. draw(), killing_action(), sabotage_memory, etc.
+By integrating these attributes and methods, the OtsukaAGI framework facilitates a dynamic and engaging simulation, where agents navigate the intricate complexities of locations, history, and interactions with remarkable intelligence and autonomy.
+
+Get ready to be amazed as OtsukaAGI brings to life a captivating world of simulated agents, intelligent decision-making, and immersive storytelling. Embrace the boundless possibilities of this exceptional simulation, where the fusion of artificial intelligence and strategic gameplay creates an experience that is both unique and enthralling.
+
 
 
