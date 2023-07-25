@@ -6,9 +6,18 @@ We use Chat GPT LLM
 
 ### OtsukaAGI - Agent
 ### Components present in the Agent:
-__Person:__ Based on the modified GameGenerativeAgent class inherited from Langchain. <br>
-* hello
 __Memory:__ Based on the modified GameGenerativeMemory class inherited from Langchain. <br>
+* LLM: the engine which the agent uses to respond
+
+__Person:__ Based on the modified GameGenerativeAgent class inherited from Langchain. <br>
+* name: Name of the agent
+* age: Age of the agent as an integer
+* traits: traits of the agent
+* status: agent's current situation or status
+* memory_retreiver: the retreiver which extracts information from the memory of the agent
+* llm: the engine which the agent uses to respond
+* file_path: path for the file which contains the memory of the agent which can be used for various purposes
+* memory: the reference to the memory of the agent
 
 
 
