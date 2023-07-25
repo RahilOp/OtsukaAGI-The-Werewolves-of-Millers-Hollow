@@ -1,43 +1,38 @@
-# OtsukaAGI
+# OtsukaAGI: Professional Framework for Generative Agents
 
-Based on chat-gpt-3.5-turbo engine, OtsukaAGI is a framework powered by Otsuka Corporation, Tokyo, Japan, which can be used to develop generative agents
-with proper Agent Avtar comprising of Profile, Plans and Relations.
-We use Chat GPT LLM 
+OtsukaAGI is an advanced framework, powered by Otsuka Corporation in Tokyo, Japan, and based on the chat-gpt-3.5-turbo engine. It offers developers the capability to create sophisticated generative agents with distinct Agent Avatars, comprising Profile, Plans, and Relations. The underlying engine utilized is Chat GPT LLM.
 
-### OtsukaAGI - Agent
-### Components present in the Agent:
-__Memory:__ Based on the modified GameGenerativeMemory class inherited from Langchain. <br>
-* llm: the engine which the agent uses to respond
-* memory_retreiver: the retreiver which extracts information from the memory of the agent
-* verbose: extra details with respect to the response of the LLM
-* reflection_threshold: the threshold for the generations of reflections based on the memory of the agent
-* file_path: path for the file which contains the memory of the agent which can be used for various purposes
+## OtsukaAGI - Agent Components:
 
-__Person:__ Based on the modified GameGenerativeAgent class inherited from Langchain. <br>
-* name: name of the agent
-* age: age of the agent as an integer
-* traits: traits of the agent
-* status: agent's current situation or status
-* memory_retreiver: the retreiver which extracts information from the memory of the agent
-* llm: the engine which the agent uses to respond
-* file_path: path for the file which contains the memory of the agent which can be used for various purposes
-* memory: the reference to the memory of the agent
+1. **Memory**: This component is based on the modified GameGenerativeMemory class inherited from Langchain.
+   - `llm`: The engine used by the agent to generate responses.
+   - `memory_retriever`: The retriever responsible for extracting information from the agent's memory.
+   - `verbose`: Provides additional details regarding the LLM's response.
+   - `reflection_threshold`: Determines the threshold for generating reflections based on the agent's memory.
+   - `file_path`: Specifies the file path containing the agent's memory, serving various purposes.
 
-__Agent_Type:__ Type of the agent to declare agents having different characteristics. E.g: TownFolks and WereWolfs. <br>
+2. **Person**: This component is based on the modified GameGenerativeAgent class inherited from Langchain.
+   - `name`: The name of the agent.
+   - `age`: The agent's age as an integer.
+   - `traits`: Describes the unique traits of the agent.
+   - `status`: Reflects the agent's current situation or status.
+   - `memory_retriever`: The retriever responsible for extracting information from the agent's memory.
+   - `llm`: The engine used by the agent to generate responses.
+   - `file_path`: Specifies the file path containing the agent's memory, serving various purposes.
+   - `memory`: A reference to the agent's memory.
 
-__Profile:__ Description of the character of the agent as a string. <br>
+3. **Agent_Type**: This component categorizes agents based on their distinct characteristics, such as TownFolks and WereWolfs.
 
-__Relations:__ Description of the agent with other agents in the environment as a dictionary of string. <br>
+4. **Profile**: A string describing the character of the agent.
 
-__Plans:__ Basic plans of the agent i.e. the Daily routine. <br>
+5. **Relations**: A dictionary of strings describing the agent's interactions with other agents in the environment.
 
-__State:__ Decides whether the agent is "alive" or "dead". <br>
+6. **Plans**: Specifies the basic plans of the agent, including its daily routine.
 
-__Location:__ Current location of the agent as an object of the Place class. <br>
+7. **State**: Determines whether the agent is in an "alive" or "dead" state.
 
-__View:__ Radius of the field of view of the agent in the environment. <br>
+8. **Location**: Represents the current location of the agent as an object of the Place class.
 
-__Score:__ Number of tasks being completed by the agent. <br>
+9. **View**: Specifies the radius of the agent's field of view in the environment.
 
-
-
+10. **Score**: Represents the number of tasks completed by the agent.
