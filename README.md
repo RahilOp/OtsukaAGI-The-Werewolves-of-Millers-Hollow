@@ -59,7 +59,7 @@ OtsukaAGI is an advanced framework, powered by Otsuka Corporation in Tokyo, Japa
 
 8. **killing_action()**: Executes the process of the WereWolf killing Townfolks.
 
-These methods play crucial roles in the functionality and dynamics of the OtsukaAGI framework, enabling the development of sophisticated generative agents with meaningful interactions and behaviors.
+All of the methods and attributes above are inherited from OtsukaAGI, while some of them are defined as per the requirement of the simulation, viz. draw(), killing_action(), etc.
 
 ## OtsukaAGI - Place Attributes:
 
