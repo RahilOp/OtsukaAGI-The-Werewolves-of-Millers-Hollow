@@ -65,10 +65,28 @@ Embrace the thrilling experience of witnessing autonomous agents engage in an au
 
 8. **killing_action()**: Executes the process of the WereWolf killing Townfolks.
 
-All of the methods and attributes above are inherited from OtsukaAGI, while some of them are defined as per the requirement of the simulation, viz. draw(), killing_action(), etc.
 
 ## OtsukaAGI - Place Attributes:
 
+1. **history**: This component is based on the modified GameGenerativeMemory class inherited from Langchain.
+   - `llm`: The engine used by the agent to generate responses.
+   - `memory_retriever`: The retriever responsible for extracting information from the agent's memory.
+   - `verbose`: Provides additional details regarding the LLM's response.
+   - `reflection_threshold`: Determines the threshold for generating reflections based on the agent's memory.
 
+2. Information about the Locations
+   - `name`: The name of the location.
+   - `description`: Description of the location.
+   - `objects`: Objects present in the internal view of the location.
+   - `file_path`: Specifies the file path containing the location's history, serving various purposes.
+   - `sabotage_memory`: Memory used to hold the information about the tasks which have been sabotaged.
+
+
+## OtsukaAGI - Place Methods:
+
+1. **add_history()**: Method to add the history or information about the location.
+
+
+All of the methods and attributes above are inherited from OtsukaAGI, while some of them are defined as per the requirement of the simulation, viz. draw(), killing_action(), sabotage_memory, etc.
 
 
