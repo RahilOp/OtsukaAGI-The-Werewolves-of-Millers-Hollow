@@ -1,4 +1,4 @@
-# OtsukaAGI: Professional Framework for Generative Agents
+# OtsukaAGI: The Werewolves of Millers Hollow
 
 OtsukaAGI is an advanced framework, powered by Otsuka Corporation in Tokyo, Japan, and based on the chat-gpt-3.5-turbo engine. It offers developers the capability to create sophisticated generative agents with distinct Agent Avatars, comprising Profile, Plans, and Relations. The underlying engine utilized is Chat GPT LLM.
 
