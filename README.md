@@ -9,6 +9,7 @@ As the game unfolds, the OtsukaAGI-created agents take center stage, demonstrati
 Embrace the thrilling experience of witnessing autonomous agents engage in an autosimulative adventure like never before! Explore the intricate dynamics, unravel the mysteries, and immerse yourself in the world of "The Werewolves of Millers Hollow," where artificial intelligence meets suspenseful gameplay.
 
 <img src = "/static/env.png">
+
 ## OtsukaAGI - Agent Attributes:
 
 1. **Memory**: This component is based on the modified GameGenerativeMemory class inherited from Langchain.
