@@ -39,23 +39,27 @@ OtsukaAGI is an advanced framework, powered by Otsuka Corporation in Tokyo, Japa
 
 ## OtsukaAGI - Agent Methods:
 
-1. **get_memory()**:Returns the complete memory as a string.
+1. **get_memory()**: Returns the complete memory as a string.
 
+2. **get_mem_summary()**: Provides a concise summary from the memory that is most relevant, important, and recent in relation to the input prompt.
+   - `recency`: A value indicating the age of the memory point.
+   - `relevance`: A value indicating the extent to which the prompt is relevant to the memory point.
+   - `importance`: A value indicating the significance of the prompt with respect to the memory point.
 
-2. **get_mem_summary()**: Returns a summary from the memory which is most relevant, important and recent with respect to the input prompt.
-   - `recency`: value signifying the age of the memory point.
-   - `relevance`: value signifying how much the prompt is relevant to the memory point.
-   - `importance`: value signifying how much the prompt is important with respect to the memory point.
+3. **make_interaction_conversation_tree()**: Executes an interaction between our agents within a well-defined context.
 
+4. **make_interaction()**: Performs a general, less-contextualized interaction between the agents.
 
-3. **make_interaction_conversation_tree()**: Method to execute interaction between our agents within proper context.
+5. **draw()**: Renders the agents on the pygame display.
 
-4. **make_interaction()**: Method to execute general, less-contexted interaction between the agents.
+6. **update_location()**: Updates the agent's location object.
 
-5. **draw()**: Method to draw the agents on the pygame display.
-6. **update_location()**:  Method to update the location object of the agent.
-7. **move_agent()**: Method to move agents from one location to other location.
-8. **killing_action()**: Method to execute the killing of Townfolks by the WereWolf.
+7. **move_agent()**: Facilitates the movement of agents from one location to another.
+
+8. **killing_action()**: Executes the process of the WereWolf killing Townfolks.
+
+These methods play crucial roles in the functionality and dynamics of the OtsukaAGI framework, enabling the development of sophisticated generative agents with meaningful interactions and behaviors.
+
 
 
 
