@@ -2,6 +2,7 @@
 
 OtsukaAGI is an advanced framework, powered by Otsuka Corporation in Tokyo, Japan, and based on the chat-gpt-3.5-turbo engine. It offers developers the capability to create sophisticated generative agents with distinct Agent Avatars, comprising Profile, Plans, and Relations. The underlying engine utilized is Chat GPT LLM.
 
+<img src = "{{ url_for('static', filename='env.png') }}">
 ## OtsukaAGI - Agent Attributes:
 
 1. **Memory**: This component is based on the modified GameGenerativeMemory class inherited from Langchain.
@@ -59,6 +60,8 @@ OtsukaAGI is an advanced framework, powered by Otsuka Corporation in Tokyo, Japa
 8. **killing_action()**: Executes the process of the WereWolf killing Townfolks.
 
 These methods play crucial roles in the functionality and dynamics of the OtsukaAGI framework, enabling the development of sophisticated generative agents with meaningful interactions and behaviors.
+
+## OtsukaAGI - Place Attributes:
 
 
 
