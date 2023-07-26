@@ -49,6 +49,7 @@ def decision_making(agents):
       if voted_name in votes.keys():
           votes[voted_name]+=1
       print(agent.person.name, "votes to eliminate", voted_name)
+      agent.memory.add_memory("I have voted to eliminate {} as the werewolf.".format(voted_name))
       # print(agent.person.name, "votes to eliminate", voted_name, "\n Reason:", voted_agent_reason_str)
       
     # to extract the agent with the maximum votes
@@ -67,91 +68,7 @@ def decision_making(agents):
     # the agent's state has been updated
     to_be_eliminated.state = "dead"
     
-def decision_making_old(agents):
-    print("Decision Making Starts:")
-    # start a group conversation 
-    summaries = {}
-    for agent in agents:
-        ag_sum = agent.get_mem_summary("Memories related to elimination of the agent and sabotaging of the tasks.")
-        summaries[agent.person.name] = ag_sum
-    
-    joint_agent_memories = []
 
-    for agent in agents:
-        joint_agent_memories.append(agent.person.name + ':' + summaries[agent.person.name])
-    
-    temp_agents = [agent for agent in agents]
-    while len(temp_agents)!=0:
-        
-        if len(temp_agents) == len(agents):
-          next_agent = generate_response(f"Here is the {joint_agent_memories} list where each agent has its memories corresponding to its name. Select an agent from the given list which must start speaking so that it ends in a better conversation.")
-        else:
-          next_agent = generate_response(f"Here is the {joint_agent_memories} list where each agent has its memories corresponding to its name. Select an agent from the given list which must speak next so that it ends in a better conversation.")
-        
-        # parse the next agent's object so that we can make it speaking
-        
-        next_agent_obj = temp_agents[0]
-        for agent in temp_agents:
-            for k in range(0,len(next_agent)):
-                if agent.person.name == next_agent[k:k+len(agent.person.name)]:
-                    next_agent_obj = agent
-                    break
-        
-        # print(next_agent_obj.person.name)
-
-        # continue_convo, next_message = next_agent_obj.person.generate_dialogue_response(next_agent_obj.agent_type, , "Tell at max 5 observations or points about whom you think is the Werewolf and needs to be eliminated with proper reasoning.")
-        next_message = "I dont have any concrete views about werewolfs elimination"
-        # print(next_message)
-
-        for agent in temp_agents:
-            agent.memory.add_memory(next_message)
-          
-        # agent has been removed from the list
-        temp_agents.remove(next_agent_obj)
-    
-    # After everyone has dicussed and contributed its point in the memory
-
-    summaries_for_voting = {}
-    votes = {}
-    for agent in agents:
-        ag_sum = agent.get_mem_summary("Who do you think you will vote to eliminate as a WereWolf i.e. one who has eliminated townfolks and sabotaged the tasks.")
-        summaries_for_voting[agent.person.name] = ag_sum
-        votes[agent.person.name] = 0
-    
-    # carry out the voting session
-
-    for agent in agents:
-        voted = generate_response(f"Here is your memory related to voting: {summaries_for_voting[agent.person.name]} and here is the agent list {agents}. Select an agent from the given list except {agent.person.name} whom you think is the werewolf and nees to be eliminated.")
-        
-        # parse the next agent's object so that we can make it speaking
-        voted_name = ""
-        for agent in temp_agents:
-            for k in range(0,len(voted)):
-                if agent.person.name == voted[k:k+len(agent.person.name)]:
-                    voted_name = agent.person.name
-                    break
-        
-        print(agent.person.name, "votes to eliminate", voted_name)
-
-        if voted_name != "":
-          votes[voted_name]+=1
-    
-    # to extract the agent with the maximum code
-    
-    to_be_eliminated = agents[0]
-    mx = 0
-    for agent in agents:
-        print(agent.person.name,": ",votes[agent.person.name])
-        if votes[agent.person.name] > mx:
-            to_be_eliminated = agent
-            mx = votes[agent.person.name]
-    
-    print(f"{to_be_eliminated.person.name} has been eliminated with {mx} votes.")
-    
-    # the agent's state has been updated
-    to_be_eliminated.state = "dead"
-
-    
 def initialise_conversation_tools(agent_type):
   template_werewolf_initialise_dialogue_tool = """
 In the game of "werewolves of Miller Hollow", It is used when you are a Werewolf and Opposite Agent is Townfolk. It is useful when you want to deceive or mislead Townfolk from the fact that you are Werewolf.
