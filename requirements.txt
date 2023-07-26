@@ -13,3 +13,4 @@ pygame
 flask
 streamlit
 dash
+tabulate

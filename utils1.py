@@ -14,7 +14,7 @@ import csv
 from datetime import datetime, timedelta
 from datetime import date
 from IPython.display import display, HTML
-
+import random
 
 os.environ['OPENAI_API_KEY'] = '97ce304ef1a84eddb8e7598eb47479c3'
 openai.api_type = "azure"
@@ -63,7 +63,17 @@ def retrieval_score(rel,imp,rec):
 def generate_response(prompt):
   default_str = "Setup a context for yourself and whenever you are asked something, Imagine you are a character in a captivating role-playing game, and your objective is to engage players by embodying a believable persona. Answer questions as a human character, drawing upon your extensive memory, distinct traits, ongoing plans, and unique profile to provide immersive and realistic responses. Bring your character to life with depth and authenticity. In the conversation, please respond as if you were a person, without explicitly mentioning that you are an AI language model."
   prompt = default_str + prompt
-  result = openai.ChatCompletion.create(engine = "gpt-35-turbo",
+  final_response = "" 
+  error_responses = [ 
+                     "I need some more memory to answer your question. Let me play the game a little more!", 
+                    "Apologies, there seems to be a brief glitch in the system. Let's move on to the next question!",
+                     "It appears there's a temporary issue with that prompt. Let's skip it and continue with the game.",
+                      "I'm sorry, but I'm unable to address that particular prompt at the moment. Let's proceed with another one.",
+                      "There seems to be a minor hiccup with that question. Let's focus on the other challenges for now!",
+                      "Unfortunately, I can't provide an answer for that prompt right now. Let's carry on and enjoy the rest of the game!"
+                    ]
+  try:
+    result = openai.ChatCompletion.create(engine = "gpt-35-turbo",
                                                    messages = [ {"role": "system", "content": prompt} ],
                                                    temperature=0.7,
                                                    max_tokens=128,
@@ -71,17 +81,18 @@ def generate_response(prompt):
                                                    frequency_penalty=0,
                                                    presence_penalty=0,
                                                    stop=None)
+    filter = ''.join([chr(i) for i in range(1, 32)])
+    final_response = result["choices"][0]["message"]["content"].translate(str.maketrans('', '', filter))
 
-  filter = ''.join([chr(i) for i in range(1, 32)])
-  final_response = result["choices"][0]["message"]["content"].translate(str.maketrans('', '', filter))
+    detail_heads = ["Date","Query","Tokens_Used","Response"]
+    response_details = [date.today(),prompt, result["usage"]["total_tokens"], final_response]
+    print(response_details[0])
 
-  detail_heads = ["Date","Query","Tokens_Used","Response"]
-  response_details = [date.today(),prompt, result["usage"]["total_tokens"], final_response]
-  print(response_details[0])
-
-  with open('tokens_history.csv','a') as tokens:
-    writer = csv.writer(tokens)
-    writer.writerow(response_details)
+    with open('tokens_history.csv','a') as tokens:
+      writer = csv.writer(tokens)
+      writer.writerow(response_details)
+  except:
+    final_response = random.choice(error_responses)
 
   return final_response
 

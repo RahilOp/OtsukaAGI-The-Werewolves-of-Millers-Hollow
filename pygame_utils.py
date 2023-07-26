@@ -1,9 +1,6 @@
 import pygame
-import datetime
-import pygame.mixer
-from agent_game import Agent 
-from place_game import Place
-from initialize import locations, restricted_areas
+
+
 
 
 #Popups  Variables
@@ -11,10 +8,10 @@ popup_width = 0
 popup_height = 0
 popup_title = ""
 popup_text = ""
-font = pygame.font.Font("assets/japanese.otf", 20)
 
 show_popup = False
 
+# font = pygame.font.Font("assets/japanese.otf", 20)
 
 def create_popup(p_title, p_text, p_x, p_y, win, WINDOW_HEIGHT, WINDOW_WIDTH):
     # Define colors

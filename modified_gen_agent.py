@@ -241,7 +241,7 @@ Relevant context:
             """React to a given observation.
             self, self_type: str, observation: str, call_to_action_template: str, current_time, tools_to_use: Optional[List], now: Optional[datetime] = None
             """
-            # return "React: Do nothing", 700
+            return "React: Do nothing", 700
             # call_to_action_template = (
             #     f"Should {self.name} react to the observation, and if so,"
             #     + f" what would be an appropriate reaction? Respond in one line."
@@ -256,24 +256,24 @@ Relevant context:
                 + "\nEither react or do nothing\n\n"
             )
 
-            timeout = 1
-            pool = multiprocessing.Pool(processes=2)
-            tools_to_use = []
-            args = (self_type, observation, call_to_action_template, current_time, tools_to_use, now)
-            result = pool.apply_async(self._generate_reaction, args = args)
-            try:
-                _, full_result, consumed_tokens = result.get(timeout)
-            except multiprocessing.TimeoutError:
-                pool.terminate()  # Terminate the function
-                pool.join()
-                full_result = "No Reaction"
-                consumed_tokens = 0
+            # timeout = 10
+            # pool = multiprocessing.Pool(processes=2)
+            # tools_to_use = []
+            # args = (self_type, observation, call_to_action_template, current_time, tools_to_use, now)
+            # result = pool.apply_async(self._generate_reaction, args = args)
+            # try:
+            #     _, full_result, consumed_tokens = result.get(timeout)
+            # except multiprocessing.TimeoutError:
+            #     pool.terminate()  # Terminate the function
+            #     pool.join()
+            #     full_result = "No Reaction"
+            #     consumed_tokens = 0
                 
         # Continue with alternative logic or print an error message
-            # tools_to_use = []
-            # _, full_result, consumed_tokens = self._generate_reaction(
-            #     self_type, observation, call_to_action_template, current_time, tools_to_use, now=now
-            # )
+            tools_to_use = []
+            _, full_result, consumed_tokens = self._generate_reaction(
+                self_type, observation, call_to_action_template, current_time, tools_to_use, now=now
+            )
             result = full_result.strip().split("\n")[0]
             # AAA
             file = open(self.file_path, 'a')
@@ -326,22 +326,22 @@ Relevant context:
             +"{agent_scratchpad}"
         )
         
-        timeout = 1
-        pool = multiprocessing.Pool(processes=2)
-        args = (self_type, current_plan_reaction, call_to_action_template, current_time, tools_to_use, now)
-        result = pool.apply_async(self._generate_reaction, args = args)
-        try:
-            tool_used, full_result, consumed_tokens = result.get(timeout)
-        except multiprocessing.TimeoutError:
-            pool.terminate()  # Terminate the function
-            pool.join()
-            full_result = f"Hi {agent.person.name}-san, how are you?"
-            consumed_tokens = 0
+        # timeout = 20
+        # pool = multiprocessing.Pool(processes=2)
+        # args = (self_type, current_plan_reaction, call_to_action_template, current_time, tools_to_use, now)
+        # result = pool.apply_async(self._generate_reaction, args = args)
+        # try:
+        #     tool_used, full_result, consumed_tokens = result.get(timeout)
+        # except multiprocessing.TimeoutError:
+        #     pool.terminate()  # Terminate the function
+        #     pool.join()
+        #     full_result = f"Hi {agent.person.name}-san, how are you?"
+        #     consumed_tokens = 0
         
         #  _generate_reaction(self, observation: str, call_to_action_template: str, current_time, tools_to_use, now: Optional[datetime] = None) -> Tuple[str, int]:
-        # tool_used, full_result, consumed_tokens = self._generate_reaction(self_type,
-        #     current_plan_reaction, call_to_action_template, current_time, tools_to_use, now=now
-        # )
+        tool_used, full_result, consumed_tokens = self._generate_reaction(self_type,
+            current_plan_reaction, call_to_action_template, current_time, tools_to_use, now=now
+        )
 
         # print(True, full_result, consumed_tokens)
         file = open(self.file_path, 'a')
@@ -398,25 +398,25 @@ Relevant context:
             +"{agent_scratchpad}"
         )
 
-        timeout = 1
-        pool = multiprocessing.Pool(processes=2)
-        args = (self_type, previous_dialogue_response_reaction, call_to_action_template, current_time, tools_to_use, now)
-        result = pool.apply_async(self._generate_reaction, args = args)
-        try:
-            tool_used, full_result, consumed_tokens = result.get(timeout)
-        except multiprocessing.TimeoutError:
-            pool.terminate()  # Terminate the function
-            pool.join()
-            tool_used = ""
-            if self_type=="TownFolk":
-                tool_used = "Townfolk End Dialogue Tool"
-            else:
-                tool_used = "Werewolf End Dialogue Tool"
-            full_result = f"Ohh {agent.person.name}-san, I sincerely apologize for the inconvenience, but I kindly request your understanding as I need to attend to something else at the moment. I greatly appreciate your patience and would be grateful if we could continue our conversation at a later time. Thank you so much for your understanding and cooperation. Have a splendid day, and I look forward to reconnecting with you soon!"
-            consumed_tokens = 0
+        # timeout = 20
+        # pool = multiprocessing.Pool(processes=2)
+        # args = (self_type, previous_dialogue_response_reaction, call_to_action_template, current_time, tools_to_use, now)
+        # result = pool.apply_async(self._generate_reaction, args = args)
+        # try:
+        #     tool_used, full_result, consumed_tokens = result.get(timeout)
+        # except multiprocessing.TimeoutError:
+        #     pool.terminate()  # Terminate the function
+        #     pool.join()
+        #     tool_used = ""
+        #     if self_type=="TownFolk":
+        #         tool_used = "Townfolk End Dialogue Tool"
+        #     else:
+        #         tool_used = "Werewolf End Dialogue Tool"
+        #     full_result = f"Ohh {agent.person.name}-san, I sincerely apologize for the inconvenience, but I kindly request your understanding as I need to attend to something else at the moment. I greatly appreciate your patience and would be grateful if we could continue our conversation at a later time. Thank you so much for your understanding and cooperation. Have a splendid day, and I look forward to reconnecting with you soon!"
+        #     consumed_tokens = 0
             
             
-        # tool_used, full_result, consumed_tokens = self._generate_reaction(self_type, previous_dialogue_response_reaction, call_to_action_template, current_time, tools_to_use, now=now)
+        tool_used, full_result, consumed_tokens = self._generate_reaction(self_type, previous_dialogue_response_reaction, call_to_action_template, current_time, tools_to_use, now=now)
         
         file = open(self.file_path, 'a')
         file.write(f"{datetime_only.time(current_time, 0)}: {self.name} heard {previous_response} from {agent.person.name} and said {full_result}\n")
@@ -436,35 +436,82 @@ Relevant context:
           return True, full_result, consumed_tokens
         elif((tool_used == "Townfolk End Dialogue Tool") or (tool_used == "Werewolf End Dialogue Tool")):
           return False, full_result, consumed_tokens
+    
+    def _generate_reaction_simple(self, observation: str, suffix: str, now: Optional[datetime] = None) -> str:
+        """React to a given observation or dialogue act."""
+        prompt = PromptTemplate.from_template(
+            "{agent_summary_description}"
+            + "\nIt is {current_time}."
+            + "\n{agent_name}'s status: {agent_status}"
+            + "\nSummary of relevant context from {agent_name}'s memory:"
+            + "\n{relevant_memories}"
+            + "\nMost recent observations: {most_recent_memories}"
+            + "\nObservation: {observation}"
+            + "\n\n"
+            + suffix
+        )
+        
+        # self.memory.memory_retrieve 
+        # Fetch the last memory here, and continue the conversation based on this
 
+        agent_summary_description = self.get_summary(now=now)
+        relevant_memories_str = self.summarize_related_memories(observation)
+        current_time_str = (
+            datetime.now().strftime("%B %d, %Y, %I:%M %p")
+            if now is None
+            else now.strftime("%B %d, %Y, %I:%M %p")
+        )
+        kwargs: Dict[str, Any] = dict(
+            agent_summary_description=agent_summary_description,
+            current_time=current_time_str,
+            relevant_memories=relevant_memories_str,
+            agent_name=self.name,
+            observation=observation,
+            agent_status=self.status,
+        )
+        consumed_tokens = self.llm.get_num_tokens(
+            prompt.format(most_recent_memories="", **kwargs)
+        )
+        kwargs[self.memory.most_recent_memories_token_key] = consumed_tokens
+        return self.chain(prompt=prompt).run(**kwargs).strip()
+    
 
-        ## end
-        # have to add dialogue complete extraction way
-        # result = full_result.strip().split("\n")[0]
-        # if "GOODBYE:" in result:
-        #     farewell = self._clean_response(result.split("GOODBYE:")[-1])
-        #     self.memory.save_context(
-        #         {},
-        #         {
-        #             self.memory.add_memory_key: f"{self.name} observed "
-        #             f"{observation} and said {farewell}",
-        #             self.memory.now_key: now,
-        #         },
-        #     )
-        #     return False, f"{self.name} said {farewell}", consumed_tokens
-        # if "SAY:" in result:
-        #     response_text = self._clean_response(result.split("SAY:")[-1])
-        #     self.memory.save_context(
-        #         {},
-        #         {
-        #             self.memory.add_memory_key: f"{self.name} observed "
-        #             f"{observation} and said {response_text}",
-        #             self.memory.now_key: now,
-        #         },
-        #     )
-        #     return True, f"{self.name} said {response_text}", consumed_tokens
-        # else:
-        #     return True, result, consumed_tokens
+    def generate_dialogue_response_simple(self, observation: str, counter:int, now: Optional[datetime] = None) -> Tuple[bool, str]:
+        """React to a given observation."""
+        call_to_action_template = (
+            "What would {agent_name} say? To end the conversation, write:"
+            ' GOODBYE: "what to say". Otherwise to continue the conversation,'
+            ' write: SAY: "what to say next"\n\n'
+        )
+        full_result = self._generate_reaction_simple(
+            observation, call_to_action_template, now=now
+        )
+        result = full_result.strip().split("\n")[0]
+        if "GOODBYE:" in result:
+            farewell = self._clean_response(result.split("GOODBYE:")[-1])
+            self.memory.save_context(
+                {},
+                {
+                    self.memory.add_memory_key: f"{self.name} observed "
+                    f"{observation} and said {farewell}",
+                    self.memory.now_key: now,
+                },
+            )
+            return False, f"{self.name} said {farewell}"
+        if "SAY:" in result:
+            response_text = self._clean_response(result.split("SAY:")[-1])
+            self.memory.save_context(
+                {},
+                {
+                    self.memory.add_memory_key: f"{self.name} observed "
+                    f"{observation} and said {response_text}",
+                    self.memory.now_key: now,
+                },
+            )
+            return True, f"{self.name} said {response_text}"
+        else:
+            return False, result
+
 
     ######################################################
     # Agent stateful' summary methods.                   #

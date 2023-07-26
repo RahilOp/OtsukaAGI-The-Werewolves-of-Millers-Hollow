@@ -1,4 +1,4 @@
-n<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
   <style>
@@ -84,7 +84,7 @@ n<!DOCTYPE html>
 <body>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-      <img src = "static\otsuka.jpg" style="width: 75px; height: 75px; padding: 5px; border-radius: 5px;" >
+      <img src = "static\otsuka.png" style="width: 75px; height: 75px; padding: 5px; border-radius: 5px;" >
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -102,10 +102,11 @@ n<!DOCTYPE html>
 
   <div class = "village">
   <div id="logs-palette-icon1" class = "logs-palette1">
-    <h2> <img src="{{ url_for('static', filename='icon4.png') }} " style = "height: 75px; width: 75px;"> Ayumi Kimora </h2>
+    <button onclick="window.location.href='ayumi/chatbot'" type="button" class="btn btn-outline-success" style="width:150px; height:40px; ">Chat with me!</button>
+    <h2> <img src="{{ url_for('static', filename='icon4.png') }}" > Ayumi Kimora </h2>
     <div class="spinner-grow text-success" role="status">
-      <span class="visually-hidden">Loading...</span>
-    </div>
+        <span class="visually-hidden">Loading...</span>
+      </div>
     <p id="content" > {{ text }} </p>
   </div>
   </div>

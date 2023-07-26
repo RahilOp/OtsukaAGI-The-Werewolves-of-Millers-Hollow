@@ -6,162 +6,28 @@ from utils1 import generate_response,print_colored,relevance_score,retrieval_sco
 from utils2 import initialise_conversation_tools
 from typing import Optional
 from modified_gen_agent import GameGenerativeAgent
-
+from game_gen_memory import GameGenerativeAgentMemory
+import random
 from datetime import datetime
 
 
 threshold = 0.57
 
-# char = pygame.image.load('assets/char.gif')
- 
 simulation_path = "simulation.html"
 
-paths = {
-  'Yamamoto Residence': {
-    'Mizukami Shrine': [(153,230),(153,341),(410,341),(410,592),(705,592),(705,486),(828,486),(828,655)],
-    'Hanazawa Garden': [(153,230),(153,341),(410,341),(410,592),(705,592),(705,486),(978,486),(978,697)],
-    'Kogaku Institute of Physics': [(153,230),(153,341),(410,341),(410,710), (229,710), (229,674)],
-    'Well': [(153,230),(153,341), (493,341),(493,197)],
-    'Haya Apartment 1': [(153,230),(153,341),(493,341), (493,278) ,(640,278), (640,203) ],
-    'Haya Apartment 2': [(153,230),(153,341),(493,341), (493,278) ,(810,278), (810,206)],
-    'Haya Apartment 3': [(153,230),(153,341),(493,341), (493,278) ,(970,278), (970,206)],
-    'Haya Apartment 4': [(153,230),(153,341),(493,341), (493,278) ,(1135,278), (1135,208)],
-    'Yamamoto Residence': [(153,230),(153,230)],
-    'Shino Grocery Store': [(153,230),(153,341),(410,341),(410,592),(705,592),(705,486),(1124,486)],
-    
-  } ,
-  'Well': {
-    'Mizukami Shrine': [(493,197), (493,281), (991,281),(991,481), (828,481), (828,655)],
-    'Hanazawa Garden': [(493,197), (493,281), (978,281),(978,697)],
-    'Kogaku Institute of Physics': [(493,197), (493,349), (406,349),(406,708), (229,708), (229,674)],
-    'Well': [(493,197), (493,197)],
-    'Haya Apartment 1': [(493,197), (493,285), (640,285),(640,203)],
-    'Haya Apartment 2': [(493,197), (493,285), (810,285),(810,206)],
-    'Haya Apartment 3': [(493,197), (493,285), (970,285),(970,206)],
-    'Haya Apartment 4': [(493,197), (493,285), (1135,285),(1135,206)],
-    'Yamamoto Residence': [(493, 197), (493, 341), (153, 341), (153, 230)],
-    'Shino Grocery Store': [(493,197), (493,285), (988,285),(988,486), (1124,486)],
-    
-  }  ,
-  'Haya Apartment 1': {
-    'Mizukami Shrine': [(640,203),(640,292), (986,292),(986,471), (828,471),(828,655)],
-    'Hanazawa Garden': [(640,203),(640,292), (978,292), (978,697)],
-    'Kogaku Institute of Physics': [(640,203),(640,292), (493,292), (493,349), (406,349),(406,708), (229,708), (229,674)],
-    'Well': [(640, 203), (640, 285), (493, 285), (493, 197)],
-    'Haya Apartment 1': [(640, 203),(640, 203)],
-    'Haya Apartment 2': [(640,203),(640,285), (810,285),(810,206)],
-    'Haya Apartment 3': [(640,203),(640,285), (970,285),(970,206)],
-    'Haya Apartment 4': [(640,203),(640,285), (1135,285),(1135,206)],
-    'Yamamoto Residence': [(640, 203), (640, 278), (493, 278), (493, 341), (153, 341), (153, 230)],
-    'Shino Grocery Store': [(640,203),(640,285),(988,285),(988,486), (1124,486)],
-    
-  }  ,
-  'Haya Apartment 2': {
-    'Mizukami Shrine': [(810,206),(810,292), (986,292),(986,471), (828,471),(828,655)],
-    'Hanazawa Garden': [(810,206),(810,292), (978,292), (978,697)],
-    'Kogaku Institute of Physics': [(810,206),(810,292), (493,292), (493,349), (406,349),(406,708), (229,708), (229,674)],
-    'Well': [(810, 206), (810, 285), (493, 285), (493, 197)],
-    'Haya Apartment 1': [(810, 206),(810, 293),(640,293), (640,203)],
-    'Haya Apartment 2': [(810,206), (810,206)],
-    'Haya Apartment 3': [(810,206),(810,285), (970,285),(970,206)],
-    'Haya Apartment 4': [(810,206),(810,285), (1135,285),(1135,206)],
-    'Yamamoto Residence': [(810, 206), (810, 278), (493, 278), (493, 341), (153, 341), (153, 230)],
-    'Shino Grocery Store': [(810,206),(810,285),(988,285),(988,486), (1124,486)],
-    
-  }  ,
-  'Haya Apartment 3': {
-    'Mizukami Shrine': [(970,206),(970,292), (986,292),(986,471), (828,471),(828,655)],
-    'Hanazawa Garden': [(970,206),(970,292), (978,292), (978,697)],
-    'Kogaku Institute of Physics': [(970,206),(970,292), (493,292), (493,349), (406,349),(406,708), (229,708), (229,674)],
-    'Well': [(970, 206), (970, 285), (493, 285), (493, 197)],
-    'Haya Apartment 1': [(970, 206),(970, 293),(640,293), (640,203)],
-    'Haya Apartment 2': [(970,206),(970,292), (810,292),(810,206)],
-    'Haya Apartment 3': [(970,206), (970,206)],
-    'Haya Apartment 4': [(970,206),(970,285), (1135,285),(1135,206)],
-    'Yamamoto Residence': [(970, 206), (970, 278), (493, 278), (493, 341), (153, 341), (153, 230)],
-    'Shino Grocery Store': [(970,206),(970,285),(988,285),(988,486), (1124,486)],
-    
-  }  ,
-  'Haya Apartment 4': {
-    'Mizukami Shrine': [(1135,206),(1135,292), (986,292),(986,471), (828,471),(828,655)],
-    'Hanazawa Garden': [(1135,206),(1135,292), (978,292), (978,697)],
-    'Kogaku Institute of Physics': [(1135,206),(1135,292), (493,292), (493,349), (406,349),(406,708), (229,708), (229,674)],
-    'Well': [(1135, 206), (1135, 285), (493, 285), (493, 197)],
-    'Haya Apartment 1': [(1135, 206),(1135, 293),(640,293), (640,203)],
-    'Haya Apartment 2': [(1135,206),(1135,292), (810,292),(810,206)],
-    'Haya Apartment 3': [(1135,206),(1135,292), (970,292),(970,206)],
-    'Haya Apartment 4': [(1135,206), (1135,206)],
-    'Yamamoto Residence': [(1135, 206), (1135, 278), (493, 278), (493, 341), (153, 341), (153, 230)],
-    'Shino Grocery Store': [(1135,206),(1135,285),(988,285),(988,486), (1124,486)],
-    
-  }  ,
-  'Kogaku Institute of Physics': {
-   'Mizukami Shrine': [(229,674), (229,708),(410,708), (410,592),(705,592),(705,486),(828,486),(828,655)],
-    'Hanazawa Garden': [(229,674), (229,708),(410,708), (410,592),(705,592),(705,486),(828,486),(978,486), (978,697)],
-    'Kogaku Institute of Physics': [(229,674), (229,674)],
-    'Well': [(229, 674), (229, 708), (406, 708), (406, 349), (493, 349), (493, 197)],
-    'Haya Apartment 1': [(229, 674), (229, 708), (406, 708), (406, 349), (493, 349), (493, 292), (640, 292), (640, 203)],
-    'Haya Apartment 2': [(229, 674), (229, 708), (406, 708), (406, 349), (493, 349), (493, 292), (810, 292), (810, 206)],
-    'Haya Apartment 3': [(229, 674), (229, 708), (406, 708), (406, 349), (493, 349), (493, 292), (970, 292), (970, 206)],
-    'Haya Apartment 4': [(229, 674), (229, 708), (406, 708), (406, 349), (493, 349), (493, 292), (1135, 292), (1135, 206)],
-    'Yamamoto Residence': [(229, 674), (229, 710), (410, 710), (410, 341), (153, 341), (153, 230)],
-    'Shino Grocery Store': [(229,674), (229,708),(410,708), (410,592),(705,592),(705,486),(828,486), (1124,486)],
-    
-  }  ,
-  'Mizukami Shrine': {
-    'Mizukami Shrine': [(828,655), (828,655)],
-    'Hanazawa Garden': [(828,655), (828,486), (978,486), (978,697)], 
-    'Kogaku Institute of Physics': [(828, 655), (828, 486), (705, 486), (705, 592), (410, 592), (410, 708), (229, 708), (229, 674)],
-    'Well': [(828, 655), (828, 481), (991, 481), (991, 281), (493, 281), (493, 197)],
-    'Haya Apartment 1': [(828, 655), (828, 471), (986, 471), (986, 292), (640, 292), (640, 203)],
-    'Haya Apartment 2': [(828, 655), (828, 471), (986, 471), (986, 292), (810, 292), (810, 206)],
-    'Haya Apartment 3': [(828, 655), (828, 471), (986, 471), (986, 292), (970, 292), (970, 206)],
-    'Haya Apartment 4': [(828, 655), (828, 471), (986, 471), (986, 292), (1135, 292), (1135, 206)],
-    'Yamamoto Residence': [(828, 655), (828, 486), (705, 486), (705, 592), (410, 592), (410, 341), (153, 341), (153, 230)],
-    'Shino Grocery Store': [(828,655), (828,486), (1124,486)], 
-    
-  }  ,
-  'Hanazawa Garden': {
-    'Mizukami Shrine': [(978, 697), (978, 486), (828, 486), (828, 655)],
-    'Hanazawa Garden': [(978, 697), (978, 697)],
-    'Kogaku Institute of Physics': [(978, 697), (978, 486), (828, 486), (705, 486), (705, 592), (410, 592), (410, 708), (229, 708), (229, 674)],
-    'Well': [(978, 697), (978, 281), (493, 281), (493, 197)],
-    'Haya Apartment 1': [(978, 697), (978, 292), (640, 292), (640, 203)],
-    'Haya Apartment 2': [(978, 697), (978, 292), (810, 292), (810, 206)],
-    'Haya Apartment 3': [(978, 697), (978, 292), (970, 292), (970, 206)],
-    'Haya Apartment 4': [(978, 697), (978, 292), (1135, 292), (1135, 206)],
-    'Yamamoto Residence': [(978, 697), (978, 486), (705, 486), (705, 592), (410, 592), (410, 341), (153, 341), (153, 230)],
-    'Shino Grocery Store': [(978,697), (978,486), (1124,486)],
-    
-  }  ,
-  'Shino Grocery Store': {
-     'Mizukami Shrine': [(1124, 486), (828, 486), (828, 655)],
-    'Hanazawa Garden': [(1124, 486), (978, 486), (978, 697)],
-    'Kogaku Institute of Physics': [(1124, 486), (828, 486), (705, 486), (705, 592), (410, 592), (410, 708), (229, 708), (229, 674)],
-    'Well': [(1124, 486), (988, 486), (988, 285), (493, 285), (493, 197)],
-    'Haya Apartment 1': [(1124, 486), (988, 486), (988, 285), (640, 285), (640, 203)],
-    'Haya Apartment 2': [(1124, 486), (988, 486), (988, 285), (810, 285), (810, 206)],
-    'Haya Apartment 3': [(1124, 486), (988, 486), (988, 285), (970, 285), (970, 206)],
-    'Haya Apartment 4': [(1124, 486), (988, 486), (988, 285), (1135, 285), (1135, 2036)],
-    'Yamamoto Residence': [(1124, 486), (705, 486), (705, 592), (410, 592), (410, 341), (153, 341), (153, 230)],
-    'Shino Grocery Store': [(1124, 486), (1124, 486)],
-    
-  }  
-}
 
-
-
-
-
-
+                                      
 class Agent():
-    def __init__(self, name:str, age:int, agent_type:str, traits:str, status:str, location, file_path:str, memory_retriever, llm, reflection_threshold:int, verbose:bool, x, y, width, height,image_path, left_images,right_images,up_images,down_images):
 
-        self.memory = GenerativeAgentMemory(
+    # constructor to initialize the agent object
+    def __init__(self, name:str, age:int, agent_type:str, traits:str, status:str, location,view:int, file_path:str, memory_retriever, llm, reflection_threshold:int, verbose:bool, x, y, width, height,image_path, left_images,right_images,up_images,down_images):
+
+        self.memory = GameGenerativeAgentMemory(
             llm=llm,
             memory_retriever=memory_retriever,
             verbose=verbose,
-            reflection_threshold=reflection_threshold # we will give this a relatively low number to show how reflection works
+            reflection_threshold=reflection_threshold, # we will give this a relatively low number to show how reflection works
+            file_path=file_path
         )
 
         self.person = GameGenerativeAgent(name=name,
@@ -181,9 +47,9 @@ class Agent():
         
         self.file_path = file_path
         self.state = "alive"
-
+        self.score = 0
         self.location = location
-
+        self.view = view
         self.relations = {}
 
         self.plans = []
@@ -214,48 +80,63 @@ class Agent():
         
         self.show_popup = False
 
-    def draw(self, win, left_images_werewolf, right_images_werewolf,up_images_werewolf,down_images_werewolf,char_werewolf,env,env_night,current_background):
+    # draw the agent at rest
+    def draw_at_rest(self, win, left_images_werewolf, right_images_werewolf,up_images_werewolf,down_images_werewolf,char_werewolf,env,env_night,env2,env2_night,current_background,show_field):
+         
+        if(self.agent_type == "WereWolf" and (current_background == env_night or current_background == env2_night)):
+                win.blit(down_images_werewolf[0],(self.x,self.y))
+        else:
+                win.blit(self.down_images[0],(self.x,self.y))
+                 
+    # draw the agent on the pygame screen
+    def draw(self, win, left_images_werewolf, right_images_werewolf,up_images_werewolf,down_images_werewolf,char_werewolf,env,env_night,env2,env2_night,current_background,show_field):
+        
+        if show_field:
+            pygame.draw.circle(win, ((0,0,0,100)), (self.x + self.width/2, self.y + self.height/2), self.view,2)
+
+
         if self.walkCount + 1 >= 9:
             self.walkCount = 0
         
         if self.left:
-            if(self.agent_type == "WereWolf" and current_background == env_night):
+            if(self.agent_type == "WereWolf" and (current_background == env_night or current_background == env2_night)):
                 win.blit(left_images_werewolf[self.walkCount//3],(self.x,self.y))
             else:
-                win.blit(self.left_images[self.walkCount//3],(self.x,self.y))
+                win.blit(self.left_images[self.walkCount//3],(self.x,self.y))   
             self.walkCount += 1
         elif self.right:
-            if(self.agent_type == "WereWolf" and current_background == env_night):
+            if(self.agent_type == "WereWolf" and (current_background == env_night or current_background == env2_night)):
                 win.blit(right_images_werewolf[self.walkCount//3],(self.x,self.y))
             else:
                 win.blit(self.right_images[self.walkCount//3],(self.x,self.y))
             self.walkCount += 1
         elif self.up:
-            if(self.agent_type == "WereWolf" and current_background == env_night):
+            if(self.agent_type == "WereWolf" and (current_background == env_night or current_background == env2_night)):
                 win.blit(up_images_werewolf[self.walkCount//3],(self.x,self.y))
             else:
                 win.blit(self.up_images[self.walkCount//3],(self.x,self.y))
             self.walkCount += 1
         elif self.down:
-            if(self.agent_type == "WereWolf" and current_background == env_night):
+            if(self.agent_type == "WereWolf" and (current_background == env_night or current_background == env2_night)):
                 win.blit(down_images_werewolf[self.walkCount//3],(self.x,self.y))
             else:
                 win.blit(self.down_images[self.walkCount//3],(self.x,self.y))
             self.walkCount += 1
         else:
-            if(self.agent_type == "WereWolf" and current_background == env_night):
+            if(self.agent_type == "WereWolf" and (current_background == env_night or current_background == env2_night)):
                 win.blit(char_werewolf, (self.x,self.y))
             else:
                 win.blit(self.char, (self.x,self.y))
     
+    # add relations between agents
     def add_relations(self, Agent, relation):
         self.relations[Agent.name] = relation
 
 
 
-
+    # move agent on a specific path defined by paths
     def move_agent(self,path):
-        # global agent_x, agent_y, current_point, direction
+
         # Calculate the target position based on the current point in the path
         if(self.current_point >= len(path)):
           self.right = False
@@ -314,37 +195,21 @@ class Agent():
           self.current_point += 1
           
         
-
-                
-
-                # Check if the agent has reached the target position
-                # if self.x == target_x and self.y == target_y:
-                #     # Move to the next point in the path
-                #     self.current_point += self.direction
-
-                    # Check if the agent has reached the end of the path, and reverse the direction
-                    # if self.current_point == len(path) :
-                    #     self.direction = -1
-                    #     self.current_point = len(path) - 2
-                    # elif self.current_point == -1:
-                    #     self.direction = 1
-                    #     self.current_point = 1
-
-
-
-
-    def update_location(self,prev_location, new_location):
+    # update the location of the agent as per the new location and add the observation into the memory
+    def update_location(self,prev_location, new_location, current_time):
         
+        self.memory.add_memory(f'At {current_time}:00 , I was at {prev_location.name} and next will go to {new_location.name}.')
         self.location = new_location
         
-  
+    # to get the memory as a string 
     def get_memory(self):
         temp_mem = ""
         for i in range(0,len(self.person.memory.memory_retriever.memory_stream)):
             temp_mem+= self.person.memory.memory_retriever.memory_stream[i].page_content
         
         return temp_mem
-  
+    
+    # get the summary of the memory according to the prompt
     def get_mem_summary(self,prompt):
     
         recency = 0 
@@ -359,17 +224,11 @@ class Agent():
             mem_point = self.person.memory.memory_retriever.memory_stream[i].page_content
             relevance = relevance_score(mem_point,prompt)
             importance = self.person.memory.memory_retriever.memory_stream[i].metadata['importance']
-            time_diff = (current_time.hour - self.person.memory.memory_retriever.memory_stream[i].metadata['last_accessed_at'].hour)*60 + (current_time.minute - self.person.memory.memory_retriever.memory_stream[i].metadata['last_accessed_at'].minute)
-            # print(hours_diff)
-            # # self.person.memory.memory_retriever.memory_stream[i].metadata['last_accessed_at'] = current_time
+            time_diff = (current_time.hour - self.person.memory.memory_retriever.memory_stream[i].metadata['last_accessed_at'].hour)*60 + (current_time.minute - self.person.memory.memory_retriever.memory_stream[i].metadata['last_accessed_at'].minute)        
             recency = calculate_weight(time_diff)
-            # print(importance,"\n")
-            # print(relevance,"\n")
-            # print(recency,"\n")
+           
             final_score = retrieval_score(relevance,importance,recency)
             
-            # print(final_score," ",mem_point, "\n")
-
             if final_score >= threshold:
                 get_summary_points+=mem_point
 
@@ -378,20 +237,25 @@ class Agent():
 
         return result
 
-
+    # make the agent interact with other agent using different tools
     def make_interaction_conversation_tree(self, current_time, Agents:list, user_setting = False, user_initializer: Optional[str] = ""):
-    # interaction tree handling feature added
+     
 
      if(self.agent_type=="TownFolk"):
+      
       all_tools = initialise_conversation_tools(self.agent_type)
+
       for agent in Agents:
+
         all_tools_agent = initialise_conversation_tools(agent.agent_type)
+
         if(agent.agent_type=="TownFolk"):
           continue_convo = True
           dialogue_response = ""
           current_plan_self = self.plans[self.plans['Time'].apply(lambda x: x.hour) == current_time]['Plans'].values[0]
           current_plan_agent = agent.plans[agent.plans['Time'].apply(lambda x: x.hour) == current_time]['Plans'].values[0]
           counter = 0
+
           while True:
             # self chance
             if dialogue_response == "":
@@ -399,102 +263,105 @@ class Agent():
               current_plan_reaction, consumed_tokens_reaction = self.person.generate_reaction(self.agent_type, current_plan_agent, current_time)
               continue_convo, dialogue_response, consumed_tokens_dialogue = self.person.initialise_dialogue_response(self.agent_type, agent, current_plan_self, current_plan_agent, current_plan_reaction, current_time, tools_to_use, self.relations, user_setting, user_initializer)
 
-              # break
             else:
               print(counter)
               tools_to_use = [all_tools["townfolk_continue_dialogue_tool"], all_tools["townfolk_end_dialogue_tool"]]
               previous_dialogue_response_reaction, consumed_tokens_reaction = self.person.generate_reaction(self.agent_type, dialogue_response, current_time)
               continue_convo, dialogue_response, consumed_tokens_dialogue = self.person.generate_dialogue_response(self.agent_type, agent, dialogue_response, previous_dialogue_response_reaction, current_plan_self, current_plan_agent, current_time, tools_to_use, self.relations, counter)
               
-            # print_colored(f"{self.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "blue")
             print_colored(f"{self.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "blue",simulation_path)
             if not continue_convo:
               break
-            #other agent's chance
 
+            #other agent's chance
             tools_to_use = [all_tools_agent["townfolk_continue_dialogue_tool"], all_tools_agent["townfolk_end_dialogue_tool"]]
             previous_dialogue_response_reaction, consumed_tokens_reaction = agent.person.generate_reaction(agent.agent_type, dialogue_response, current_time)
             continue_convo, dialogue_response, consumed_tokens_dialogue = agent.person.generate_dialogue_response(agent.agent_type, self, dialogue_response, previous_dialogue_response_reaction, current_plan_agent, current_plan_self, current_time, tools_to_use, agent.relations, counter)
-            # print_colored(f"{agent.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "magenta")
             print_colored(f"{agent.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "magenta",simulation_path)
             counter+=1
+
+
         else:
           continue_convo = True
           dialogue_response = ""
           current_plan_self = self.plans[self.plans['Time'].apply(lambda x: x.hour) == current_time]['Plans'].values[0]
           current_plan_agent = agent.plans[agent.plans['Time'].apply(lambda x: x.hour) == current_time]['Plans'].values[0]
           counter = 0
+
           while True:
+
             # self chance
             if dialogue_response == "":
               tools_to_use = [all_tools["townfolk_initialise_dialogue_tool"]]
               current_plan_reaction, consumed_tokens_reaction = self.person.generate_reaction(self.agent_type, current_plan_agent, current_time)
               continue_convo, dialogue_response, consumed_tokens_dialogue = self.person.initialise_dialogue_response(self.agent_type, agent, current_plan_self, current_plan_agent, current_plan_reaction, current_time, tools_to_use, self.relations, user_setting, user_initializer)
 
-              # break
             else:
               print(counter)
               tools_to_use = [all_tools["townfolk_continue_dialogue_tool"], all_tools["townfolk_end_dialogue_tool"]]
               previous_dialogue_response_reaction, consumed_tokens_reaction = self.person.generate_reaction(self.agent_type, dialogue_response, current_time)
               continue_convo, dialogue_response, consumed_tokens_dialogue = self.person.generate_dialogue_response(self.agent_type, agent, dialogue_response, previous_dialogue_response_reaction, current_plan_self, current_plan_agent, current_time, tools_to_use, self.relations, counter)
 
-            # print_colored(f"{self.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "blue")
             print_colored(f"{self.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "blue",simulation_path)
             if not continue_convo:
               break
-            #other agent's chance
 
+            #other agent's chance
             tools_to_use = [all_tools_agent["werewolf_continue_dialogue_tool"], all_tools_agent["werewolf_end_dialogue_tool"]]
             previous_dialogue_response_reaction, consumed_tokens_reaction = agent.person.generate_reaction(agent.agent_type, dialogue_response, current_time)
             continue_convo, dialogue_response, consumed_tokens_dialogue = agent.person.generate_dialogue_response(agent.agent_type, self, dialogue_response, previous_dialogue_response_reaction, current_plan_agent, current_plan_self, current_time, tools_to_use, agent.relations, counter)
-            # print_colored(f"{agent.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "magenta")
             print_colored(f"{agent.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "magenta",simulation_path)
             counter+=1
 
-        # pass
+
      elif(self.agent_type=="WereWolf"):
+      
       all_tools = initialise_conversation_tools(self.agent_type)
 
       for agent in Agents:
+
         all_tools_agent = initialise_conversation_tools(agent.agent_type)
+
         if(agent.agent_type=="TownFolk"):
           continue_convo = True
           dialogue_response = ""
           current_plan_self = self.plans[self.plans['Time'].apply(lambda x: x.hour) == current_time]['Plans'].values[0]
           current_plan_agent = agent.plans[agent.plans['Time'].apply(lambda x: x.hour) == current_time]['Plans'].values[0]
           counter = 0
+
           while True:
             # self chance
             if dialogue_response == "":
               tools_to_use = [all_tools["werewolf_initialise_dialogue_tool"]]
-              # self, self_type, observation: str, current_time, now: Optional[datetime] = datetime.now()
               current_plan_reaction, consumed_tokens_reaction = self.person.generate_reaction(self.agent_type, current_plan_agent, current_time)
               continue_convo, dialogue_response, consumed_tokens_dialogue = self.person.initialise_dialogue_response(self.agent_type, agent, current_plan_self, current_plan_agent, current_plan_reaction, current_time, tools_to_use, self.relations, user_setting, user_initializer)
 
-              # break
             else:
               print(counter)
               tools_to_use = [all_tools["werewolf_continue_dialogue_tool"], all_tools["werewolf_end_dialogue_tool"]]
               previous_dialogue_response_reaction, consumed_tokens_reaction = self.person.generate_reaction(self.agent_type, dialogue_response, current_time)
               continue_convo, dialogue_response, consumed_tokens_dialogue = self.person.generate_dialogue_response(self.agent_type, agent, dialogue_response, previous_dialogue_response_reaction, current_plan_self, current_plan_agent, current_time, tools_to_use, self.relations, counter)
-            # print_colored(f"{self.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "blue")
+            
             print_colored(f"{self.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "blue",simulation_path)
             if not continue_convo:
               break
+
             #other agent's chance
             tools_to_use = [all_tools_agent["townfolk_continue_dialogue_tool"], all_tools_agent["townfolk_end_dialogue_tool"]]
             previous_dialogue_response_reaction, consumed_tokens_reaction = agent.person.generate_reaction(agent.agent_type, dialogue_response, current_time)
             continue_convo, dialogue_response, consumed_tokens_dialogue = agent.person.generate_dialogue_response(agent.agent_type, self, dialogue_response, previous_dialogue_response_reaction, current_plan_agent, current_plan_self, current_time, tools_to_use, agent.relations, counter)
-            # print_colored(f"{agent.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "magenta")
             print_colored(f"{agent.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "magenta",simulation_path)
-
             counter+=1
-        else: # agent.agent_type == "WereWolf"
+
+            
+        else: 
+          
           continue_convo = True
           dialogue_response = ""
           current_plan_self = self.plans[self.plans['Time'].apply(lambda x: x.hour) == current_time]['Plans'].values[0]
           current_plan_agent = agent.plans[agent.plans['Time'].apply(lambda x: x.hour) == current_time]['Plans'].values[0]
           counter = 0
+
           while True:
             # self chance
             if dialogue_response == "":
@@ -502,22 +369,20 @@ class Agent():
               current_plan_reaction, consumed_tokens_reaction = self.person.generate_reaction(self.agent_type, current_plan_agent, current_time)
               continue_convo, dialogue_response, consumed_tokens_dialogue = self.person.initialise_dialogue_response(self.agent_type, agent, current_plan_self, current_plan_agent, current_plan_reaction, current_time, tools_to_use, self.relations, user_setting, user_initializer)
 
-              # break
             else:
               print(counter)
               tools_to_use = [all_tools["werewolf_continue_dialogue_tool"], all_tools["werewolf_end_dialogue_tool"]]
               previous_dialogue_response_reaction, consumed_tokens_reaction = self.person.generate_reaction(self.agent_type, dialogue_response, current_time)
               continue_convo, dialogue_response, consumed_tokens_dialogue = self.person.generate_dialogue_response(self.agent_type, agent, dialogue_response, previous_dialogue_response_reaction, current_plan_self, current_plan_agent, current_time, tools_to_use, self.relations, counter)
             
-            # print_colored(f"{self.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "blue")
             print_colored(f"{self.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "blue",simulation_path)
             if not continue_convo:
               break
+
             #other agent's chance
             tools_to_use = [all_tools_agent["werewolf_continue_dialogue_tool"], all_tools_agent["werewolf_end_dialogue_tool"]]
             previous_dialogue_response_reaction, consumed_tokens_reaction = agent.person.generate_reaction(agent.agent_type, dialogue_response, current_time)
             continue_convo, dialogue_response, consumed_tokens_dialogue = agent.person.generate_dialogue_response(agent.agent_type, self, dialogue_response, previous_dialogue_response_reaction, current_plan_agent, current_plan_self, current_time, tools_to_use, agent.relations, counter)
-            # print_colored(f"{agent.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "magenta")
             print_colored(f"{agent.person.name} ({consumed_tokens_dialogue}): {dialogue_response}", "magenta",simulation_path)
             counter+=1
 
@@ -525,39 +390,43 @@ class Agent():
       ValueError("\'agent_type\' changed after initialisation. \'agent_type\' can be either TownFolk or WereWolf.")
       
 
+    # to make less contextualised conversations with less use of tokens 
     def make_interaction(self, current_time, Agents:list, last_message:str):
         for agent in Agents:
             continue_convo = True
             dialogue_response = last_message
+            counter = 1
+            talks_list = ["What task were you doing in the previous hour?", "How many tasks did you complete?", "Whom do you think is sabotaging our tasks?", "Do you have any clues about the werewolf in our village?", "Whom are you planning to vote for Werewolf Elimination?"]
             while True:
+
                 #self chance
                 if dialogue_response == "":
-                    start_prompt = f"It is currently {current_time}. \
-                    you are {self.person.name} and you are currently at {self.location} with {agent.person.name}. Your status is {agent.person.status}. Your age is {agent.person.age}. \
-                    The traits of {agent.person.name} having age {agent.person.age} are: {agent.person.traits}.  \
-                    \
-                    Greet {agent.person.name} and start the conversation as {self.person.name}. Initiate conversation with him/her with a single line message on the basis of your relations: {self.relations[agent.person.name]} and your memories: {self.memory.fetch_memories(f'Give the memories related to {agent.person.name}')}"
-                    dialogue_response = generate_response(start_prompt)
+                    dialogue_response = random.choice(talks_list)
+                    # continue_convo,dialogue_response = self.person.generate_dialogue_response_simple(dialogue_response,counter)
                 else:
-                    continue_convo, dialogue_response = self.person.generate_dialogue_response(dialogue_response)
-                    self.memory.add_memory(dialogue_response)
-
+                    continue_convo, dialogue_response = self.person.generate_dialogue_response_simple(dialogue_response,counter)
+                    
+                self.memory.add_memory(f"{agent.person.name}: {dialogue_response}")
                 print(dialogue_response,"magenta")
                 if not continue_convo:
                     break
+
                 #other agent's chance
-                continue_convo, dialogue_response = agent.person.generate_dialogue_response(dialogue_response)
+                continue_convo, dialogue_response = agent.person.generate_dialogue_response_simple(dialogue_response,counter)
                 print(dialogue_response,"green")
                 agent.memory.add_memory(dialogue_response)
                 if not continue_convo:
                     break
 
+                counter+=1
+
+    # let the agent kill the other agent
     def killing_action(self,Agent2,agents, current_time):
         Agent2.state = "dead"
         file = open(self.file_path, 'a')
-        file.write(f"I have eliminated {Agent2.person.name}.\n")
+        file.write(f"I have eliminated {Agent2.person.name} at {Agent2.location.name}.\n")
         file.close()
-        self.memory.add_memory("I have eliminated {}.".format(Agent2.person.name))
+        self.memory.add_memory("I have eliminated {} at {}.".format(Agent2.person.name,Agent2.location.name))
         print_colored(f"{Agent2.person.name} is dead.", "red", simulation_path)
         
         for agent in agents:
