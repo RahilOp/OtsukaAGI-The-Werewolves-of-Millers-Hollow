@@ -92,5 +92,43 @@ By integrating these attributes and methods, the OtsukaAGI framework facilitates
 
 Get ready to be amazed as OtsukaAGI brings to life a captivating world of simulated agents, intelligent decision-making, and immersive storytelling. Embrace the boundless possibilities of this exceptional simulation, where the fusion of artificial intelligence and strategic gameplay creates an experience that is both unique and enthralling.
 
+## Evaluation and Results
+
+### End to End Evaluation
+
+In the end-to-end evaluation of the OtsukaAGI framework, we investigated the impact of varying key parameters on the performance and outcomes of the simulation. The parameters that were varied included:
+
+1. Number of Townfolks: The count of peaceful Townfolks in the game.
+2. Number of Werewolves: The count of cunning and mischievous Werewolves in the game.
+3. Number of Tasks: The total number of tasks that need to be completed during the gameplay.
+
+The following properties were analyzed by varying the above parameters:
+
+1. Townfolks Win Percentage: The percentage of games where the Townfolks emerged victorious over the Werewolves.
+2. Werewolves Win Percentage: The percentage of games where the Werewolves successfully defeated the Townfolks.
+3. Average Real Time: The average time taken for the simulation to run in real-time.
+4. Average Game Time: The average duration of the game within the simulation.
+
+### Observations and Conclusions:
+
+1. Equal Chance of Townfolks and Werewolves to Win:
+   - Number of Townfolks: 5
+   - Number of Werewolves: 3
+   - Number of Tasks: 28
+   
+2. Maximum Game Time:
+   - Number of Townfolks: 6
+   - Number of Werewolves: 2
+   - Number of Tasks: 28
+   
+From the analysis of the charts, we draw the following conclusions:
+
+- For an equal chance of Townfolks and Werewolves to win, a configuration of 5 Townfolks and 3 Werewolves, with 28 tasks, provided balanced gameplay with neither faction having a significant advantage.
+
+- To maximize the game's duration, a setup with 6 Townfolks and 2 Werewolves, with 28 tasks, proved effective in creating a more extended and engaging gameplay experience.
+
+It is essential to note that on average, there is a synchronization between real-time and game time, where approximately 30 seconds of real-time corresponds to 1 hour of game time. However, the precise synchronization depends on the latency of the LLM (Chat GPT LLM) engine used for the simulation.
+
+In conclusion, the end-to-end evaluation of the OtsukaAGI framework has provided valuable insights into the influence of various parameters on the simulation's dynamics. The flexibility of the framework allows developers to customize the gameplay and tailor it to different scenarios, achieving optimal balance and creating captivating experiences for players. The synergy between artificial intelligence and strategic gameplay in "The Werewolves of Millers Hollow" showcases the power and potential of the OtsukaAGI framework, promising a new era of autonomous agents and immersive storytelling.
 
 
